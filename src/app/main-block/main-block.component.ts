@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { NgControlStatus } from '@angular/forms';
 import * as THREE from "three";
+import * as threeADDONS from "three/examples/jsm/Addons";
 
 @Component({
 	selector: 'app-main-block',
@@ -25,7 +27,8 @@ export class MainBlockComponent implements OnInit, AfterViewInit{
 
 
 	private camera!: THREE.PerspectiveCamera;
-	
+
+
 	private get canvas(): HTMLCanvasElement{
 		return this.canvasRef.nativeElement;
 	}
@@ -38,7 +41,10 @@ export class MainBlockComponent implements OnInit, AfterViewInit{
 	private renderer!: THREE.WebGLRenderer;
 
 	private scene!: THREE.Scene;
-
+	
+	//controls
+	private controls!:threeADDONS.OrbitControls;
+	
 	/**
 	 * @private
 	 * @memberof MainBlockComponent
@@ -46,7 +52,7 @@ export class MainBlockComponent implements OnInit, AfterViewInit{
 	private createScene(){
 		//* Scene
 		this.scene = new THREE.Scene();
-		this.scene.background = new THREE.Color(0x000000)
+		this.scene.background = new THREE.Color(0x000000);
 		this.scene.add(this.cube);
 		//*camera
 		let aspectRatio = this.getAspectRatio();
@@ -57,6 +63,8 @@ export class MainBlockComponent implements OnInit, AfterViewInit{
 			this.farClippingPlane
 		)
 		this.camera.position.z = this.cameraZ;
+		this.controls = new threeADDONS.OrbitControls(this.camera,this.canvas);
+		this.controls.update();
 	}
 
 	private getAspectRatio(){
@@ -70,8 +78,7 @@ export class MainBlockComponent implements OnInit, AfterViewInit{
 	 * @memberof MainBlockComponent
 	 */
 	private animateCube(){
-		this.cube.rotation.x += this.rotationSpeedX;
-		this.cube.rotation.y += this.rotationSpeedY;
+		this.controls.update();
 	}
 
 	/**
@@ -90,8 +97,8 @@ export class MainBlockComponent implements OnInit, AfterViewInit{
 		let component:MainBlockComponent = this;
 		(function render(){
 			requestAnimationFrame(render);
-			component.animateCube();
 			component.renderer.render(component.scene, component.camera);
+			component.animateCube();
 		}());
 	}
 	constructor(){}
@@ -99,9 +106,11 @@ export class MainBlockComponent implements OnInit, AfterViewInit{
 	ngOnInit(): void {
 		
 	}
+
 	ngAfterViewInit(): void {
 		this.createScene();
 		this.startRenderingLoop();
 	}
 
 }
+
