@@ -36,8 +36,11 @@ export class MainBlockComponent implements OnInit, AfterViewInit{
 	private geometry = new THREE.BoxGeometry(1,1,1);
 	private material = new THREE.MeshBasicMaterial({map: this.loader.load(this.texture)});
 
-	private cube:THREE.Mesh = new THREE.Mesh(this.geometry,this.material);
 
+	private labelRenderer!:threeADDONS.CSS2DRenderer;
+	private titleLabelRender!:threeADDONS.CSS2DObject;
+
+	private cube:THREE.Mesh = new THREE.Mesh(this.geometry,this.material);
 	private renderer!: THREE.WebGLRenderer;
 
 	private scene!: THREE.Scene;
@@ -50,6 +53,11 @@ export class MainBlockComponent implements OnInit, AfterViewInit{
 	 * @memberof MainBlockComponent
 	*/
 	private createScene(){
+		var titleLabelElement:HTMLElement = document.createElement('div');
+		titleLabelElement.className = 'label';
+		titleLabelElement.textContent = 'Daniel Perez';
+		titleLabelElement.style.backgroundColor = 'transparent';
+		titleLabelElement.style.color = 'white';
 		//* Scene
 		this.scene = new THREE.Scene();
 		this.scene.background = new THREE.Color(0x000000);
@@ -64,6 +72,9 @@ export class MainBlockComponent implements OnInit, AfterViewInit{
 		)
 		this.camera.position.z = this.cameraZ;
 		this.controls = new threeADDONS.OrbitControls(this.camera,this.canvas);
+		this.titleLabelRender = new threeADDONS.CSS2DObject(titleLabelElement);
+		this.titleLabelRender.position.set(-2.2,0.8,0);
+		this.scene.add(this.titleLabelRender);
 		this.controls.update();
 	}
 
@@ -80,7 +91,6 @@ export class MainBlockComponent implements OnInit, AfterViewInit{
 	private animateCube(){
 		this.controls.update();
 	}
-
 	/**
 	 * Start the rendering loop
 	 * 
@@ -94,10 +104,24 @@ export class MainBlockComponent implements OnInit, AfterViewInit{
 		this.renderer.setPixelRatio(devicePixelRatio);
 		this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
 
+		this.labelRenderer = new threeADDONS.CSS2DRenderer();
+		this.labelRenderer.setSize(this.canvas.clientWidth,this.canvas.clientHeight);
+		this.labelRenderer.domElement.style.position = 'absolute';
+		this.labelRenderer.domElement.style.top = '200px';
+		this.labelRenderer.domElement.style.left = '600px';
+		this.labelRenderer.domElement.style.width = '400px';
+		this.labelRenderer.domElement.style.height = '400px';
+
+		this.labelRenderer.domElement.style.border = 'solid white';
+
+		document.body.appendChild(this.labelRenderer.domElement);
+
+
 		let component:MainBlockComponent = this;
 		(function render(){
 			requestAnimationFrame(render);
 			component.renderer.render(component.scene, component.camera);
+			component.labelRenderer.render(component.scene,component.camera);
 			component.animateCube();
 		}());
 	}
