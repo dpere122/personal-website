@@ -14,13 +14,10 @@ export class MainBlockComponent implements OnInit, AfterViewInit{
 	private canvasRef!: ElementRef;
 
 	//* Cube Properties
-	@Input() public rotationSpeedX: number = 0.002;
-	@Input() public rotationSpeedY: number = 0.002;
-	@Input() public size: number = 200;
-	@Input() public texture: string = "/assets/crate.png";
+	@Input() public texture: string = "/assets/texture.jpg";
 
 	//*Stage properties
-	@Input() public cameraZ:number = 150;
+	@Input() public cameraZ:number = 200;
 	@Input() public fieldOfView:number = 1;
 	@Input('nearClipping') public nearClippingPlane:number = 1;
 	@Input('farClipping') public farClippingPlane:number = 1000;
@@ -33,7 +30,7 @@ export class MainBlockComponent implements OnInit, AfterViewInit{
 		return this.canvasRef.nativeElement;
 	}
 	private loader = new THREE.TextureLoader();
-	private geometry = new THREE.BoxGeometry(1,1,1);
+	private geometry = new THREE.SphereGeometry(0.5);
 	private material = new THREE.MeshBasicMaterial({map: this.loader.load(this.texture)});
 
 
@@ -58,6 +55,8 @@ export class MainBlockComponent implements OnInit, AfterViewInit{
 		titleLabelElement.textContent = 'Daniel Perez';
 		titleLabelElement.style.backgroundColor = 'transparent';
 		titleLabelElement.style.color = 'white';
+
+
 		//* Scene
 		this.scene = new THREE.Scene();
 		this.scene.background = new THREE.Color(0x000000);
@@ -72,8 +71,16 @@ export class MainBlockComponent implements OnInit, AfterViewInit{
 		)
 		this.camera.position.z = this.cameraZ;
 		this.controls = new threeADDONS.OrbitControls(this.camera,this.canvas);
+		this.controls.enableDamping = true;
+		this.controls.dampingFactor = 0.01;
+		this.controls.rotateSpeed = 1.5;
+		this.controls.autoRotate = true;
+		this.controls.minDistance = 150;
+		this.controls.maxDistance = 300;
+		this.controls.minPolarAngle = 1;
+		this.controls.maxPolarAngle = 2;
 		this.titleLabelRender = new threeADDONS.CSS2DObject(titleLabelElement);
-		this.titleLabelRender.position.set(-2.2,0.8,0);
+		this.titleLabelRender.position.set(0.5,0.5,1);
 		this.scene.add(this.titleLabelRender);
 		this.controls.update();
 	}
@@ -107,10 +114,9 @@ export class MainBlockComponent implements OnInit, AfterViewInit{
 		this.labelRenderer = new threeADDONS.CSS2DRenderer();
 		this.labelRenderer.setSize(this.canvas.clientWidth,this.canvas.clientHeight);
 		this.labelRenderer.domElement.style.position = 'absolute';
-		this.labelRenderer.domElement.style.top = '200px';
-		this.labelRenderer.domElement.style.left = '600px';
-		this.labelRenderer.domElement.style.width = '400px';
-		this.labelRenderer.domElement.style.height = '400px';
+		this.labelRenderer.domElement.style.top = '0px';
+		this.labelRenderer.domElement.style.left = '0px';
+		this.labelRenderer.domElement.style.pointerEvents = 'none';
 
 		this.labelRenderer.domElement.style.border = 'solid white';
 
