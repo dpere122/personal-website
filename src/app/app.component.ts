@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 
-
+export enum SIZE{
+	small,
+	medium,
+	large
+}
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,3 +13,4 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'personal-website';
 }
+

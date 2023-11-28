@@ -5,12 +5,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MainBlockComponent } from './main-block/main-block.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TextWallComponent } from './text-wall/text-wall.component';
+import { ModelBlockComponent } from './model-block/model-block.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     MainBlockComponent,
+    TextWallComponent,
+    ModelBlockComponent,
   ],
   imports: [
     BrowserModule,

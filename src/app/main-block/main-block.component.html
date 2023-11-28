@@ -1,1 +1,10 @@
-<canvas #canvas id="canvas" style="height: 100vh; width: 100%"></canvas>
+<!-- The purpose of this block is to piece together a page all components will go here -->
+<h1>Daniel Perez</h1>
+<canvas #canvas id="canvas" style="height: 50px; width: 50px"></canvas>
+<div class="container-sm">
+    <app-text-wall [textScale]="SizeEnum.small"></app-text-wall>
+    <app-text-wall [textScale]="SizeEnum.medium"></app-text-wall>
+    <app-text-wall [textScale]="SizeEnum.large"></app-text-wall>
+</div>
+
+

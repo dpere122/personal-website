@@ -4,7 +4,7 @@ import { MainBlockComponent } from "./main-block/main-block.component"
 
 const routeConfig: Routes = [
   {
-    path: 'home',
+    path: '',
     component: MainBlockComponent,
     title: 'Home Page'
   }
@@ -14,4 +14,4 @@ const routeConfig: Routes = [
   imports: [RouterModule.forRoot(routeConfig)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -1,1 +1,7 @@
+@import url(fonts.css);
 /* You can add global styles to this file, and also import other style files */
+body{
+    background-color: lightskyblue;
+    font-family: 'Fira Code Medium';
+    /* font-family: 'Times New Romans'; */
+}
