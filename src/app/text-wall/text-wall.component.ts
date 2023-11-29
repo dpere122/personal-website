@@ -12,43 +12,44 @@ export class TextWallComponent implements OnInit, AfterViewInit{
 	@ViewChild('dynamicBlock', { read: ViewContainerRef })
 	dynamicBlock!: ViewContainerRef;
 
-	
 	@ViewChild('dynamicBlock')
 	el!: ElementRef;
 
-
 	@Input() textScale:SIZE = SIZE.small;
 	@Input() addModel:boolean  = false;
-	textSize:String = "";
-	modelSize:String = "";
-	constructor(private renderer:Renderer2){
+	textSize:string = "";
+	modelSize:string = "";
 
-	}
+	constructor(private renderer:Renderer2){}
 
 	ngOnInit(){
-		// initialize size of container
+		var textVariable:number = 5;
+		const maxSize:number = 12;
+
 		switch (this.textScale){
 			case SIZE.small:
-				this.textSize = "col-3";
-				this.modelSize = "col-9";
+				textVariable = 5;
 				break;
 			case SIZE.medium:
-				this.textSize = "col-6";
-				this.modelSize = "col-6";
+				textVariable = 7;
 				break;
 			case SIZE.large:
-				this.textSize = "col-9";
-				this.modelSize = "col-3";
+				textVariable = 9;
 				break;
 		}
+		this.textSize = "col-"+textVariable;
+		this.modelSize = "col-"+(maxSize-textVariable);
 	}
 
 	ngAfterViewInit(){
-		const childComponentFactory = resolveForwardRef(ModelBlockComponent);
-		const componentRef:ComponentRef<ModelBlockComponent> = this.dynamicBlock.createComponent(childComponentFactory);
+		if(this.addModel){
+			const childComponentFactory = resolveForwardRef(ModelBlockComponent);
+			const componentRef:ComponentRef<ModelBlockComponent> = this.dynamicBlock.createComponent(childComponentFactory);
+	
+			const modelContainer:HTMLElement = componentRef.location.nativeElement;
+			this.renderer.appendChild(this.el.nativeElement,modelContainer);
 
-		const modelContainer:HTMLElement = componentRef.location.nativeElement;
-		this.renderer.appendChild(this.el.nativeElement,modelContainer);
-
+			this.renderer.addClass(this.el.nativeElement,this.modelSize);
+		}
 	}
 }
