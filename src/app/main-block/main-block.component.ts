@@ -9,6 +9,5 @@ import { SIZE } from '../app.component';
 })
 export class MainBlockComponent {
 	SizeEnum = SIZE;
-
 }
 

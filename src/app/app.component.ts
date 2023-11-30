@@ -5,6 +5,7 @@ export enum SIZE{
 	medium,
 	large
 }
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

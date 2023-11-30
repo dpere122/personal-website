@@ -1,5 +1,5 @@
 import { Component, Input, OnInit,AfterViewInit, ViewChild, ViewContainerRef, resolveForwardRef, ComponentRef,ElementRef, Renderer2} from '@angular/core';
-import { SIZE } from '../app.component';
+import { SIZE} from '../app.component';
 import { ModelBlockComponent } from '../model-block/model-block.component';
 
 @Component({
@@ -15,10 +15,15 @@ export class TextWallComponent implements OnInit, AfterViewInit{
 	@ViewChild('dynamicBlock')
 	el!: ElementRef;
 
+	@Input() titleText:string = "title-text";
+	@Input() contentTemplate:any = "";
 	@Input() textScale:SIZE = SIZE.small;
 	@Input() addModel:boolean  = false;
+	@Input() cutoff:number = 0;
+	textContent:string = "";
 	textSize:string = "";
 	modelSize:string = "";
+	
 
 	constructor(private renderer:Renderer2){}
 
@@ -37,8 +42,14 @@ export class TextWallComponent implements OnInit, AfterViewInit{
 				textVariable = 9;
 				break;
 		}
-		this.textSize = "col-"+textVariable;
-		this.modelSize = "col-"+(maxSize-textVariable);
+		if(this.cutoff > 0){
+			this.textSize += "col-"+(textVariable-this.cutoff);
+			this.modelSize += "col-"+(maxSize-textVariable);
+		}else{
+			this.textSize += "col-"+textVariable;
+			this.modelSize += "col-"+(maxSize-textVariable);
+		}
+
 	}
 
 	ngAfterViewInit(){

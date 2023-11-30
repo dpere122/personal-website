@@ -1,0 +1,6 @@
+.text-container{
+    background-color: aliceblue;
+    font-size: medium;
+    border: solid gray 2px;
+    border-radius: 10px 10px 10px 0px;
+}
