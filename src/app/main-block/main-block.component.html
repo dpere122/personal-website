@@ -1,17 +1,16 @@
 <!-- The purpose of this block is to piece together a page all components will go here -->
 <h1>Daniel Perez</h1>
-<canvas #canvas id="canvas" style="height: 50px; width: 50px"></canvas>
 <div class="container-sm">
     <app-text-wall 
     [titleText]="'About Me'"
     [contentTemplate]="aboutMeContent"
-    [textScale]="SizeEnum.medium" [addModel]="true">
+    [textScale]="SizeEnum.small" [addModel]="true">
     </app-text-wall>
     <br>
     <app-text-wall 
     [titleText]="'Portfolio'"
     [contentTemplate]="portfolioContent"
-    [textScale]="SizeEnum.medium" [addModel]="true">
+    [textScale]="SizeEnum.large">
     </app-text-wall>
     <br>
     <app-text-wall 
@@ -27,7 +26,7 @@
      -->
     <ng-template #aboutMeContent>
         <p>
-            Hello world
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis hendrerit dolor magna eget. Tortor consequat id porta nibh venenatis cras sed felis eget. Facilisis mauris sit amet massa vitae tortor condimentum. Eget est lorem ipsum dolor sit amet consectetur. Proin nibh nisl condimentum id. Vulputate sapien nec sagittis aliquam malesuada bibendum arcu vitae elementum. Vulputate enim nulla aliquet porttitor lacus. Risus quis varius quam quisque id diam vel quam elementum. At augue eget arcu dictum varius duis at consectetur lorem. Laoreet suspendisse interdum consectetur libero id faucibus nisl. Vitae et leo duis ut diam quam nulla porttitor. Elit ut aliquam purus sit amet luctus.
         </p>
     </ng-template>
 
