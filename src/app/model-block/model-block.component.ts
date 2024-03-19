@@ -1,10 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { NgControlStatus } from '@angular/forms';
 import * as THREE from "three";
 import * as threeADDONS from "three/examples/jsm/Addons";
-import { SIZE } from '../app.component';
-import { animate } from '@angular/animations';
-
 
 @Component({
 	selector: 'app-model-block',
@@ -26,26 +22,31 @@ export class ModelBlockComponent implements OnInit, AfterViewInit {
 
 	private scene!:THREE.Scene;
 	private renderer!:THREE.WebGLRenderer;
-	 
+
+	@Input() modelURL:string = "";
+	@Input() scale:number = 0.4;
+	@Input() verticalOffset:number = 20;
+
 
 	ngOnInit(): void {
 
 	}
 	ngAfterViewInit(): void {
 		this.createScene();
-		this.loadModel('../assets/models/crystal_model/scene.gltf');
+		this.loadModel(this.modelURL);
 		this.startRenderingLoop();
 	}
 
 	private createScene(){
 		this.scene = new THREE.Scene();
-		this.camera = new THREE.PerspectiveCamera(75,this.getAspectRatio(),0.1,2000);
-		this.camera.position.set(0,23,3);
+		this.camera = new THREE.PerspectiveCamera(65,this.getAspectRatio(),0.1,2000);
+		this.camera.position.set(0,21.5,5);
 
 		this.controls = new threeADDONS.OrbitControls(this.camera,this.canvas);
-		this.controls.target.set(0,21,0)
+		this.controls.target.set(0,20,0.5)
 		this.controls.enablePan = false;
 		this.controls.enableZoom = false;
+		this.controls.enableRotate = false;
 		this.controls.autoRotate = true;
 		this.controls.autoRotateSpeed = 2;
 		this.controls.update();
@@ -60,10 +61,10 @@ export class ModelBlockComponent implements OnInit, AfterViewInit {
 
 		//create test light
 		var light = new THREE.DirectionalLight(0xFFFFFF);
-		light.position.set(0,40,0);
-		light.target.position.set(0,20,0);
+		light.position.set(1,40,15);
+		light.target.position.set(10,40,0);
 		light.castShadow = true;
-		light.intensity = 5;
+		light.intensity = 4;
 		// light.shadow.bias = -0.01;
 		// light.shadow.mapSize.width = 1000;
 		// light.shadow.mapSize.height = 1000;
@@ -87,8 +88,8 @@ export class ModelBlockComponent implements OnInit, AfterViewInit {
 		this.gltfLoader = new threeADDONS.GLTFLoader();
 		this.gltfLoader.load(path,(gltfScene)=>{
 			//callback to occur when the loader has loaded the model
-			gltfScene.scene.position.set(0,20,0);
-			gltfScene.scene.scale.set(2,2,2);
+			gltfScene.scene.position.set(0,this.verticalOffset,0);
+			gltfScene.scene.scale.set(this.scale,this.scale,this.scale);
 			//add the model to the scene
 			this.scene.add(gltfScene.scene);
 		});

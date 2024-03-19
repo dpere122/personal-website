@@ -22,14 +22,17 @@ export class TextWallComponent implements OnInit, AfterViewInit{
 	@Input() cutoff:number = 0;
 	textContent:string = "";
 	textSize:string = "";
-	modelSize:string = "";
+	@Input() modelSize:string = "col-7";
+	@Input() modelURL:string = "../assets/models/toy_boat/scene.gltf";
+	@Input() modelScale:number = 0.4;
+	@Input() modelVerticalOffset:number = 20;
+	
 	
 
 	constructor(private renderer:Renderer2){}
 
 	ngOnInit(){
 		var textVariable:number = 5;
-		const maxSize:number = 12;
 
 		switch (this.textScale){
 			case SIZE.small:
@@ -44,11 +47,10 @@ export class TextWallComponent implements OnInit, AfterViewInit{
 		}
 		if(this.cutoff > 0){
 			this.textSize += "col-"+(textVariable-this.cutoff);
-			this.modelSize += "col-"+(maxSize-textVariable);
 		}else{
 			this.textSize += "col-"+textVariable;
-			this.modelSize += "col-"+(maxSize-textVariable);
 		}
+
 
 	}
 
@@ -56,6 +58,10 @@ export class TextWallComponent implements OnInit, AfterViewInit{
 		if(this.addModel){
 			const childComponentFactory = resolveForwardRef(ModelBlockComponent);
 			const componentRef:ComponentRef<ModelBlockComponent> = this.dynamicBlock.createComponent(childComponentFactory);
+			componentRef.setInput("modelURL",this.modelURL);
+			componentRef.setInput("scale",this.modelScale);
+			componentRef.setInput("verticalOffset",this.modelVerticalOffset);
+
 	
 			const modelContainer:HTMLElement = componentRef.location.nativeElement;
 			this.renderer.appendChild(this.el.nativeElement,modelContainer);

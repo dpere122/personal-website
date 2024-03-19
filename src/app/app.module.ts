@@ -7,6 +7,7 @@ import { MainBlockComponent } from './main-block/main-block.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TextWallComponent } from './text-wall/text-wall.component';
 import { ModelBlockComponent } from './model-block/model-block.component';
+import { BannerComponent } from './banner/banner.component';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { ModelBlockComponent } from './model-block/model-block.component';
     MainBlockComponent,
     TextWallComponent,
     ModelBlockComponent,
+    BannerComponent,
   ],
   imports: [
     BrowserModule,

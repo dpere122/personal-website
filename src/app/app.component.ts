@@ -12,6 +12,6 @@ export enum SIZE{
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'personal-website';
+  title = 'Daniel Perez Dev';
 }
 

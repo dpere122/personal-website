@@ -6,7 +6,7 @@ const routeConfig: Routes = [
   {
     path: '',
     component: MainBlockComponent,
-    title: 'Home Page'
+    title: 'Daniel Perez Dev'
   }
 ];
 

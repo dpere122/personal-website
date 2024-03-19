@@ -2,8 +2,11 @@
     background-color: aliceblue;
     font-size: medium;
     border: solid gray 2px;
-    border-radius: 10px 10px 10px 0px;
+    border-radius: 20px 20px 0px 20px;
     padding: 0px;
+    margin-top: 150px;
+    margin-bottom: 300px;
+
 
 }
 .title-space{
@@ -11,7 +14,7 @@
     width: 100%;
     background-color: lightblue;
     padding-left: calc(var(--bs-gutter-x) * .5);
-    border-radius: 10px 10px 0px 0px;
+    border-radius: 20px 20px 0px 0px;
     padding-top: 5px;
     box-shadow: 1px 1px;
     text-shadow: 1px 1px gray;
@@ -21,4 +24,10 @@
 .content-space{
     padding-right: calc(var(--bs-gutter-x) * .5);
     padding-left: calc(var(--bs-gutter-x) * .5);
+    text-align: justify;
+
+}
+
+.model-content{
+    float: left;
 }

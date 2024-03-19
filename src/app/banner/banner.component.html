@@ -1,0 +1,20 @@
+<div class="container-fluid py-4 banner" style="color:black;" style="opacity: {{opacity}}%;position: fixed;height:{{compHeight}}px;"></div>
+<div class="container-fluid py-4 mx-2" style="position: fixed;">
+    <div class="row">
+        <div class="col-5">
+            <h1 class="display-5 fw-bold">Daniel Perez</h1>
+        </div>
+        <div class="offset-1 display-5 col-6 fw-bold" style="text-align: right;">
+            <span *ngFor="let page of pages;" class="col-3 page-button mx-3">{{page}}</span>
+        </div>
+    </div>
+    <div class="row ">
+        <p [hidden]="!subheaderVisible" class="col-md-8 fs-4">
+            Full-Stack Developer
+        </p>
+    </div>
+
+
+</div>
+<div style="padding-top: {{compHeightInit}}px;"></div>
+
