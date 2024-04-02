@@ -18,7 +18,9 @@ export class ModelBlockComponent implements OnInit, AfterViewInit {
 
 	private gltfLoader!:threeADDONS.GLTFLoader;
 	private camera!:THREE.PerspectiveCamera;
-	private controls!:threeADDONS.OrbitControls;
+	private light:THREE.DirectionalLight = new THREE.DirectionalLight(0xFFFFFF);
+	private model!:THREE.Group;
+	// private controls!:threeADDONS.OrbitControls;
 
 	private scene!:THREE.Scene;
 	private renderer!:THREE.WebGLRenderer;
@@ -39,17 +41,17 @@ export class ModelBlockComponent implements OnInit, AfterViewInit {
 
 	private createScene(){
 		this.scene = new THREE.Scene();
-		this.camera = new THREE.PerspectiveCamera(65,this.getAspectRatio(),0.1,2000);
-		this.camera.position.set(0,21.5,5);
+		this.camera = new THREE.PerspectiveCamera(70,this.getAspectRatio(),0.1,2000);
+		this.camera.position.set(0,20,5);
 
-		this.controls = new threeADDONS.OrbitControls(this.camera,this.canvas);
-		this.controls.target.set(0,20,0.5)
-		this.controls.enablePan = false;
-		this.controls.enableZoom = false;
-		this.controls.enableRotate = false;
-		this.controls.autoRotate = true;
-		this.controls.autoRotateSpeed = 2;
-		this.controls.update();
+		// this.controls = new threeADDONS.OrbitControls(this.camera,this.canvas);
+		// this.controls.target.set(0,20,0.5)
+		// this.controls.enablePan = false;
+		// this.controls.enableZoom = false;
+		// this.controls.enableRotate = false;
+		// this.controls.autoRotate = true;
+		// this.controls.autoRotateSpeed = 2;
+		// this.controls.update();
 
 		// //create test cube
 		// var planeGeometry = new THREE.PlaneGeometry(100,100,1,1);
@@ -60,21 +62,21 @@ export class ModelBlockComponent implements OnInit, AfterViewInit {
 		// this.scene.add(plane);
 
 		//create test light
-		var light = new THREE.DirectionalLight(0xFFFFFF);
-		light.position.set(1,40,15);
-		light.target.position.set(10,40,0);
-		light.castShadow = true;
-		light.intensity = 4;
-		// light.shadow.bias = -0.01;
-		// light.shadow.mapSize.width = 1000;
-		// light.shadow.mapSize.height = 1000;
-		// light.shadow.camera.near = 1.0;
-		// light.shadow.camera.far = 500;
-		// light.shadow.camera.left = 200;
-		// light.shadow.camera.right = -200;
-		// light.shadow.camera.top = 200;
-		// light.shadow.camera.bottom = -200;
-		this.scene.add(light);
+		
+		this.light.position.set(1,40,15);
+		this.light.target.position.set(10,40,0);
+		this.light.castShadow = true;
+		this.light.intensity = 4;
+		// this.light.shadow.bias = -0.01;
+		// this.light.shadow.mapSize.width = 1000;
+		// this.light.shadow.mapSize.height = 1000;
+		// this.light.shadow.camera.near = 1.0;
+		// this.light.shadow.camera.far = 500;
+		// this.light.shadow.camera.left = 200;
+		// this.light.shadow.camera.right = -200;
+		// this.light.shadow.camera.top = 200;
+		// this.light.shadow.camera.bottom = -200;
+		this.scene.add(this.light);
 
 		// var ambLight = new THREE.PointLight(0x08f700)
 		// ambLight.position.set(0,20,100);
@@ -91,7 +93,8 @@ export class ModelBlockComponent implements OnInit, AfterViewInit {
 			gltfScene.scene.position.set(0,this.verticalOffset,0);
 			gltfScene.scene.scale.set(this.scale,this.scale,this.scale);
 			//add the model to the scene
-			this.scene.add(gltfScene.scene);
+			this.model = gltfScene.scene;
+			this.scene.add(this.model);
 		});
 	}
 
@@ -106,7 +109,8 @@ export class ModelBlockComponent implements OnInit, AfterViewInit {
 		(function render(){
 			requestAnimationFrame(render);
 			component.renderer.render(component.scene,component.camera);
-			component.controls.update();
+			component.model.rotateY(0.005);
+			// component.controls.update();
 		}());
 	}
 
