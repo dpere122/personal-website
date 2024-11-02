@@ -1,0 +1,18 @@
+/* fonts */
+@font-face{
+    font-family: 'Fira Code';
+    src: url(assets/fonts/FiraMono/FiraMono-Regular.ttf) format('truetype');
+    font-style: normal;
+}
+/* fonts */
+@font-face{
+    font-family: 'Fira Code Medium';
+    src: url(assets/fonts/FiraMono/FiraMono-Medium.ttf) format('truetype');
+    font-style: normal;
+}
+/* fonts */
+@font-face{
+    font-family: 'Inconsolata';
+    src: url(assets/fonts/Inconsolata/Inconsolata-variable_font.ttf) format('truetype');
+    font-style: bold;
+}

@@ -1,0 +1,4 @@
+Angular website to display Resume and portfolio.
+
+- Main Page Describes me and methodology in tech
+

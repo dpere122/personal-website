@@ -1,0 +1,62 @@
+<!-- The purpose of this block is to piece together a page all components will go here -->
+<div class="container-sm">
+    <app-text-wall 
+    [titleText]="'About Me'"
+    [contentTemplate]="aboutMeContent"
+    [textScale]="SizeEnum.large" [addModel]="true"
+    [modelSize]="'col-4'"
+    [modelURL]="'../assets/models/crystal_model/scene.gltf'"
+    [modelScale]="2.5"
+    [modelVerticalOffset]="19">
+    </app-text-wall>
+    <br>
+    <app-text-wall 
+    [titleText]="'Portfolio'"
+    [contentTemplate]="portfolioContent"
+    [textScale]="SizeEnum.large">
+    </app-text-wall>
+    <br>
+    <app-text-wall 
+    [titleText]="'Blog post 1'"
+    [contentTemplate]="blogPost1"
+    [textScale]="SizeEnum.large" [addModel]="true" [modelSize]="'col-12'">
+    </app-text-wall>
+
+
+
+    <!-- 
+        NG template with the identifier will fill in the data 
+     -->
+    <ng-template #aboutMeContent>
+        <p>
+            Based in South Florida, Daniel is a full-stack Web developer that specializes in creating Spring powered microservices and RESTful APIs. In addition to serving front-end frameworks like Angular.
+             
+        </p>
+    </ng-template>
+
+    <ng-template #portfolioContent>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Fringilla est ullamcorper eget nulla facilisi etiam dignissim. Convallis aenean et tortor at risus. Enim blandit volutpat maecenas volutpat blandit aliquam etiam. Ac orci phasellus egestas tellus. Dui id ornare arcu odio ut sem. Diam in arcu cursus euismod quis viverra nibh. Nam aliquam sem et tortor consequat id porta nibh venenatis. Aliquam id diam maecenas ultricies mi eget. Aliquam etiam erat velit scelerisque in dictum non consectetur a. Urna duis convallis convallis tellus. Cursus turpis massa tincidunt dui ut ornare. Metus vulputate eu scelerisque felis imperdiet proin fermentum. Morbi tristique senectus et netus et malesuada fames. Turpis massa sed elementum tempus egestas sed sed risus pretium. Quis viverra nibh cras pulvinar mattis. Amet est placerat in egestas erat imperdiet sed euismod. Purus non enim praesent elementum facilisis.
+
+            Posuere ac ut consequat semper. Feugiat vivamus at augue eget arcu dictum. Quis lectus nulla at volutpat diam ut venenatis. Mauris ultrices eros in cursus turpis massa tincidunt dui. Consectetur purus ut faucibus pulvinar elementum. Blandit aliquam etiam erat velit. Sapien faucibus et molestie ac feugiat sed lectus vestibulum. Nullam non nisi est sit amet facilisis. Tempus egestas sed sed risus pretium. Malesuada nunc vel risus commodo viverra.
+            
+        </p>
+    </ng-template>
+
+    <ng-template #blogPost1>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Fringilla est ullamcorper eget nulla facilisi etiam dignissim. Convallis aenean et tortor at risus. Enim blandit volutpat maecenas volutpat blandit aliquam etiam. Ac orci phasellus egestas tellus. Dui id ornare arcu odio ut sem. Diam in arcu cursus euismod quis viverra nibh. Nam aliquam sem et tortor consequat id porta nibh venenatis. Aliquam id diam maecenas ultricies mi eget. Aliquam etiam erat velit scelerisque in dictum non consectetur a. Urna duis convallis convallis tellus. Cursus turpis massa tincidunt dui ut ornare. Metus vulputate eu scelerisque felis imperdiet proin fermentum. Morbi tristique senectus et netus et malesuada fames. Turpis massa sed elementum tempus egestas sed sed risus pretium. Quis viverra nibh cras pulvinar mattis. Amet est placerat in egestas erat imperdiet sed euismod. Purus non enim praesent elementum facilisis.
+
+Posuere ac ut consequat semper. Feugiat vivamus at augue eget arcu dictum. Quis lectus nulla at volutpat diam ut venenatis. Mauris ultrices eros in cursus turpis massa tincidunt dui. Consectetur purus ut faucibus pulvinar elementum. Blandit aliquam etiam erat velit. Sapien faucibus et molestie ac feugiat sed lectus vestibulum. Nullam non nisi est sit amet facilisis. Tempus egestas sed sed risus pretium. Malesuada nunc vel risus commodo viverra.
+
+Ultrices tincidunt arcu non sodales neque sodales ut etiam. Duis at tellus at urna condimentum mattis pellentesque id. Posuere urna nec tincidunt praesent. Nibh sit amet commodo nulla facilisi nullam vehicula ipsum. Commodo nulla facilisi nullam vehicula ipsum. Ac odio tempor orci dapibus ultrices in iaculis nunc. Pretium vulputate sapien nec sagittis. Orci ac auctor augue mauris. Luctus accumsan tortor posuere ac ut consequat semper. Luctus venenatis lectus magna fringilla urna porttitor rhoncus. Accumsan sit amet nulla facilisi morbi tempus iaculis urna id. Auctor augue mauris augue neque. Convallis posuere morbi leo urna molestie at. Commodo ullamcorper a lacus vestibulum. Urna id volutpat lacus laoreet non curabitur. Posuere morbi leo urna molestie. Eget mauris pharetra et ultrices neque ornare aenean euismod. Quam elementum pulvinar etiam non quam lacus suspendisse faucibus interdum.
+
+Augue neque gravida in fermentum et. Risus nullam eget felis eget nunc lobortis mattis aliquam faucibus. Enim eu turpis egestas pretium aenean pharetra. Ut morbi tincidunt augue interdum velit euismod in pellentesque massa. Nulla posuere sollicitudin aliquam ultrices. Semper viverra nam libero justo laoreet. Scelerisque fermentum dui faucibus in ornare quam viverra orci. Malesuada bibendum arcu vitae elementum curabitur vitae nunc. Vel fringilla est ullamcorper eget. Interdum velit euismod in pellentesque massa. Eget velit aliquet sagittis id consectetur purus ut. Purus gravida quis blandit turpis cursus in hac habitasse platea. Vestibulum lorem sed risus ultricies tristique nulla aliquet. Enim nunc faucibus a pellentesque sit. Amet nulla facilisi morbi tempus.
+
+Nulla at volutpat diam ut. Leo urna molestie at elementum eu facilisis sed odio. Mauris rhoncus aenean vel elit scelerisque mauris pellentesque. Arcu bibendum at varius vel pharetra. Condimentum lacinia quis vel eros donec ac odio tempor orci. Enim facilisis gravida neque convallis a cras. Proin libero nunc consequat interdum varius sit amet mattis. Eu nisl nunc mi ipsum faucibus vitae. Consectetur lorem donec massa sapien faucibus et molestie ac. Nulla aliquet enim tortor at auctor urna nunc id. Lacus viverra vitae congue eu consequat ac.
+        </p>
+    </ng-template>
+
+</div>
+
+
