@@ -2,6 +2,7 @@
 <div class="container-sm">
     <app-text-wall 
     [titleText]="'About Me'"
+    [boxType]="BOXTYPE.RESPONSE"
     [contentTemplate]="aboutMeContent"
     [textScale]="SizeEnum.large" [addModel]="true"
     [modelSize]="'col-4'"
@@ -12,15 +13,16 @@
     <br>
     <app-text-wall 
     [titleText]="'Portfolio'"
+    [addGitWidget]="true"
     [contentTemplate]="portfolioContent"
     [textScale]="SizeEnum.large">
     </app-text-wall>
     <br>
-    <app-text-wall 
-    [titleText]="'Blog post 1'"
-    [contentTemplate]="blogPost1"
-    [textScale]="SizeEnum.large" [addModel]="true" [modelSize]="'col-12'">
-    </app-text-wall>
+    <app-response-box
+        [titleText]="'Blog post 2'"
+        [contentTemplate]="blogPost1"
+        [textScale]="SizeEnum.large" [addModel]="true" [modelSize]="'col-12'">
+    </app-response-box>
 
 
 

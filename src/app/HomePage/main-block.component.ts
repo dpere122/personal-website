@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import { SIZE } from '../app.component';
+import { SIZE,BOXTYPE } from '../app.component';
 
 
 @Component({
@@ -9,5 +9,6 @@ import { SIZE } from '../app.component';
 })
 export class MainBlockComponent {
 	SizeEnum = SIZE;
+	BOXTYPE = BOXTYPE;
 }
 

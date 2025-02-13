@@ -1,9 +1,15 @@
 import { Component } from '@angular/core';
 
-export enum SIZE{
-	small,
-	medium,
-	large
+export enum SIZE {
+  small,
+  medium,
+  large
+}
+export enum BOXTYPE {
+  MESSAGE,
+  RESPONSE,
+  NOTICE,
+  WARNING
 }
 
 @Component({
@@ -12,6 +18,6 @@ export enum SIZE{
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Daniel Perez Dev';
+  title = 'CodebyDP';
 }
 

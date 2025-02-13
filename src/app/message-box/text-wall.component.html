@@ -1,0 +1,13 @@
+<div class="row d-flex justify-content-center">
+    <!-- possible image or 3d model placed side by side -->
+
+    <div class="{{textSize}} text-container">
+        <div ngClass="{'response-title-text': true}">
+            <h4>{{titleText}}</h4>
+        </div>
+        <div  ngClass="{'response-content-space': true}">
+            <div #dynamicBlock class="model-content"></div>
+            <ng-container class="content-space" *ngTemplateOutlet="contentTemplate"></ng-container>
+        </div>
+    </div>
+</div>

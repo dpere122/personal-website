@@ -3,11 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MainBlockComponent } from './main-block/main-block.component';
+import { MainBlockComponent } from './HomePage/main-block.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TextWallComponent } from './text-wall/text-wall.component';
-import { ModelBlockComponent } from './model-block/model-block.component';
+import { TextWallComponent } from './message-box/text-wall.component';
+import { ModelBlockComponent } from './3DModel/model-block.component';
 import { BannerComponent } from './banner/banner.component';
+import { ResponseBoxComponent } from './response-box/response-box.component';
+import { GitWidgetComponent } from './git-widget/git-widget.component';
 
 
 @NgModule({
@@ -17,6 +19,8 @@ import { BannerComponent } from './banner/banner.component';
     TextWallComponent,
     ModelBlockComponent,
     BannerComponent,
+    ResponseBoxComponent,
+    GitWidgetComponent
   ],
   imports: [
     BrowserModule,
