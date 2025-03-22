@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, HostListener } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-banner',
@@ -6,14 +7,29 @@ import { Component, OnInit, AfterViewInit, HostListener } from '@angular/core';
   styleUrls: ['./banner.component.css']
 })
 export class BannerComponent implements OnInit, AfterViewInit {
-  pages:Array<String> = ["Home","Portfolio","Blog","Resume"];
+  pages: string[] = ["Home","Portfolio","Blog","Resume"];
   bannerOpacity: number = 1;
   originalHeight: number = 100; // Default banner height in pixels
   minHeight: number = 60; // Minimum height (60% of original)
   originalTitleSize: number = 2.5; // Default title size in em
   minTitleSize: number = 1.5; // Minimum title size (target when scrolled)
+  currentRoute: string = '';
 
-  constructor(){}
+  constructor(private router: Router){
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.currentRoute = event.url;
+      }
+    });
+  }
+  
+  isActive(page: string): boolean {
+    const pageLower = page.toLowerCase();
+    if (pageLower === 'home') {
+      return this.currentRoute === '/';
+    }
+    return this.currentRoute === `/${pageLower}`;
+  }
   
   ngAfterViewInit(): void {
     // Set initial height if needed
@@ -25,6 +41,18 @@ export class BannerComponent implements OnInit, AfterViewInit {
   }
   
   ngOnInit(): void {
+  }
+
+  navigateToPage(page: string) {
+    switch(page.toLowerCase()) {
+      case 'home':
+        this.router.navigate(['/']);
+        break;
+      case 'blog':
+        this.router.navigate(['/blog']);
+        break;
+      // Add other navigation cases as needed
+    }
   }
 
   @HostListener('window:scroll', [])

@@ -83,4 +83,11 @@
 .menu-options h1{
   font-size: 0.9em; /* Smaller text size for menu headings */
   margin: 0 0 0 15px; /* Removes auto margin and adds space between items */
+  cursor: pointer; /* Add pointer cursor to indicate clickable */
+}
+
+/* Active menu item styling */
+.menu-options h1.active {
+  border-bottom: 2px solid white;
+  padding-bottom: 2px;
 }

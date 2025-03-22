@@ -9,7 +9,9 @@
       <h1 class="sub-title">Full Stack Developer</h1>
     </div>
     <div class="col-5 menu-options">
-      <h1 class="page-button" *ngFor="let page of pages;let i = index">{{page}}</h1>
+      <h1 class="page-button" *ngFor="let page of pages;let i = index" 
+          (click)="navigateToPage(page)"
+          [class.active]="isActive(page)">{{page}}</h1>
     </div>
   </div>
 </div>
