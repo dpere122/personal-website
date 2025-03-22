@@ -3,8 +3,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f0f0f0;
-  padding: 20px;
+  padding: auto;
 }
 
 .window {
@@ -22,13 +21,13 @@
 /* Responsive styles for mobile */
 @media (max-width: 768px) {
   .custom-box {
-    padding: 0;
+    padding: auto;; /* Reduced top padding to minimize gap */
   }
   
   .window {
     width: 100vw;
     border-radius: 0;
-    min-height: 100vh;
+    min-height: calc(100vh - 105px); /* Adjust to match new padding */
   }
   
   .content {

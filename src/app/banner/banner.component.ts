@@ -10,17 +10,23 @@ export class BannerComponent implements OnInit, AfterViewInit {
   pages: string[] = ["Home","Portfolio","Blog","Resume"];
   bannerOpacity: number = 1;
   originalHeight: number = 100; // Default banner height in pixels
-  minHeight: number = 80; // Minimum height (60% of original)
+  minHeight: number = 60; // Minimum height (60% of original)
   originalTitleSize: number = 2.7; // Default title size in em
   minTitleSize: number = 2; // Minimum title size (target when scrolled)
   currentRoute: string = '';
+  isNavbarCollapsed: boolean = false;
 
   constructor(private router: Router){
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.currentRoute = event.url;
+        this.isNavbarCollapsed = false; // Close navbar when navigating
       }
     });
+  }
+  
+  toggleNavbar() {
+    this.isNavbarCollapsed = !this.isNavbarCollapsed;
   }
   
   isActive(page: string): boolean {
@@ -57,7 +63,8 @@ export class BannerComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
-    // Get viewport height and scroll position
+    // Get viewport width, height and scroll position
+    const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
     const scrollPosition = window.scrollY;
     
@@ -68,23 +75,26 @@ export class BannerComponent implements OnInit, AfterViewInit {
     // Calculate opacity: starts at 1 (100%) and goes down to 0.7 (70%)
     this.bannerOpacity = 1 - (0.3 * scrollPercentage);
     
-    // Calculate height: starts at original height and goes down to 60% of original
+    // Calculate height: starts at original height and goes down to minimum height
     const currentHeight = this.originalHeight - ((this.originalHeight - this.minHeight) * scrollPercentage);
     
-    // Calculate title size: starts at original size and goes down to minimum size
-    const currentTitleSize = this.originalTitleSize - ((this.originalTitleSize - this.minTitleSize) * scrollPercentage);
-    
-    // Apply the opacity and height to the banner element
-    const banner = document.querySelector('.banner') as HTMLElement;
-    if (banner) {
-      banner.style.opacity = this.bannerOpacity.toString();
-      banner.style.height = `${currentHeight}px`;
+    // Apply the opacity and height to the navbar element
+    const navbar = document.querySelector('.navbar') as HTMLElement;
+    if (navbar) {
+      navbar.style.opacity = this.bannerOpacity.toString();
+      navbar.style.height = `${currentHeight}px`;
     }
     
-    // Apply the font size to the title element
-    const title = document.querySelector('.title') as HTMLElement;
-    if (title) {
-      title.style.fontSize = `${currentTitleSize}em`;
+    // Only resize title on desktop (screen width > 991px)
+    if (windowWidth > 991) {
+      // Calculate title size: starts at original size and goes down to minimum size
+      const currentTitleSize = this.originalTitleSize - ((this.originalTitleSize - this.minTitleSize) * scrollPercentage);
+      
+      // Apply the font size to the title element
+      const title = document.querySelector('.title') as HTMLElement;
+      if (title) {
+        title.style.fontSize = `${currentTitleSize}em`;
+      }
     }
   }
 }

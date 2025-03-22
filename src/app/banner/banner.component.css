@@ -10,6 +10,7 @@
   display: flex;
   flex-direction: column; /* Stack children vertically */
   top: 0; /* Ensure banner is flush with top of viewport */
+  z-index: 9999; /* Ensure banner appears above all other elements */
 }
 
 /* Reset opacity to 1 when hovering over the banner */
@@ -57,6 +58,7 @@
   font-size: 1.1em; /* Increase font size slightly on hover */
   animation: wiggle 0.5s ease; /* Apply wiggle animation */
   transition: font-size 0.2s ease; /* Smooth transition for font size change */
+  color: black;;
 }
 
 /* Main title styling */
@@ -91,4 +93,119 @@
 .menu-options h1.active {
   border-bottom: 2px solid rgb(102, 102, 102);
   padding-bottom: 2px;
+}
+
+/* Main navbar styling */
+.navbar {
+  background: black;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 9999;
+  transition: all 0.3s ease;
+  height: 100px;
+}
+
+.navbar-brand-container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+}
+
+/* Main title styling */
+.title {
+  color: white;
+  font-size: 2.5em;
+  margin: 0;
+  transition: font-size 0.3s ease;
+  line-height: 1;
+}
+
+/* Secondary title styling */
+.sub-title {
+  color: white;
+  font-size: 0.9em;
+  margin: 0;
+  line-height: 1;
+}
+
+/* Custom navbar styling */
+.navbar-nav {
+  padding: 10px 0;
+}
+
+.nav-item {
+  margin: 0 10px;
+}
+
+.nav-link {
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 5px 10px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.nav-link.active {
+  position: relative;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #d4a641;
+}
+
+.nav-link:hover {
+  background-color: white;
+  color: black !important;
+  transform: scale(1.05);
+  animation: wiggle 0.5s ease;
+}
+
+/* Custom toggler styling */
+.navbar-toggler {
+  border: none;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+/* Responsive styles */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    background-color: rgba(0, 0, 0, 0.95);
+    padding: 10px;
+    border-radius: 0 0 5px 5px;
+  }
+  
+  .navbar-nav {
+    text-align: center;
+  }
+  
+  .nav-item {
+    margin: 5px 0;
+  }
+  
+  .nav-link.active::after {
+    width: 50%;
+    left: 25%;
+  }
+  
+  .title {
+    font-size: 1.8em;
+  }
+  
+  .sub-title {
+    font-size: 0.8em;
+  }
 }

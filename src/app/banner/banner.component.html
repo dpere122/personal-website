@@ -1,17 +1,25 @@
-<div class="container" class="banner">
-  <div class="row">
-    <div class="col-7">
-      <h1 class="title">Daniel Perez</h1>
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container">
+    <div class="navbar-brand-container">
+      <h1 class="title mb-0">Daniel Perez</h1>
+      <h1 class="sub-title mb-0">Full Stack Developer</h1>
+    </div>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNav" [class.show]="isNavbarCollapsed">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item" *ngFor="let page of pages">
+          <a class="nav-link" 
+             [class.active]="isActive(page)" 
+             (click)="navigateToPage(page)">
+            {{page}}
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
-  <div class="row">
-    <div class="col-7">
-      <h1 class="sub-title">Full Stack Developer</h1>
-    </div>
-    <div class="col-5 menu-options">
-      <h1 class="page-button" *ngFor="let page of pages;let i = index" 
-          (click)="navigateToPage(page)"
-          [class.active]="isActive(page)">{{page}}</h1>
-    </div>
-  </div>
-</div>
+</nav>
