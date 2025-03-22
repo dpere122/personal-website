@@ -1,0 +1,118 @@
+.custom-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+  padding: 20px;
+}
+
+.window {
+  width: 50vw;
+  height: auto;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Responsive styles for mobile */
+@media (max-width: 768px) {
+  .custom-box {
+    padding: 0;
+  }
+  
+  .window {
+    width: 100vw;
+    border-radius: 0;
+    min-height: 100vh;
+  }
+  
+  .content {
+    padding: 15px;
+  }
+}
+
+.glare {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 45%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 55%,
+    transparent 100%
+  );
+  transform: rotate(45deg);
+  animation: glare 3s infinite;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  padding: 20px;
+}
+
+/* Profile Summary Styling */
+.profile-summary {
+  padding: 0 15px;
+  color: #000000;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.dev-name {
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: #d4a641;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid rgba(212, 166, 65, 0.5);
+  padding-bottom: 8px;
+}
+
+.summary-text {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  opacity: 0.95;
+}
+
+.tech-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.tech-list li {
+  margin-bottom: 8px;
+  position: relative;
+  padding-left: 20px;
+  font-size: 0.9rem;
+}
+
+.tech-list li:before {
+  content: "▹";
+  position: absolute;
+  left: 0;
+  color: #d4a641;
+  font-size: 1.2rem;
+}
+
+.category {
+  font-weight: 600;
+  color: #d4a641;
+  margin-right: 5px;
+}
+
+@keyframes glare {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(45deg);
+  }
+}

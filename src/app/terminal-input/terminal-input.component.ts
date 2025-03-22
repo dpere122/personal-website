@@ -25,7 +25,8 @@ import { Component, OnInit, AfterViewInit, OnDestroy, Input } from '@angular/cor
 @Component({
   selector: 'app-terminal-input',
   templateUrl: './terminal-input.component.html',
-  styleUrls: ['./terminal-input.component.css']
+  styleUrls: ['./terminal-input.component.css'],
+  standalone: true
 })
 export class TerminalInputComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Default height of the terminal box in pixels */

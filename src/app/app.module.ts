@@ -9,8 +9,6 @@ import { TextWallComponent } from './message-box/text-wall.component';
 import { ModelBlockComponent } from './3DModel/model-block.component';
 import { BannerComponent } from './banner/banner.component';
 import { GitWidgetComponent } from './git-widget/git-widget.component';
-import { TerminalInputComponent } from './terminal-input/terminal-input.component';
-import { HostPageComponent } from './host-page/host-page.component';
 
 
 @NgModule({
@@ -20,9 +18,7 @@ import { HostPageComponent } from './host-page/host-page.component';
     TextWallComponent,
     ModelBlockComponent,
     BannerComponent,
-    GitWidgetComponent,
-    TerminalInputComponent,
-    HostPageComponent
+    GitWidgetComponent
   ],
   imports: [
     BrowserModule,
