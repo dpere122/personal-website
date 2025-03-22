@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MainBlockComponent } from './main-block.component';
+import { HostPageComponent } from './host-page.component';
 
-describe('MainBlockComponent', () => {
-  let component: MainBlockComponent;
-  let fixture: ComponentFixture<MainBlockComponent>;
+describe('HostPageComponent', () => {
+  let component: HostPageComponent;
+  let fixture: ComponentFixture<HostPageComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [MainBlockComponent]
+      declarations: [HostPageComponent]
     });
-    fixture = TestBed.createComponent(MainBlockComponent);
+    fixture = TestBed.createComponent(HostPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

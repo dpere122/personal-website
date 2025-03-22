@@ -1,12 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MainBlockComponent } from "./HomePage/main-block.component"
+import { BlogFeedComponent } from "./blog-feed/blog-feed.component"
+import { HostPageComponent } from './host-page/host-page.component';
 
 const routeConfig: Routes = [
   {
     path: '',
-    component: MainBlockComponent,
+    component: HostPageComponent,
     title: 'CodebyDP'
+  },
+  {
+    path: 'blog',
+    component: BlogFeedComponent,
+    title: 'CodebyDp Blog'
   }
 ];
 
