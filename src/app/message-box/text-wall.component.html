@@ -1,13 +1,13 @@
 <div class="row d-flex justify-content-center">
     <!-- possible image or 3d model placed side by side -->
 
-    <div class="{{textSize}} text-container">
-        <div ngClass="{'response-title-text': true}">
+        <div class="{{widgetSize}}" [ngClass]="{'response-container': boxType === BOXTYPE.RESPONSE, 'message-container': boxType === BOXTYPE.MESSAGE}">
+        <div [ngClass]="{'response-title-space': boxType === BOXTYPE.RESPONSE, 'message-title-space': boxType === BOXTYPE.MESSAGE}">
             <h4>{{titleText}}</h4>
         </div>
-        <div  ngClass="{'response-content-space': true}">
-            <div #dynamicBlock class="model-content"></div>
-            <ng-container class="content-space" *ngTemplateOutlet="contentTemplate"></ng-container>
+        <div [ngClass]="{'response-content-space': boxType === BOXTYPE.RESPONSE, 'message-content-space': boxType === BOXTYPE.MESSAGE}">
+            <div #dynamicBlock [ngClass]="{'response-model-content': boxType === BOXTYPE.RESPONSE, 'message-model-content': boxType === BOXTYPE.MESSAGE}"></div>
+            <ng-container [ngClass]="{'response-content-space': boxType === BOXTYPE.RESPONSE, 'message-content-space': boxType === BOXTYPE.MESSAGE}" *ngTemplateOutlet="contentTemplate"></ng-container>
         </div>
     </div>
 </div>

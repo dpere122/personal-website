@@ -19,16 +19,17 @@ export class TextWallComponent implements OnInit, AfterViewInit {
   @Input() titleText: string = "title-text";
   @Input() boxType: BOXTYPE = BOXTYPE.RESPONSE
   @Input() contentTemplate: any = "";
-  @Input() textScale: SIZE = SIZE.small;
+  @Input() boxSize: SIZE = SIZE.small;
   @Input() addModel: boolean = false;
   @Input() addGitWidget: boolean = false;
   @Input() cutoff: number = 0;
-  textContent: string = "";
-  textSize: string = "";
   @Input() modelSize: string = "col-7";
   @Input() modelURL: string = "../assets/models/toy_boat/scene.gltf";
   @Input() modelScale: number = 0.4;
   @Input() modelVerticalOffset: number = 20;
+  textContent: string = "";
+  widgetSize: string = "";
+  BOXTYPE = BOXTYPE;
 
 
 
@@ -36,26 +37,25 @@ export class TextWallComponent implements OnInit, AfterViewInit {
   constructor(private renderer: Renderer2) { }
 
   ngOnInit() {
-    var textVariable: number = 5;
+    var boxSizeVar: number = 5;
 
-    switch (this.textScale) {
+    switch (this.boxSize) {
       case SIZE.small:
-        textVariable = 5;
+        boxSizeVar = 5;
         break;
       case SIZE.medium:
-        textVariable = 7;
+        boxSizeVar = 7;
         break;
       case SIZE.large:
-        textVariable = 9;
+        boxSizeVar = 9;
         break;
     }
     console.log(this.boxType)
     if (this.cutoff > 0) {
-      this.textSize += "col-" + (textVariable - this.cutoff);
+      this.widgetSize += "col-" + (boxSizeVar - this.cutoff);
     } else {
-      this.textSize += "col-" + textVariable;
+      this.widgetSize += "col-" + boxSizeVar;
     }
-
 
   }
 

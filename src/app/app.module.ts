@@ -8,8 +8,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TextWallComponent } from './message-box/text-wall.component';
 import { ModelBlockComponent } from './3DModel/model-block.component';
 import { BannerComponent } from './banner/banner.component';
-import { ResponseBoxComponent } from './response-box/response-box.component';
 import { GitWidgetComponent } from './git-widget/git-widget.component';
+import { TerminalInputComponent } from './terminal-input/terminal-input.component';
 
 
 @NgModule({
@@ -19,8 +19,8 @@ import { GitWidgetComponent } from './git-widget/git-widget.component';
     TextWallComponent,
     ModelBlockComponent,
     BannerComponent,
-    ResponseBoxComponent,
-    GitWidgetComponent
+    GitWidgetComponent,
+    TerminalInputComponent
   ],
   imports: [
     BrowserModule,

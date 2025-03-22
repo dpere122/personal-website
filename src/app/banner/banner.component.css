@@ -1,7 +1,86 @@
-.banner{
-    background: #d4a641;
+/* Main banner container - fixed at the top of the page */
+.banner {
+  background: #d4a641; /* Golden color for the banner */
+  width: 100%; /* Takes full width of viewport */
+  position: fixed; /* Stays at the top during scrolling */
+  transition: opacity 0.3s ease, height 0.3s ease; /* Smooth transition for opacity and height changes */
+  height: 100px; /* Set a fixed initial height */
+  overflow: hidden; /* Hide content that exceeds the container height */
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  top: 0; /* Ensure banner is flush with top of viewport */
 }
 
+/* Reset opacity to 1 when hovering over the banner */
+.banner:hover {
+  opacity: 1 !important; /* Override the inline style set by JavaScript */
+}
+
+/* Define wiggle animation keyframes */
+@keyframes wiggle {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  50% { transform: translateX(0); }
+  75% { transform: translateX(3px); }
+  100% { transform: translateX(0); }
+}
+
+/* Banner container */
+.banner > .container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Put space between top and bottom content */
+  padding-top: 0; /* Remove top padding */
+}
+
+/* Top row with title and menu */
+.banner .row:first-child {
+  padding-top: 0; /* Remove top padding */
+  display: flex;
+  align-items: center; /* Center items vertically */
+}
+
+/* Bottom row with subtitle */
+.banner .row:last-child {
+  margin-top: auto; /* Push to the bottom */
+  padding-bottom: 10px; /* Add some space at the bottom */
+  display: flex;
+  align-items: center; /* Center items vertically */
+}
+
+/* Hover effect for navigation buttons */
 .page-button:hover{
-    background-color: rgb(255, 255, 255);;
+  background-color: rgb(255, 255, 255); /* Changes to white on hover */
+  font-size: 1.1em; /* Increase font size slightly on hover */
+  animation: wiggle 0.5s ease; /* Apply wiggle animation */
+  transition: font-size 0.2s ease; /* Smooth transition for font size change */
+}
+
+/* Main title styling */
+.title{
+  font-size: 2.5em; /* Larger text for the primary title */
+  margin: 0; /* Remove default margin */
+  transition: font-size 0.3s ease; /* Smooth transition for font size changes */
+}
+
+/* Secondary title styling */
+.sub-title{
+  font-size: 0.9em; /* Smaller text for subtitles */
+  margin: 0; /* Remove all margins */
+}
+
+/* Menu options container */
+.menu-options{
+  text-align: right; /* Aligns text to the right */
+  display: flex; /* Uses flexbox for layout */
+  justify-content: flex-end; /* Aligns flex items to the right */
+  align-items: center; /* Centers items vertically */
+}
+
+/* Styling for headings within menu options */
+.menu-options h1{
+  font-size: 0.9em; /* Smaller text size for menu headings */
+  margin: 0 0 0 15px; /* Removes auto margin and adds space between items */
 }

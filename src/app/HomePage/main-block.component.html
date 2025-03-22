@@ -1,28 +1,31 @@
 <!-- The purpose of this block is to piece together a page all components will go here -->
-<div class="container-sm">
+<div class="container-fluid">
     <app-text-wall 
-    [titleText]="'About Me'"
-    [boxType]="BOXTYPE.RESPONSE"
-    [contentTemplate]="aboutMeContent"
-    [textScale]="SizeEnum.large" [addModel]="true"
-    [modelSize]="'col-4'"
-    [modelURL]="'../assets/models/crystal_model/scene.gltf'"
-    [modelScale]="2.5"
-    [modelVerticalOffset]="19">
+        [titleText]="'About Me'"
+        [boxType]="BOXTYPE.MESSAGE"
+        [contentTemplate]="aboutMeContent"
+        [boxSize]="SizeEnum.large" [addModel]="true"
+        [modelSize]="'col-4'"
+        [modelURL]="'../assets/models/crystal_model/scene.gltf'"
+        [modelScale]="2.5"
+        [modelVerticalOffset]="19">
     </app-text-wall>
-    <br>
+
     <app-text-wall 
-    [titleText]="'Portfolio'"
-    [addGitWidget]="true"
-    [contentTemplate]="portfolioContent"
-    [textScale]="SizeEnum.large">
+        [titleText]="'Portfolio'"
+        [boxType]="BOXTYPE.MESSAGE"
+        [addGitWidget]="true"
+        [contentTemplate]="portfolioContent"
+        [boxSize]="SizeEnum.large">
     </app-text-wall>
-    <br>
-    <app-response-box
+    <app-text-wall 
         [titleText]="'Blog post 2'"
+        [boxType]="BOXTYPE.RESPONSE"
         [contentTemplate]="blogPost1"
-        [textScale]="SizeEnum.large" [addModel]="true" [modelSize]="'col-12'">
-    </app-response-box>
+        [boxSize]="SizeEnum.large"
+        [addModel]="true"
+        [modelSize]="'col-12'">
+    </app-text-wall >
 
 
 

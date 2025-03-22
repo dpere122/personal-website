@@ -109,7 +109,9 @@ export class ModelBlockComponent implements OnInit, AfterViewInit {
 		(function render(){
 			requestAnimationFrame(render);
 			component.renderer.render(component.scene,component.camera);
-			component.model.rotateY(0.005);
+			if(component.model !== undefined){
+				component.model.rotateY(0.005);
+			}
 			// component.controls.update();
 		}());
 	}
