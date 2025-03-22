@@ -10,9 +10,9 @@ export class BannerComponent implements OnInit, AfterViewInit {
   pages: string[] = ["Home","Portfolio","Blog","Resume"];
   bannerOpacity: number = 1;
   originalHeight: number = 100; // Default banner height in pixels
-  minHeight: number = 60; // Minimum height (60% of original)
-  originalTitleSize: number = 2.5; // Default title size in em
-  minTitleSize: number = 1.5; // Minimum title size (target when scrolled)
+  minHeight: number = 80; // Minimum height (60% of original)
+  originalTitleSize: number = 2.7; // Default title size in em
+  minTitleSize: number = 2; // Minimum title size (target when scrolled)
   currentRoute: string = '';
 
   constructor(private router: Router){
@@ -36,7 +36,7 @@ export class BannerComponent implements OnInit, AfterViewInit {
     const banner = document.querySelector('.banner') as HTMLElement;
     if (banner) {
       this.originalHeight = banner.offsetHeight;
-      this.minHeight = this.originalHeight * 0.6; // 60% of original height
+      this.minHeight = this.originalHeight * 0.8; // 80% of original height
     }
   }
   

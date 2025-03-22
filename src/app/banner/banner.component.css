@@ -1,6 +1,7 @@
 /* Main banner container - fixed at the top of the page */
 .banner {
-  background: #d4a641; /* Golden color for the banner */
+  color: white;
+  background: black; /* Golden color for the banner */
   width: 100%; /* Takes full width of viewport */
   position: fixed; /* Stays at the top during scrolling */
   transition: opacity 0.3s ease, height 0.3s ease; /* Smooth transition for opacity and height changes */
@@ -81,13 +82,13 @@
 
 /* Styling for headings within menu options */
 .menu-options h1{
-  font-size: 0.9em; /* Smaller text size for menu headings */
-  margin: 0 0 0 15px; /* Removes auto margin and adds space between items */
+  font-size: 1.5em; /* Smaller text size for menu headings */
+  margin: auto; /* Removes auto margin and adds space between items */
   cursor: pointer; /* Add pointer cursor to indicate clickable */
 }
 
 /* Active menu item styling */
 .menu-options h1.active {
-  border-bottom: 2px solid white;
+  border-bottom: 2px solid rgb(102, 102, 102);
   padding-bottom: 2px;
 }
