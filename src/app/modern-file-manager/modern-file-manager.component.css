@@ -19,120 +19,246 @@
   border-bottom: 1px solid #e1e1e1;
 }
 
-.address-bar {
-  background-color: #ffffff;
-  border: 1px solid #e1e1e1;
-  border-radius: 6px;
-  padding: 6px 12px;
+/* Mac Finder-style three-column browser */
+.file-browser-columns {
+  display: flex;
+  height: 75vh;
+  overflow: hidden;
 }
 
-.segment-name {
-  color: #0078d7;
-  cursor: pointer;
-}
-
-.segment-name:hover {
-  text-decoration: underline;
-}
-
-.favorites {
-  background-color: #f9f9f9;
-}
-
-.hover-effect:hover {
-  background-color: #f0f0f0;
-  cursor: pointer;
-}
-
-.file-manager-footer {
-  background-color: #f5f5f7;
-  border-top: 1px solid #e1e1e1;
-}
-
-.repo-list-section {
+.column {
+  display: flex;
+  flex-direction: column;
   border-right: 1px solid #e1e1e1;
-  overflow-y: auto;
-  max-height: 100%;
+  min-width: 200px;
+  overflow: hidden;
 }
 
-.repo-details-section {
-  padding: 15px;
-  overflow-y: auto;
-  max-height: 100%;
+.column:last-child {
+  border-right: none;
+  flex-grow: 1;
 }
 
-.list-group-item {
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  border-left: 3px solid transparent;
-}
-
-.list-group-item.active {
-  background-color: #f0f7ff;
-  color: #0078d7;
-  border-left-color: #0078d7;
+.column-header {
+  background-color: #f5f5f7;
+  padding: 10px 15px;
   font-weight: 500;
-}
-
-.repo-header {
-  padding-bottom: 10px;
   border-bottom: 1px solid #e1e1e1;
-}
-
-.repo-name {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 5px;
   color: #333;
 }
 
-.repo-link {
-  color: #0078d7;
+.column-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Source column (first column) */
+.source-column {
+  flex: 0 0 220px;
+}
+
+/* Items column (second column) */
+.items-column {
+  flex: 0 0 220px;
+}
+
+/* Details column (third column) */
+.details-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* List items */
+.list-group-item {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border: none;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 10px 15px;
+  font-size: 14px;
+}
+
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+.list-group-item.active {
+  background-color: #e8f0ff;
+  color: #0066cc;
+  font-weight: 500;
+}
+
+.list-group-item:hover:not(.active) {
+  background-color: #f9f9f9;
+}
+
+/* Details styling */
+.details-header {
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e1e1e1;
+  margin: 15px;
+}
+
+.details-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.details-link {
+  color: #0066cc;
   word-break: break-all;
-  display: block;
   font-size: 0.9rem;
 }
 
-.repo-description {
+.details-content {
+  padding: 0 15px 15px 15px;
+  overflow-y: auto;
+}
+
+.details-description {
   color: #555;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
-.repo-image-container {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.repo-image {
+.details-image img {
   max-width: 100%;
-  border-radius: 5px;
+  border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.select-prompt {
+/* PDF specific styling */
+.pdf-details {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: 100%;
+  overflow: visible;
+}
+
+.pdf-metadata {
+  background-color: #f9f9f9;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.pdf-metadata div {
+  margin-bottom: 5px;
+}
+
+.pdf-preview {
+  flex: 1;
+  padding: 0 15px 15px 15px;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pdf-embed-container {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  display: flex;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  overflow: hidden;
+}
+
+.pdf-object {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  display: block;
+}
+
+.fallback-message {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
-  color: #888;
-  font-style: italic;
+  padding: 20px;
+  text-align: center;
+  color: #666;
 }
 
-/* Responsive styles for mobile */
+/* Empty state styling */
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #999;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .file-manager {
     padding: 105px 0 0 0;
   }
   
-  /* Let Bootstrap handle the width with the column classes */
   .window {
     border-radius: 0;
     min-height: calc(100vh - 105px);
   }
   
-  .repo-list-section {
+  .file-browser-columns {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .column {
     border-right: none;
     border-bottom: 1px solid #e1e1e1;
+    min-width: 100%;
     max-height: 30vh;
   }
+  
+  .column:last-child {
+    border-bottom: none;
+    flex-grow: 1;
+    max-height: none;
+  }
+  
+  .source-column, .items-column {
+    flex: 0 0 auto;
+  }
+  
+  .details-column {
+    flex: 1 1 auto;
+    min-height: 50vh;
+  }
+  
+  .pdf-preview {
+    height: 300px;
+    min-height: auto;
+  }
+}
+
+.details-column .column-content {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.repository-details, .pdf-details {
+  height: auto;
+  width: 100%;
+}
+
+/* Remove all the PDF text container styles */
+.pdf-text-container, .pdf-text-header, .pdf-text-content, .page-content, .page-number, .page-text {
+  /* Removing these styles */
 }

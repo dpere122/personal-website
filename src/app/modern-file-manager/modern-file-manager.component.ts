@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GithubRepo } from '../models/github-repo.model';
+import { PdfDocument } from '../models/pdf-document.model';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-modern-file-manager',
@@ -10,26 +12,37 @@ import { GithubRepo } from '../models/github-repo.model';
   styleUrls: ['./modern-file-manager.component.css']
 })
 export class ModernFileManagerComponent implements OnInit {
-  currentPath: string = 'GitHub';
-  pathSegments: string[] = [];
+  // First column - Source directories
+  sources = ['GitHub Repositories', 'PDF Documents'];
+  selectedSource: string | null = null;
   
+  // Second column - Items in the source
   // First HashMap: String to GithubRepo
   repoMap = new Map<string, GithubRepo>();
+  // Second HashMap: String to PdfDocument
+  pdfMap = new Map<string, PdfDocument>();
   
-  // Second HashMap (to be used later): String to Object
-  dataMap = new Map<string, any>();
+  // Contents of current view
+  currentItems: string[] = [];
+  selectedItem: string | null = null;
   
-  // Lists derived from the hashmaps for display
-  repoList: string[] = [];
+  // Third column - Details view
   selectedRepo: GithubRepo | null = null;
+  selectedPdf: PdfDocument | null = null;
   
-  // Track selected items
-  selectedKey: string = '';
+  // PDF viewer
+  pdfUrl: SafeResourceUrl | null = null;
+  
+  constructor(private sanitizer: DomSanitizer) {}
   
   ngOnInit() {
     this.initializeRepos();
-    this.repoList = Array.from(this.repoMap.keys());
-    this.pathSegments = this.currentPath.split('/');
+    this.initializePdfs();
+    
+    // Select the first source by default
+    if (this.sources.length > 0) {
+      this.selectSource(this.sources[0]);
+    }
   }
   
   initializeRepos() {
@@ -70,50 +83,99 @@ export class ModernFileManagerComponent implements OnInit {
     ));
   }
   
-  selectRepo(key: string) {
-    this.selectedKey = key;
-    this.selectedRepo = this.repoMap.get(key) || null;
-    this.updatePath(key);
-  }
-  
-  updatePath(key: string) {
-    this.currentPath = `GitHub/${key}`;
-    this.pathSegments = this.currentPath.split('/');
-  }
-  
-  navigateTo(path: string) {
-    this.currentPath = path;
-    this.pathSegments = this.currentPath.split('/');
+  initializePdfs() {
+    // Populate the PDF map with the Resume PDF from public_files
+    this.pdfMap.set('Resume 2025.pdf', new PdfDocument(
+      'Resume 2025.pdf',
+      'assets/public_files/Resume 2025.pdf',
+      'Professional Resume 2025',
+      'John Doe',
+      'Professional Resume',
+      ['resume', 'professional', 'job application'],
+      new Date('2023-12-15'),
+      new Date('2024-03-22'),
+      3,
+      '196 KB'
+    ));
     
-    const segments = path.split('/');
-    if (segments.length > 1) {
-      const repoKey = segments[1];
-      this.selectRepo(repoKey);
+    this.pdfMap.set('Project Proposal.pdf', new PdfDocument(
+      'Project Proposal.pdf',
+      'assets/public_files/Project Proposal.pdf',
+      'Software Development Project Proposal',
+      'Development Team',
+      'Project Planning Document',
+      ['project', 'proposal', 'software', 'development'],
+      new Date('2023-10-05'),
+      new Date('2023-11-10'),
+      12,
+      '450 KB'
+    ));
+    
+    this.pdfMap.set('Technical Documentation.pdf', new PdfDocument(
+      'Technical Documentation.pdf',
+      'assets/public_files/Technical Documentation.pdf',
+      'System Architecture Documentation',
+      'Engineering Team',
+      'Technical Reference',
+      ['documentation', 'architecture', 'system', 'reference'],
+      new Date('2023-08-12'),
+      new Date('2024-01-15'),
+      25,
+      '3.2 MB'
+    ));
+  }
+  
+  selectSource(source: string) {
+    this.selectedSource = source;
+    this.selectedItem = null;
+    this.selectedRepo = null;
+    this.selectedPdf = null;
+    this.pdfUrl = null;
+    
+    // Update the items for the selected source
+    if (source === 'GitHub Repositories') {
+      this.currentItems = Array.from(this.repoMap.keys());
+    } else if (source === 'PDF Documents') {
+      this.currentItems = Array.from(this.pdfMap.keys());
     } else {
-      this.selectedRepo = null;
-      this.selectedKey = '';
+      this.currentItems = [];
     }
   }
-
-  getFileIcon(item: { type: string; name: string }): string {
-    if (item.type === 'folder') {
-      return '📁';
-    }
-    const extension = item.name.split('.').pop()?.toLowerCase();
+  
+  selectItem(item: string) {
+    this.selectedItem = item;
     
-    switch(extension) {
-      case 'pdf': return '📄';
-      case 'jpg':
-      case 'png':
-      case 'gif': return '🖼️';
-      case 'doc':
-      case 'docx': return '📝';
-      case 'xls':
-      case 'xlsx': return '📊';
-      case 'ppt':
-      case 'pptx': return '📽️';
-      case 'txt': return '📄';
-      default: return '📄';
+    // Clear previous selections
+    this.selectedRepo = null;
+    this.selectedPdf = null;
+    this.pdfUrl = null;
+    
+    // Get the appropriate data based on current source
+    if (this.selectedSource === 'GitHub Repositories') {
+      this.selectedRepo = this.repoMap.get(item) || null;
+    } else if (this.selectedSource === 'PDF Documents') {
+      this.selectedPdf = this.pdfMap.get(item) || null;
+      if (this.selectedPdf) {
+        this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.selectedPdf.filePath);
+      }
     }
+  }
+  
+  getItemIcon(source: string, item: string): string {
+    if (source === 'GitHub Repositories') {
+      return '📁';
+    } else if (source === 'PDF Documents') {
+      return '📄';
+    }
+    return '📄';
+  }
+  
+  getSourceIcon(source: string): string {
+    if (source === 'GitHub Repositories') {
+      return '📂';
+    } else if (source === 'PDF Documents') {
+      return '📚';
+    }
+    return '📁';
   }
 }

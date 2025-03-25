@@ -3,64 +3,105 @@
     <!-- File Manager Header -->
     <div class="row file-manager-header py-2">
       <div class="col-12">
-        <!-- Toolbar with navigation and address bar -->
         <div class="d-flex align-items-center mb-2">
-          <!-- Address bar -->
-          <div class="address-bar flex-grow-1">
-            <div class="d-flex align-items-center">
-              <span *ngFor="let segment of pathSegments; let i = index">
-                <span class="segment-name" (click)="navigateTo(pathSegments.slice(0, i+1).join('/'))">
-                  {{ segment }}
-                </span>
-                <span *ngIf="i < pathSegments.length - 1" class="text-muted mx-1">/</span>
-              </span>
-            </div>
-          </div>
+          <h4 class="mb-0">File Browser</h4>
         </div>
       </div>
     </div>
     
-    <!-- Main content area with three sections -->
-    <div class="row h-75">
-      <!-- Section 1: List of repositories (keys) -->
-      <div class="col-12 col-md-4 repo-list-section">
-        <div class="list-group">
-          <a *ngFor="let key of repoList" 
-             (click)="selectRepo(key)"
-             [class.active]="selectedKey === key"
-             class="list-group-item list-group-item-action d-flex align-items-center">
-            <span class="me-2">📁</span>
-            <span>{{ key }}</span>
-          </a>
+    <!-- Three-column browser layout -->
+    <div class="file-browser-columns">
+      <!-- Column 1: Source directories -->
+      <div class="column source-column">
+        <div class="column-header">Sources</div>
+        <div class="column-content">
+          <div class="list-group">
+            <a *ngFor="let source of sources" 
+               (click)="selectSource(source)"
+               [class.active]="selectedSource === source"
+               class="list-group-item list-group-item-action d-flex align-items-center">
+              <span class="me-2">{{ getSourceIcon(source) }}</span>
+              <span>{{ source }}</span>
+            </a>
+          </div>
         </div>
       </div>
       
-      <!-- Section 2 & 3: Repository details -->
-      <div class="col-12 col-md-8 repo-details-section">
-        <ng-container *ngIf="selectedRepo; else selectRepoPrompt">
-          <div class="repo-header mb-3">
-            <h3 class="repo-name">{{ selectedRepo.repoName }}</h3>
-            <a [href]="selectedRepo.repoURL" target="_blank" class="repo-link">
-              {{ selectedRepo.repoURL }}
+      <!-- Column 2: Items in selected source -->
+      <div class="column items-column">
+        <div class="column-header">{{ selectedSource || 'Items' }}</div>
+        <div class="column-content">
+          <div class="list-group" *ngIf="selectedSource">
+            <a *ngFor="let item of currentItems" 
+               (click)="selectItem(item)"
+               [class.active]="selectedItem === item"
+               class="list-group-item list-group-item-action d-flex align-items-center">
+              <span class="me-2">{{ getItemIcon(selectedSource, item) }}</span>
+              <span>{{ item }}</span>
             </a>
           </div>
-          
-          <div class="repo-content">
-            <div class="repo-description mb-3">
-              {{ selectedRepo.repoDescription }}
+          <div class="empty-state" *ngIf="!selectedSource">
+            Select a source to view items
+          </div>
+        </div>
+      </div>
+      
+      <!-- Column 3: Details view -->
+      <div class="column details-column">
+        <div class="column-header">Details</div>
+        <div class="column-content">
+          <!-- GitHub Repository details -->
+          <div class="repository-details" *ngIf="selectedRepo">
+            <div class="details-header mb-3">
+              <h3 class="details-title">{{ selectedRepo.repoName }}</h3>
+              <a [href]="selectedRepo.repoURL" target="_blank" class="details-link">
+                {{ selectedRepo.repoURL }}
+              </a>
             </div>
             
-            <div class="repo-image-container" *ngIf="selectedRepo.repoImage">
-              <img [src]="selectedRepo.repoImage" [alt]="selectedRepo.repoName" class="repo-image">
+            <div class="details-content">
+              <div class="details-description mb-3">
+                {{ selectedRepo.repoDescription }}
+              </div>
+              
+              <div class="details-image" *ngIf="selectedRepo.repoImage">
+                <img [src]="selectedRepo.repoImage" [alt]="selectedRepo.repoName" class="img-fluid rounded">
+              </div>
             </div>
           </div>
-        </ng-container>
-        
-        <ng-template #selectRepoPrompt>
-          <div class="select-prompt">
-            <p>Please select a repository from the list</p>
+          
+          <!-- PDF Document details -->
+          <div class="pdf-details" *ngIf="selectedPdf">
+            <div class="details-header mb-3">
+              <h3 class="details-title">{{ selectedPdf.title }}</h3>
+              <div class="pdf-metadata">
+                <div><strong>File:</strong> {{ selectedPdf.fileName }}</div>
+                <div><strong>Author:</strong> {{ selectedPdf.author }}</div>
+                <div><strong>Subject:</strong> {{ selectedPdf.subject }}</div>
+                <div><strong>Created:</strong> {{ selectedPdf.created | date:'medium' }}</div>
+                <div><strong>Modified:</strong> {{ selectedPdf.modified | date:'medium' }}</div>
+                <div><strong>Pages:</strong> {{ selectedPdf.pageCount }}</div>
+                <div><strong>Size:</strong> {{ selectedPdf.fileSize }}</div>
+              </div>
+            </div>
+            
+            <div class="pdf-preview" *ngIf="selectedItem && selectedSource === 'PDF Documents'">
+              <div class="pdf-embed-container" *ngIf="pdfUrl">
+                <object [data]="pdfUrl" type="application/pdf" class="pdf-object">
+                  <div class="fallback-message">
+                    <p>Your browser doesn't support embedded PDFs. 
+                      <a [href]="pdfUrl">Click here to download the PDF</a>.</p>
+                  </div>
+                </object>
+              </div>
+              <div class="empty-state" *ngIf="!pdfUrl">No preview available</div>
+            </div>
           </div>
-        </ng-template>
+          
+          <div class="empty-state" *ngIf="!selectedRepo && !selectedPdf">
+            Select an item to view details
+          </div>
+        </div>
       </div>
     </div>
   </div>
