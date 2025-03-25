@@ -1,0 +1,102 @@
+.git-widget-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 120px 20px 20px 20px;
+  }
+
+  .window-title-bar {
+    background-color: #f0f8ff;
+    height: 30px;
+  }
+  
+  .git-widget-box {
+    /* width: 50vw; */
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    border-top: 10px solid rgba(0, 0, 0, 1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    /* border: 10px solid rgba(255, 255, 255, 0.18); */
+    position: relative;
+    height: auto;
+  }
+
+  .file-system-navigation {
+    border-radius: 15px;
+    border: 10px solid rgba(0, 0, 0, 1);
+    z-index: 1;
+    padding: 0px;
+    /* border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px; */
+  }
+
+  .file-system-navigation-item {
+    height: 100px;
+  }
+  .file-system-navigation-item:nth-child(odd) {
+    background-color: #fbfbfb;
+  }
+  .file-system-navigation-item:nth-child(even) {
+    background-color: #999999;
+  }
+
+  .file-system-navigation-item.selected {
+    background-color: #e5f3ff;
+    border-left: 3px solid #0066cc;
+  }
+
+  .repo-details {
+    padding: 15px;
+  }
+
+  .repo-details h3 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+  }
+
+  .repo-details p {
+    color: #666;
+    font-size: 0.9em;
+    line-height: 1.5;
+  }
+
+  /* Address Bar Styling */
+  .address-bar {
+    display: flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 4px 8px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    color: #333;
+    width: 100%;
+  }
+
+  .address-icon {
+    margin-right: 6px;
+    font-size: 16px;
+  }
+
+  .address-separator {
+    margin: 0 6px;
+    color: #666;
+    font-weight: 600;
+  }
+
+  .address-root {
+    color: #0066cc;
+    cursor: pointer;
+  }
+
+  .address-root:hover {
+    text-decoration: underline;
+  }
+
+  .address-current {
+    color: #333;
+    font-weight: 500;
+  }

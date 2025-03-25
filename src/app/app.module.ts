@@ -8,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TextWallComponent } from './message-box/text-wall.component';
 import { ModelBlockComponent } from './3DModel/model-block.component';
 import { BannerComponent } from './banner/banner.component';
-import { GitWidgetComponent } from './git-widget/git-widget.component';
+import { PortfiolioGalleryComponent } from './portfiolio-gallery/portfiolio-gallery.component';
 
 
 @NgModule({
@@ -18,7 +18,7 @@ import { GitWidgetComponent } from './git-widget/git-widget.component';
     TextWallComponent,
     ModelBlockComponent,
     BannerComponent,
-    GitWidgetComponent
+    PortfiolioGalleryComponent
   ],
   imports: [
     BrowserModule,

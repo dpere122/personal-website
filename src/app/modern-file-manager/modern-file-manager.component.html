@@ -1,0 +1,67 @@
+<div class="container-fluid file-manager">
+  <div class="window col-12 col-sm-10 col-md-7">
+    <!-- File Manager Header -->
+    <div class="row file-manager-header py-2">
+      <div class="col-12">
+        <!-- Toolbar with navigation and address bar -->
+        <div class="d-flex align-items-center mb-2">
+          <!-- Address bar -->
+          <div class="address-bar flex-grow-1">
+            <div class="d-flex align-items-center">
+              <span *ngFor="let segment of pathSegments; let i = index">
+                <span class="segment-name" (click)="navigateTo(pathSegments.slice(0, i+1).join('/'))">
+                  {{ segment }}
+                </span>
+                <span *ngIf="i < pathSegments.length - 1" class="text-muted mx-1">/</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main content area with three sections -->
+    <div class="row h-75">
+      <!-- Section 1: List of repositories (keys) -->
+      <div class="col-12 col-md-4 repo-list-section">
+        <div class="list-group">
+          <a *ngFor="let key of repoList" 
+             (click)="selectRepo(key)"
+             [class.active]="selectedKey === key"
+             class="list-group-item list-group-item-action d-flex align-items-center">
+            <span class="me-2">📁</span>
+            <span>{{ key }}</span>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Section 2 & 3: Repository details -->
+      <div class="col-12 col-md-8 repo-details-section">
+        <ng-container *ngIf="selectedRepo; else selectRepoPrompt">
+          <div class="repo-header mb-3">
+            <h3 class="repo-name">{{ selectedRepo.repoName }}</h3>
+            <a [href]="selectedRepo.repoURL" target="_blank" class="repo-link">
+              {{ selectedRepo.repoURL }}
+            </a>
+          </div>
+          
+          <div class="repo-content">
+            <div class="repo-description mb-3">
+              {{ selectedRepo.repoDescription }}
+            </div>
+            
+            <div class="repo-image-container" *ngIf="selectedRepo.repoImage">
+              <img [src]="selectedRepo.repoImage" [alt]="selectedRepo.repoName" class="repo-image">
+            </div>
+          </div>
+        </ng-container>
+        
+        <ng-template #selectRepoPrompt>
+          <div class="select-prompt">
+            <p>Please select a repository from the list</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

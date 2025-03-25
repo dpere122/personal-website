@@ -1,0 +1,48 @@
+<div class="terminal-container">
+  <!-- Terminal window structure -->
+  <div class="terminal-window">
+    <!-- VHS screen overlay effects - now inside the terminal window -->
+    <div class="screen-overlay"></div>
+    <div class="scan-lines"></div>
+    <div class="flicker"></div>
+    
+    <!-- Title bar section -->
+    <div class="terminal-header">
+      <div class="terminal-controls">
+        <span class="control-btn close"></span>
+        <span class="control-btn minimize"></span>
+        <span class="control-btn maximize"></span>
+      </div>
+      <div class="terminal-title">{{ title }}</div>
+    </div>
+    
+    <!-- Main content -->
+    <div class="terminal-content">
+      <!-- Git project section -->
+      <div class="git-project-section">
+        <div class="command-line">
+          <span class="prompt">$</span>
+          <span class="command">git clone {{ projectUrl }}</span>
+        </div>
+        <div class="project-name">
+          <span class="label">Project:</span>
+          <span class="value">{{ projectName }}</span>
+        </div>
+        <div class="repo-link">
+          <a [href]="projectUrl" target="_blank" rel="noopener noreferrer">{{ projectUrl }}</a>
+        </div>
+      </div>
+      
+      <!-- Description section -->
+      <div class="description-section">
+        <div class="command-line">
+          <span class="prompt">$</span>
+          <span class="command">cat README.md</span>
+        </div>
+        <div class="readme-content">
+          <p>{{ description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -3,14 +3,13 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: auto;
+  padding: 120px 20px 20px 20px; /* Added top padding to account for the banner */
 }
 
 .window {
-  width: 50vw;
+  /* width: 50vw; */
   height: auto;
   background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
   border-radius: 15px;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -19,21 +18,21 @@
 }
 
 /* Responsive styles for mobile */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .custom-box {
-    padding: auto;; /* Reduced top padding to minimize gap */
+    padding: 105px 0 0 0; 
   }
   
   .window {
     width: 100vw;
     border-radius: 0;
-    min-height: calc(100vh - 105px); /* Adjust to match new padding */
+    min-height: calc(100vh - 105px); 
   }
   
   .content {
     padding: 15px;
   }
-}
+} */
 
 .glare {
   position: absolute;

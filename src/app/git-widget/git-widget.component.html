@@ -1,6 +1,35 @@
-<div class="row">
-<p class="col-1">test1</p>    
-<p class="col-1">test2</p>    
-<p class="col-1">test3</p>    
+<div class="git-widget-container">
+  <div class="git-widget-box col-12 col-sm-10 col-md-5">
+    <div class="row"></div>
+    <!-- Windows-style address bar -->
+    <div class="row px-3 py-2">
+      <div class="address-bar">
+        <span class="address-icon">📁</span>
+        <span class="address-separator">›</span>
+        <span class="address-root">GitHub</span>
+        <span class="address-separator">›</span>
+        <span class="address-current">{{currentRepo?.repoName || 'Select a Repository'}}</span>
+      </div>
+    </div>
+    <div class="row">
+        <!-- Create a file system style of navigation for github projects. -->
+        <div class="col-4 file-system-navigation ms-3">
+            <div class="file-system-navigation-item" 
+                 *ngFor="let project of githubRepos"
+                 (click)="selectRepo(project)"
+                 [class.selected]="currentRepo?.repoName === project.repoName">
+                <div>
+                    <a target="_blank">{{project.repoName}}</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-7">
+            <!-- Repository details will go here -->
+            <div class="repo-details" *ngIf="currentRepo">
+                <h3>{{currentRepo.repoName}}</h3>
+                <p>{{currentRepo.repoDescription}}</p>
+            </div>
+        </div>
+    </div>
+  </div>
 </div>
-

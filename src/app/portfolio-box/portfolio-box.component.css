@@ -1,0 +1,207 @@
+/* Container for the entire component */
+.terminal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 120px 20px 20px 20px; /* Added top padding to account for the banner */
+}
+
+/* Terminal window styling */
+.terminal-window {
+  width: 50vw;
+  height: auto;
+  background-color: #0c0c0c;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+  border: 1px solid #30d977;
+}
+
+/* VHS Screen Effects - Moved inside the terminal window */
+.screen-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, rgba(48, 217, 119, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.scan-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(24, 24, 24, 0.3) 50%,
+    transparent 100%
+  );
+  background-size: 100% 4px;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.flicker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.03);
+  opacity: 0;
+  z-index: 5;
+  pointer-events: none;
+  animation: flicker 0.3s infinite alternate;
+}
+
+/* Header bar styling */
+.terminal-header {
+  background: linear-gradient(to right, #2e3238, #4a5568);
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid #1f2937;
+}
+
+.terminal-controls {
+  display: flex;
+  gap: 8px;
+  margin-right: 15px;
+}
+
+.control-btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.close {
+  background-color: #ff5f56;
+}
+
+.minimize {
+  background-color: #ffbd2e;
+}
+
+.maximize {
+  background-color: #27c93f;
+}
+
+.terminal-title {
+  color: #e2e8f0;
+  font-weight: bold;
+  font-size: 1rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Terminal content area */
+.terminal-content {
+  padding: 15px;
+  color: #ddd;
+}
+
+/* Git project section */
+.git-project-section {
+  border-bottom: 1px dashed #30d977;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+/* Description section */
+.description-section {
+  padding-top: 5px;
+}
+
+/* Command line styling */
+.command-line {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.prompt {
+  color: #30d977;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.command {
+  color: #ddd;
+}
+
+/* Project details */
+.project-name, .repo-link {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.label {
+  color: #30d977;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.value {
+  color: #ddd;
+}
+
+.repo-link a {
+  color: #55c2fe;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.repo-link a:hover {
+  color: #7cd5ff;
+}
+
+/* README content */
+.readme-content {
+  padding: 10px;
+  background-color: #121212;
+  border-radius: 4px;
+  line-height: 1.5;
+}
+
+@keyframes flicker {
+  0%, 95% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .terminal-container {
+    padding: 105px 0 0 0; /* Top padding for banner, no side padding */
+  }
+  
+  .terminal-window {
+    width: 100vw;
+    border-radius: 0;
+    min-height: calc(100vh - 105px); /* Adjust for banner height */
+  }
+  
+  .terminal-header {
+    padding: 8px;
+  }
+  
+  .terminal-title {
+    font-size: 0.9rem;
+  }
+  
+  .terminal-content {
+    padding: 10px;
+  }
+}
