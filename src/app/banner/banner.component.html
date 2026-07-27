@@ -8,24 +8,25 @@
             <h1 class="sub-title mb-0">Full Stack Developer</h1>
           </div>
 
+
+          <div
+            class="navbar-collapse"
+            id="navbarNav"
+            [@collapseAnimation]="isNavbarCollapsed ? 'open' : 'closed'"
+          >
+            <ul class="navbar-nav">
+              <li class="nav-item" *ngFor="let page of pages">
+                <a
+                  class="nav-link"
+                  [class.active]="isActive(page)"
+                  (click)="navigateToPage(page)"
+                >
+                  {{ page }}
+                </a>
+              </li>
+            </ul>
+          </div>
           <div class="navbar-controls ms-auto" style="background-color: black">
-            <div
-              class="collapse navbar-collapse"
-              id="navbarNav"
-              [class.show]="isNavbarCollapsed"
-            >
-              <ul class="navbar-nav">
-                <li class="nav-item" *ngFor="let page of pages">
-                  <a
-                    class="nav-link"
-                    [class.active]="isActive(page)"
-                    (click)="navigateToPage(page)"
-                  >
-                    {{ page }}
-                  </a>
-                </li>
-              </ul>
-            </div>
             <button
               class="navbar-toggler d-lg-none"
               type="button"

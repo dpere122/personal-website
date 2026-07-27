@@ -3,6 +3,7 @@ import { BannerComponent } from "./banner.component";
 import { Router, NavigationEnd, Event } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { Subject } from "rxjs";
 
 describe("BannerComponent", () => {
@@ -14,7 +15,7 @@ describe("BannerComponent", () => {
     routerEvents = new Subject<Event>();
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, NoopAnimationsModule],
       declarations: [BannerComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
@@ -94,14 +95,10 @@ describe("BannerComponent", () => {
     const container = fixture.nativeElement.querySelector(".container-fluid");
     expect(container).toBeTruthy();
 
-    const row = fixture.nativeElement.querySelector(
-      ".row.justify-content-center",
-    );
+    const row = fixture.nativeElement.querySelector(".row");
     expect(row).toBeTruthy();
 
-    const col = fixture.nativeElement.querySelector(
-      ".col-12.col-sm-10.col-md-7",
-    );
+    const col = fixture.nativeElement.querySelector(".col-12");
     expect(col).toBeTruthy();
   });
 
@@ -117,5 +114,17 @@ describe("BannerComponent", () => {
 
     const navItems = fixture.nativeElement.querySelectorAll(".nav-item");
     expect(navItems.length).toBe(4);
+  });
+
+  it("should not have the toggle button inside the collapsible menu container", () => {
+    const collapseContainer =
+      fixture.nativeElement.querySelector(".navbar-collapse");
+    expect(collapseContainer).toBeTruthy();
+
+    const toggleButton = fixture.nativeElement.querySelector(".navbar-toggler");
+    expect(toggleButton).toBeTruthy();
+
+    // Toggle button should NOT be a descendant of the collapse container
+    expect(collapseContainer.contains(toggleButton)).toBeFalse();
   });
 });

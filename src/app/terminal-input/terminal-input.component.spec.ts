@@ -1,21 +1,21 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { TerminalInputComponent } from './terminal-input.component';
+import { TerminalInputComponent } from "./terminal-input.component";
 
-describe('TerminalInputComponent', () => {
+describe("TerminalInputComponent", () => {
   let component: TerminalInputComponent;
   let fixture: ComponentFixture<TerminalInputComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TerminalInputComponent]
+      imports: [TerminalInputComponent],
     });
     fixture = TestBed.createComponent(TerminalInputComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

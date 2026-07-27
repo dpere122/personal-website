@@ -1,21 +1,21 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { HostPageComponent } from './host-page.component';
+import { HostPageComponent } from "./host-page.component";
 
-describe('HostPageComponent', () => {
+describe("HostPageComponent", () => {
   let component: HostPageComponent;
   let fixture: ComponentFixture<HostPageComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [HostPageComponent]
+      imports: [HostPageComponent],
     });
     fixture = TestBed.createComponent(HostPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

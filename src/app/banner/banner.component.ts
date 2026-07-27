@@ -1,10 +1,25 @@
 import { Component, OnInit, AfterViewInit, HostListener } from "@angular/core";
 import { Router, NavigationEnd } from "@angular/router";
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from "@angular/animations";
 
 @Component({
   selector: "app-banner",
   templateUrl: "./banner.component.html",
   styleUrls: ["./banner.component.css"],
+  animations: [
+    trigger("collapseAnimation", [
+      state("closed", style({ height: "0", opacity: 0 })),
+      state("open", style({ height: "*", opacity: 1 })),
+      transition("closed => open", [animate("300ms ease-out")]),
+      transition("open => closed", [animate("300ms ease-in")]),
+    ]),
+  ],
 })
 export class BannerComponent implements OnInit, AfterViewInit {
   pages: string[] = ["Home", "Portfolio", "Blog", "Resume"];
