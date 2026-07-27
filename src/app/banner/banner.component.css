@@ -4,7 +4,9 @@
   background: black; /* Golden color for the banner */
   width: 100%; /* Takes full width of viewport */
   position: fixed; /* Stays at the top during scrolling */
-  transition: opacity 0.3s ease, height 0.3s ease; /* Smooth transition for opacity and height changes */
+  transition:
+    opacity 0.3s ease,
+    height 0.3s ease; /* Smooth transition for opacity and height changes */
   height: 100px; /* Set a fixed initial height */
   overflow: hidden; /* Hide content that exceeds the container height */
   display: flex;
@@ -20,11 +22,21 @@
 
 /* Define wiggle animation keyframes */
 @keyframes wiggle {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-3px); }
-  50% { transform: translateX(0); }
-  75% { transform: translateX(3px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 /* Banner container */
@@ -53,29 +65,29 @@
 }
 
 /* Hover effect for navigation buttons */
-.page-button:hover{
+.page-button:hover {
   background-color: rgb(255, 255, 255); /* Changes to white on hover */
   font-size: 1.1em; /* Increase font size slightly on hover */
   animation: wiggle 0.5s ease; /* Apply wiggle animation */
   transition: font-size 0.2s ease; /* Smooth transition for font size change */
-  color: black;;
+  color: black;
 }
 
 /* Main title styling */
-.title{
+.title {
   font-size: 2.5em; /* Larger text for the primary title */
   margin: 0; /* Remove default margin */
   transition: font-size 0.3s ease; /* Smooth transition for font size changes */
 }
 
 /* Secondary title styling */
-.sub-title{
+.sub-title {
   font-size: 0.9em; /* Smaller text for subtitles */
   margin: 0; /* Remove all margins */
 }
 
 /* Menu options container */
-.menu-options{
+.menu-options {
   text-align: right; /* Aligns text to the right */
   display: flex; /* Uses flexbox for layout */
   justify-content: flex-end; /* Aligns flex items to the right */
@@ -83,7 +95,7 @@
 }
 
 /* Styling for headings within menu options */
-.menu-options h1{
+.menu-options h1 {
   font-size: 1.5em; /* Smaller text size for menu headings */
   margin: auto; /* Removes auto margin and adds space between items */
   cursor: pointer; /* Add pointer cursor to indicate clickable */
@@ -113,6 +125,35 @@
   padding: 10px 0;
 }
 
+.navbar-wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+}
+
+.navbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: end;
+}
+
+@media (min-width: 992px) {
+  .navbar-wrapper {
+    flex-direction: row;
+    align-items: center;
+    height: auto;
+  }
+
+  .navbar-controls {
+    margin-left: auto;
+  }
+  .navbar-nav {
+    margin-left: auto;
+  }
+}
+
 /* Main title styling */
 .title {
   color: white;
@@ -140,9 +181,9 @@
 }
 
 .nav-link {
-  font-size: 1.2em;
+  font-size: 0.9em;
   cursor: pointer;
-  padding: 5px 10px;
+  padding: 8px 16px;
   transition: all 0.2s ease;
   position: relative;
 }
@@ -152,7 +193,7 @@
 }
 
 .nav-link.active::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -161,7 +202,8 @@
   background-color: #d4a641;
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.nav-link:active {
   background-color: white;
   color: black !important;
   transform: scale(1.05);
@@ -172,7 +214,8 @@
 .navbar-toggler {
   border: none;
   padding: 5px;
-  margin-right: 10px;
+  /* margin-right: 10px; */
+  font-size: 1.5rem;
 }
 
 .navbar-toggler:focus {
@@ -182,30 +225,56 @@
 
 /* Responsive styles */
 @media (max-width: 991px) {
+  .navbar-controls {
+    position: relative;
+  }
+
   .navbar-collapse {
-    background-color: rgba(0, 0, 0, 0.95);
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: rgb(0, 0, 0);
     padding: 10px;
     border-radius: 0 0 5px 5px;
+    z-index: 10000;
   }
-  
+
   .navbar-nav {
     text-align: center;
   }
-  
+
   .nav-item {
     margin: 5px 0;
   }
-  
+
   .nav-link.active::after {
     width: 50%;
     left: 25%;
   }
-  
-  .title {
+
+  /* .title {
     font-size: 1.8em;
   }
-  
+
   .sub-title {
     font-size: 0.8em;
+  } */
+
+  .navbar.scrolled .navbar-brand-container {
+    padding: 0;
+  }
+
+  .navbar.scrolled .title {
+    font-size: 1.4em;
+  }
+
+  .navbar.scrolled .sub-title {
+    font-size: 0.75em;
+  }
+
+  /* Fix navbar-controls alignment for tablet widths */
+  .navbar-controls {
+    display: flex !important;
+    margin-left: auto !important;
   }
 }

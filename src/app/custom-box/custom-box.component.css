@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 120px 20px 20px 20px; /* Added top padding to account for the banner */
+  padding: 20px 20px 20px 20px; 
 }
 
 .window {
