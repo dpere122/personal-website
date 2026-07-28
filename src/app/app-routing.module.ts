@@ -1,23 +1,27 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { BlogFeedComponent } from "./blog-feed/blog-feed.component"
-import { HostPageComponent } from './host-page/host-page.component';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
 
 const routeConfig: Routes = [
   {
-    path: '',
-    component: HostPageComponent,
-    title: 'CodebyDP'
+    path: "",
+    loadComponent: () =>
+      import("./host-page/host-page.component").then(
+        (m) => m.HostPageComponent,
+      ),
+    title: "CodebyDP",
   },
   {
-    path: 'blog',
-    component: BlogFeedComponent,
-    title: 'CodebyDp Blog'
-  }
+    path: "blog",
+    loadComponent: () =>
+      import("./blog-feed/blog-feed.component").then(
+        (m) => m.BlogFeedComponent,
+      ),
+    title: "CodebyDp Blog",
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routeConfig)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

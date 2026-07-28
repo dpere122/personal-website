@@ -1,23 +1,36 @@
-import { Component, Input, OnInit, AfterViewInit, ViewChild, ViewContainerRef, resolveForwardRef, ComponentRef, ElementRef, Renderer2 } from '@angular/core';
-import { SIZE, BOXTYPE } from '../app.component';
-import { ModelBlockComponent } from '../3DModel/model-block.component';
-import { GitWidgetComponent } from '../git-widget/git-widget.component';
+import {
+  Component,
+  Input,
+  OnInit,
+  AfterViewInit,
+  ViewChild,
+  ViewContainerRef,
+  resolveForwardRef,
+  ComponentRef,
+  ElementRef,
+  Renderer2,
+} from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { SIZE, BOXTYPE } from "../app.component";
+import { ModelBlockComponent } from "../3DModel/model-block.component";
+import { GitWidgetComponent } from "../git-widget/git-widget.component";
 
 @Component({
-  selector: 'app-text-wall',
-  templateUrl: './text-wall.component.html',
-  styleUrls: ['./text-wall.component.css']
+  selector: "app-text-wall",
+  templateUrl: "./text-wall.component.html",
+  styleUrls: ["./text-wall.component.css"],
+  standalone: true,
+  imports: [CommonModule, ModelBlockComponent, GitWidgetComponent],
 })
 export class TextWallComponent implements OnInit, AfterViewInit {
-
-  @ViewChild('dynamicBlock', { read: ViewContainerRef })
+  @ViewChild("dynamicBlock", { read: ViewContainerRef })
   dynamicBlock!: ViewContainerRef;
 
-  @ViewChild('dynamicBlock')
+  @ViewChild("dynamicBlock")
   el!: ElementRef;
 
   @Input() titleText: string = "title-text";
-  @Input() boxType: BOXTYPE = BOXTYPE.RESPONSE
+  @Input() boxType: BOXTYPE = BOXTYPE.RESPONSE;
   @Input() contentTemplate: any = "";
   @Input() boxSize: SIZE = SIZE.small;
   @Input() addModel: boolean = false;
@@ -31,10 +44,7 @@ export class TextWallComponent implements OnInit, AfterViewInit {
   widgetSize: string = "";
   BOXTYPE = BOXTYPE;
 
-
-
-
-  constructor(private renderer: Renderer2) { }
+  constructor(private renderer: Renderer2) {}
 
   ngOnInit() {
     var boxSizeVar: number = 5;
@@ -50,23 +60,22 @@ export class TextWallComponent implements OnInit, AfterViewInit {
         boxSizeVar = 9;
         break;
     }
-    console.log(this.boxType)
+    console.log(this.boxType);
     if (this.cutoff > 0) {
       this.widgetSize += "col-" + (boxSizeVar - this.cutoff);
     } else {
       this.widgetSize += "col-" + boxSizeVar;
     }
-
   }
 
   ngAfterViewInit() {
     if (this.addModel) {
       const childComponentFactory = resolveForwardRef(ModelBlockComponent);
-      const componentRef: ComponentRef<ModelBlockComponent> = this.dynamicBlock.createComponent(childComponentFactory);
+      const componentRef: ComponentRef<ModelBlockComponent> =
+        this.dynamicBlock.createComponent(childComponentFactory);
       componentRef.setInput("modelURL", this.modelURL);
       componentRef.setInput("scale", this.modelScale);
       componentRef.setInput("verticalOffset", this.modelVerticalOffset);
-
 
       const modelContainer: HTMLElement = componentRef.location.nativeElement;
       this.renderer.appendChild(this.el.nativeElement, modelContainer);
@@ -74,7 +83,8 @@ export class TextWallComponent implements OnInit, AfterViewInit {
       this.renderer.addClass(this.el.nativeElement, this.modelSize);
     } else if (this.addGitWidget) {
       const childComponentFactory = resolveForwardRef(GitWidgetComponent);
-      const componentRef: ComponentRef<GitWidgetComponent> = this.dynamicBlock.createComponent(childComponentFactory);
+      const componentRef: ComponentRef<GitWidgetComponent> =
+        this.dynamicBlock.createComponent(childComponentFactory);
     }
   }
 
