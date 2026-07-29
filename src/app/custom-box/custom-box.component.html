@@ -8,89 +8,9 @@
       </div>
       <span class="handle-title">Welcome</span>
     </div>
-    <div class="Content">
-      <div class="h-100">
-        <div class="row h-75">
-          <div class="col-md-12 col-lg-4 mb-4 mb-lg-0">
-            <app-terminal-input
-              class="terminal-full-height"
-            ></app-terminal-input>
-          </div>
-          <div class="col-12 col-lg-8">
-            <div class="profile-summary">
-              <h3 class="dev-name mb-3">Professional Summary</h3>
-              <p class="summary-text">
-                Full-stack developer with 4+ years building data tools and REST
-                APIs at scale. Experienced with Java/Spring, Angular, Python,
-                and SQL Server. Passionate about developer tooling and
-                open-source — creator of Clara Coder, an agentic coding harness
-                for local LLMs.
-              </p>
-
-              <h4 class="mt-4 mb-3">Work Experience</h4>
-              <div class="experience-list">
-                <div class="experience-item" *ngFor="let exp of experiences">
-                  <div
-                    class="experience-header"
-                    (click)="toggleExperience(exp)"
-                  >
-                    <div class="experience-title-row">
-                      <span class="experience-title">{{ exp.title }}</span>
-                      <span class="experience-period">{{ exp.period }}</span>
-                    </div>
-                    <div class="experience-subtitle">
-                      {{ exp.company }} — {{ exp.location }}
-                    </div>
-                    <span class="expand-icon" [class.expanded]="exp.expanded"
-                      >▸</span
-                    >
-                  </div>
-                  <div class="experience-bullets" [class.show]="exp.expanded">
-                    <ul class="tech-list">
-                      <li *ngFor="let bullet of exp.bullets">{{ bullet }}</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <h4 class="mt-4 mb-3">Education</h4>
-              <div class="education-item">
-                <div class="education-title-row">
-                  <span class="education-degree">B.A. Computer Science</span>
-                  <span class="education-period">2016 – 2021</span>
-                </div>
-                <div class="education-school">
-                  Florida International University — Miami, FL
-                </div>
-              </div>
-
-              <h4 class="mt-4 mb-3">Technical Expertise</h4>
-              <ul class="tech-list">
-                <li>
-                  <span class="category">Languages:</span> Java, TypeScript,
-                  JavaScript, Python, C#, C++, SQL
-                </li>
-                <li>
-                  <span class="category">Backend:</span> Spring Framework,
-                  Microservices, RESTful APIs, Node.js
-                </li>
-                <li>
-                  <span class="category">Frontend:</span> Angular, HTML/CSS,
-                  Bootstrap 5, jQuery
-                </li>
-                <li>
-                  <span class="category">Database:</span> SQL Server,
-                  PostgreSQL, data modeling and conversion
-                </li>
-                <li>
-                  <span class="category">Tools:</span> Git, Linux, Electron,
-                  Selenium, Playwright, Langchain, Langgraph
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <app-terminal-input
+        class="terminal-full-height"
+        [resumeData]="resumeData"
+      ></app-terminal-input>
   </div>
 </div>

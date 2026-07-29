@@ -5,6 +5,31 @@ import {
   OnDestroy,
   Input,
 } from "@angular/core";
+import { CommonModule } from "@angular/common";
+
+export interface Experience {
+  title: string;
+  company: string;
+  location: string;
+  period: string;
+  bullets: string[];
+  expanded?: boolean;
+}
+
+export interface ResumeData {
+  summary: string;
+  experiences: Experience[];
+  education: {
+    degree: string;
+    school: string;
+    location: string;
+    period: string;
+  };
+  skills: {
+    category: string;
+    items: string;
+  }[];
+}
 
 /**
  * Terminal Input Component
@@ -21,13 +46,15 @@ import {
  * - Responsive height that can be controlled by parent component
  * - Terminal-like appearance with gradient background
  * - Optional height adjustment for scroll effects
+ * - Resume content display in terminal style
  *
  * Usage:
  * <app-terminal-input
  *   [originalBoxHeight]="60"
  *   [minBoxHeight]="30"
  *   [enableHeightChanges]="true"
- *   [frameDuration]="180">
+ *   [frameDuration]="180"
+ *   [resumeData]="resumeData">
  * </app-terminal-input>
  */
 @Component({
@@ -35,6 +62,7 @@ import {
   templateUrl: "./terminal-input.component.html",
   styleUrls: ["./terminal-input.component.css"],
   standalone: true,
+  imports: [CommonModule],
 })
 export class TerminalInputComponent
   implements OnInit, AfterViewInit, OnDestroy
@@ -50,6 +78,9 @@ export class TerminalInputComponent
 
   /** Frame duration in milliseconds */
   @Input() frameDuration: number = 180;
+
+  /** Resume data to display in terminal style */
+  @Input() resumeData?: ResumeData;
 
   /** Current frame string being displayed */
   currentFrame: string = "";
@@ -204,8 +235,7 @@ export class TerminalInputComponent
           const ny = y / this.RADIUS;
           const nz = z / this.RADIUS;
           const diffuse = Math.max(0, nx * lx + ny * ly + nz * lz);
-          const raw =
-            this.AMBIENT + (1 - this.AMBIENT) * diffuse;
+          const raw = this.AMBIENT + (1 - this.AMBIENT) * diffuse;
           const intensity = Math.min(
             1,
             Math.pow(raw * this.BRIGHTNESS, this.SHADE_GAMMA),
@@ -288,5 +318,12 @@ export class TerminalInputComponent
     if (gradientBox) {
       gradientBox.style.height = `${height}px`;
     }
+  }
+
+  /**
+   * Toggle expansion of an experience item
+   */
+  toggleExperience(exp: Experience): void {
+    exp.expanded = !exp.expanded;
   }
 }

@@ -7,10 +7,10 @@
   height: 100%;
   width: 100%;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   padding: 10px;
   cursor: default;
 }
@@ -18,13 +18,34 @@
 /* Terminal wrapper container */
 .terminal-wrapper {
   position: relative;
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Terminal content */
+.terminal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Orb section */
+.orb-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
 }
 
 /* ASCII orb styling */
 .orb-art {
   font-family: "Courier New", monospace;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.05;
   letter-spacing: 0;
   color: #4dff9a;
@@ -33,4 +54,170 @@
   white-space: pre;
   text-shadow: 0 0 6px rgba(77, 255, 154, 0.65);
   display: inline-block;
+}
+
+/* Resume content */
+.resume-content {
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #d4d4d4;
+}
+
+/* Terminal line (prompt + command) */
+.terminal-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #4dff9a;
+}
+
+.prompt {
+  color: #4dff9a;
+  font-weight: bold;
+  text-shadow: 0 0 4px rgba(77, 255, 154, 0.5);
+}
+
+.command {
+  color: #ffffff;
+}
+
+/* Terminal output */
+.terminal-output {
+  padding-left: 16px;
+  color: #d4d4d4;
+}
+
+.section-header {
+  color: #d4a641;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+/* Terminal section spacing */
+.terminal-section {
+  margin-top: 8px;
+}
+
+/* Experience items */
+.experience-item {
+  margin-bottom: 6px;
+}
+
+.experience-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  padding-left: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.experience-header:hover {
+  background: rgba(212, 166, 65, 0.1);
+}
+
+.expand-icon {
+  color: #d4a641;
+  font-size: 12px;
+  min-width: 20px;
+}
+
+.job-title {
+  color: #d4a641;
+  font-weight: bold;
+}
+
+.job-period {
+  color: #888888;
+  font-size: 11px;
+  margin-left: auto;
+}
+
+/* Experience details */
+.experience-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  padding-left: 16px;
+}
+
+.experience-details.show {
+  max-height: 500px;
+  padding: 4px 8px 8px 32px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  margin-top: 2px;
+}
+
+.detail-line {
+  margin-bottom: 2px;
+}
+
+.detail-label {
+  color: #888888;
+}
+
+/* Bullet list */
+.bullet-list {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0 0;
+}
+
+.bullet-list li {
+  margin-bottom: 4px;
+  color: #cccccc;
+}
+
+/* Education item */
+.education-item {
+  padding-left: 16px;
+}
+
+/* Skills item */
+.skills-item {
+  padding-left: 16px;
+}
+
+.skill-category {
+  color: #d4a641;
+  font-weight: bold;
+}
+
+/* Cursor */
+.cursor {
+  color: #4dff9a;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Scrollbar styling */
+.gradient-box::-webkit-scrollbar {
+  width: 8px;
+}
+
+.gradient-box::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.gradient-box::-webkit-scrollbar-thumb {
+  background: #3a3a3a;
+  border-radius: 4px;
+}
+
+.gradient-box::-webkit-scrollbar-thumb:hover {
+  background: #4dff9a;
 }

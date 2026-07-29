@@ -1,5 +1,118 @@
 <div class="gradient-box" [title]="'Animated ASCII orb'">
   <div class="terminal-wrapper">
-    <pre class="orb-art">{{ currentFrame }}</pre>
+    <div class="terminal-content">
+      <!-- ASCII Orb Animation -->
+      <div class="orb-section">
+        <pre class="orb-art">{{ currentFrame }}</pre>
+      </div>
+
+      <!-- Resume Content -->
+      <div class="resume-content" *ngIf="resumeData">
+        <!-- Welcome Message -->
+        <div class="terminal-line">
+          <span class="prompt">$</span>
+          <span class="command">whoami</span>
+        </div>
+        <div class="terminal-output">Daniel Perez — Full-Stack Developer</div>
+
+        <!-- Professional Summary -->
+        <div class="terminal-section">
+          <div class="terminal-line">
+            <span class="prompt">$</span>
+            <span class="command">cat professional-summary.txt</span>
+          </div>
+          <div class="terminal-output">
+            {{ resumeData?.summary }}
+          </div>
+        </div>
+
+        <!-- Work Experience -->
+        <div class="terminal-section">
+          <div class="terminal-line">
+            <span class="prompt">$</span>
+            <span class="command">ls work-experience/</span>
+          </div>
+          <div class="terminal-output section-header">> Work Experience</div>
+          <div
+            class="experience-item"
+            *ngFor="let exp of resumeData?.experiences"
+          >
+            <div class="experience-header" (click)="toggleExperience(exp)">
+              <span class="expand-icon" [class.expanded]="exp.expanded">
+                {{ exp.expanded ? "[-]" : "[+]" }}
+              </span>
+              <span class="job-title">{{ exp.title }}</span>
+              <span class="job-period">{{ exp.period }}</span>
+            </div>
+            <div class="experience-details" [class.show]="exp.expanded">
+              <div class="detail-line">
+                <span class="detail-label">Company:</span>
+                {{ exp.company }}
+              </div>
+              <div class="detail-line">
+                <span class="detail-label">Location:</span>
+                {{ exp.location }}
+              </div>
+              <div class="detail-line">
+                <span class="detail-label">Highlights:</span>
+              </div>
+              <ul class="bullet-list">
+                <li *ngFor="let bullet of exp.bullets">▹ {{ bullet }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Education -->
+        <div class="terminal-section">
+          <div class="terminal-line">
+            <span class="prompt">$</span>
+            <span class="command">cat education.txt</span>
+          </div>
+          <div class="terminal-output section-header">> Education</div>
+          <div class="education-item">
+            <div class="detail-line">
+              <span class="detail-label">Degree:</span>
+              {{ resumeData?.education?.degree }}
+            </div>
+            <div class="detail-line">
+              <span class="detail-label">School:</span>
+              {{ resumeData?.education?.school }}
+            </div>
+            <div class="detail-line">
+              <span class="detail-label">Location:</span>
+              {{ resumeData?.education?.location }}
+            </div>
+            <div class="detail-line">
+              <span class="detail-label">Period:</span>
+              {{ resumeData?.education?.period }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Technical Expertise -->
+        <div class="terminal-section">
+          <div class="terminal-line">
+            <span class="prompt">$</span>
+            <span class="command">cat technical-skills.txt</span>
+          </div>
+          <div class="terminal-output section-header">
+            > Technical Expertise
+          </div>
+          <div class="skills-item" *ngFor="let skill of resumeData?.skills">
+            <div class="detail-line">
+              <span class="skill-category">{{ skill.category }}</span>
+              {{ skill.items }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Command Prompt -->
+        <div class="terminal-line">
+          <span class="prompt">$</span>
+          <span class="cursor">█</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
