@@ -222,6 +222,69 @@ export class TerminalInputComponent
 
     return value;
   }
+  // Mountain chain strength (additive boost over base terrain)
+  private readonly MOUNTAIN_STRENGTH: number = 0.28;
+
+  /**
+   * Ridged noise for chain-like mountain ranges.
+   *
+   * Uses ridged multifractal: 1 - |noise|, sharpened by power, accumulated
+   * across octaves. Sample frequencies are elongated along theta (longitude)
+   * so ridges stretch into linear/curved bands instead of random peaks.
+   */
+  private ridgedMountainNoise(theta: number, phi: number): number {
+    let value = 0;
+    let amplitude = 0.5;
+    let frequency = 1;
+    const octaves = 3;
+    const lacunarity = 2.0;
+    const gain = 0.5;
+    const ridgePower = 2.8;
+
+    // Elongation: lower frequency along theta so ridges form chains along
+    // roughly meridian-like directions, higher along phi for variation.
+    const thetaScale = 0.35;
+    const phiScale = 1.0;
+
+    for (let i = 0; i < octaves; i++) {
+      const nx = theta * thetaScale * frequency;
+      const ny = phi * phiScale * frequency;
+      const nz = 0.5 + i * 0.1;
+
+      // Invert absolute noise to create ridges along zero-crossings
+      const signal = 1 - Math.abs(this.noise3D(nx, ny, nz));
+      // Sharpen ridges by raising to power
+      const sharpened = Math.pow(signal, ridgePower);
+
+      value += amplitude * sharpened;
+      amplitude *= gain;
+      frequency *= lacunarity;
+    }
+
+    return value;
+  }
+
+  /**
+   * Latitude-band weight: peaks in mid-latitudes (~20-60° N/S),
+   * near-zero at equator and poles. This concentrates mountain chains
+   * in plausible bands (like Rockies/Andes, Alps, Himalayas).
+   */
+  private latitudeBandWeight(phi: number): number {
+    // phi: 0 = north pole, PI/2 = equator, PI = south pole
+    // lat: -PI/2 (south) to +PI/2 (north)
+    const lat = Math.PI / 2 - phi;
+    const absLat = Math.abs(lat);
+
+    // Target band: |lat| ≈ 0.35-1.0 rad (20-60 degrees)
+    const bandCenter = 0.65; // ~37 degrees
+    const bandWidth = 0.35; // controls width of the band
+
+    // Gaussian-like falloff centered on bandCenter
+    const dist = absLat - bandCenter;
+    const weight = Math.exp(-0.5 * (dist / bandWidth) * (dist / bandWidth));
+
+    return weight;
+  }
 
   /**
    * Generates one frame of the ASCII Earth sphere.
@@ -263,15 +326,22 @@ export class TerminalInputComponent
     // Iterate over the sphere surface
     for (let theta = 0; theta < Math.PI * 2; theta += this.STEP) {
       for (let phi = 0.08; phi < Math.PI - 0.08; phi += this.STEP) {
-        // Sample terrain noise at this (θ, φ) position (before any rotation)
+        // Sample base terrain noise at this (θ, φ) position (before any rotation)
         const noiseX = theta / Math.PI;
         const noiseY = phi / Math.PI;
         const noiseZ = 0.5;
-        const elevation = this.fbm(noiseX, noiseY, noiseZ);
+        const baseElevation = this.fbm(noiseX, noiseY, noiseZ);
         // Normalize fbm output (~[-0.5, 0.5]) to [0, 1]
-        const normalizedElevation = (elevation + 0.5) * 0.8;
+        let normalizedElevation = (baseElevation + 0.5) * 0.8;
 
-        // Displace radius by elevation: ocean dips, land rises
+        // Add ridged-noise mountain chains concentrated in mid-latitude bands
+        const ridge = this.ridgedMountainNoise(theta, phi);
+        const latWeight = this.latitudeBandWeight(phi);
+        normalizedElevation =
+          normalizedElevation + latWeight * ridge * this.MOUNTAIN_STRENGTH;
+        // Clamp to [0, 1] so existing color classes and SEA_LEVEL logic remain valid
+        normalizedElevation = Math.max(0, Math.min(1, normalizedElevation));
+
         // Displace radius by elevation: ocean dips, land rises
         const displacedRadius =
           this.RADIUS + (normalizedElevation - 0.5) * this.HEIGHT_DISPLACEMENT;
