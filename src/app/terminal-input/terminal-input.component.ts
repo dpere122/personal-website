@@ -102,12 +102,12 @@ export class TerminalInputComponent
   // (cell height ≈ line-height × font-size, width ≈ 0.6 × font-size)
   private readonly CELL_ASPECT: number = 1.75;
 
-  // Normalized light direction — upper-left-front for readable terminal shading
-  private readonly LIGHT_X: number = -0.45;
-  private readonly LIGHT_Y: number = 0.82;
+  // Normalized light direction — slightly left and low for subtle shading
+  private readonly LIGHT_X: number = -0.15;
+  private readonly LIGHT_Y: number = 0.1;
   private readonly LIGHT_Z: number = 0.35;
-  private readonly AMBIENT: number = 0.5;
-  private readonly BRIGHTNESS: number = 1.2;
+  private readonly AMBIENT: number = 0.15;
+  private readonly BRIGHTNESS: number = 1.0;
   private readonly SHADE_GAMMA: number = 0.78;
   // Shading ramp — shadow to highlight (dense characters for visibility)
   private readonly SHADING: string[] = ["░", "▒", "▓", "█"];
@@ -136,8 +136,8 @@ export class TerminalInputComponent
   private startAnimation(): void {
     this.animationTimer = setInterval(() => {
       this.angleY += 0.24;
-      // Oscillate angleX gently so the silhouette stays close to a circle
-      this.angleX = Math.sin(Date.now() * 0.001) * 0.15;
+      // Fixed X-axis tilt (~23.5° like Earth's axial tilt)
+      this.angleX = 0.41;
       this.currentFrame = this.renderSphere();
     }, this.frameDuration);
   }
@@ -281,9 +281,9 @@ export class TerminalInputComponent
         let y = displacedRadius * Math.cos(phi);
         let z = displacedRadius * Math.sin(phi) * Math.sin(theta);
 
-        // Rotate around Y-axis
-        const cosY = Math.cos(this.angleY);
-        const sinY = Math.sin(this.angleY);
+        // Rotate around Y-axis (with fixed tilt offset)
+        const cosY = Math.cos(this.angleY + 0.5);
+        const sinY = Math.sin(this.angleY + 0.5);
         const x1 = x * cosY - z * sinY;
         const z1 = x * sinY + z * cosY;
         x = x1;
