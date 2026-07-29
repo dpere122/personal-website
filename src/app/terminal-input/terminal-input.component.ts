@@ -90,8 +90,8 @@ export class TerminalInputComponent
 
   // Sphere parameters
   private readonly RADIUS: number = 12;
-  private readonly STEP: number = 0.011;
-  private readonly FOV: number = 60;
+  private readonly STEP: number = 0.008;
+  private readonly FOV: number = 90;
   private readonly ORIGIN_X: number = 20;
   private readonly ORIGIN_Y: number = 12;
 
@@ -113,7 +113,7 @@ export class TerminalInputComponent
   private readonly SHADING: string[] = ["░", "▒", "▓", "█"];
 
   // Noise seed for continent generation (fixed so continents stay the same)
-  private readonly NOISE_SEED: number = 42;
+  private readonly NOISE_SEED: number = 115;
 
   // Current rotation angle (radians)
   private angleY: number = 0;
@@ -223,7 +223,7 @@ export class TerminalInputComponent
     return value;
   }
   // Mountain chain strength (additive boost over base terrain)
-  private readonly MOUNTAIN_STRENGTH: number = 0.28;
+  private readonly MOUNTAIN_STRENGTH: number = 0.08;
 
   /**
    * Ridged noise for chain-like mountain ranges.
@@ -239,7 +239,7 @@ export class TerminalInputComponent
     const octaves = 3;
     const lacunarity = 2.0;
     const gain = 0.5;
-    const ridgePower = 2.8;
+    const ridgePower = 1.2;
 
     // Elongation: lower frequency along theta so ridges form chains along
     // roughly meridian-like directions, higher along phi for variation.
@@ -276,8 +276,8 @@ export class TerminalInputComponent
     const absLat = Math.abs(lat);
 
     // Target band: |lat| ≈ 0.35-1.0 rad (20-60 degrees)
-    const bandCenter = 0.65; // ~37 degrees
-    const bandWidth = 0.35; // controls width of the band
+    const bandCenter = 0.7; // ~40 degrees
+    const bandWidth = 0.55; // wider, smoother band
 
     // Gaussian-like falloff centered on bandCenter
     const dist = absLat - bandCenter;
@@ -448,34 +448,21 @@ export class TerminalInputComponent
     }
     if (equatorRight < 0) return "";
 
-    // Collect rows belonging to the main cluster
-    const maxDistance = Math.ceil(this.RADIUS * 1.2);
-    const includedRows: number[] = [];
-
-    for (let r = 0; r < rows; r++) {
-      if (Math.abs(r - widestRow) > maxDistance) continue;
-
-      let nonSpaceCount = 0;
-      for (let c = 0; c < cols; c++) {
-        if (outputBuffer[r][c] !== " ") nonSpaceCount++;
-      }
-      if (nonSpaceCount < 2) continue;
-
-      includedRows.push(r);
-    }
-
-    if (includedRows.length === 0) return "";
+    // Fixed vertical frame: always output the same rows around the buffer center,
+    // regardless of rotation, so the container height is stable.
+    const centerRow = Math.floor(rows / 2);
+    const fixedRadius = Math.ceil(this.RADIUS * 1.3);
+    const topRow = Math.max(0, centerRow - fixedRadius);
+    const bottomRow = Math.min(rows - 1, centerRow + fixedRadius);
 
     // Slice each row to the equator width (preserves projected positions)
     let result = "";
-    for (const r of includedRows) {
+    for (let r = topRow; r <= bottomRow; r++) {
       result +=
         outputBuffer[r].slice(equatorLeft, equatorRight + 1).join("") + "\n";
     }
-    // trimEnd only — trim() would strip leading spaces from the first row
-    return result.trimEnd();
+    return result;
   }
-
   /**
    * Updates the height of the gradient box
    * Called by the parent component during scroll events.
