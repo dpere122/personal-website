@@ -95,6 +95,9 @@ export class TerminalInputComponent
   private readonly ORIGIN_X: number = 20;
   private readonly ORIGIN_Y: number = 12;
 
+  // Height displacement from elevation (subtle but visible)
+  private readonly HEIGHT_DISPLACEMENT: number = 2.0;
+
   // Horizontal stretch so the projected sphere reads round in monospace cells
   // (cell height ≈ line-height × font-size, width ≈ 0.6 × font-size)
   private readonly CELL_ASPECT: number = 1.75;
@@ -103,28 +106,14 @@ export class TerminalInputComponent
   private readonly LIGHT_X: number = -0.45;
   private readonly LIGHT_Y: number = 0.82;
   private readonly LIGHT_Z: number = 0.35;
-  private readonly AMBIENT: number = 0.32;
+  private readonly AMBIENT: number = 0.5;
   private readonly BRIGHTNESS: number = 1.2;
   private readonly SHADE_GAMMA: number = 0.78;
+  // Shading ramp — shadow to highlight (dense characters for visibility)
+  private readonly SHADING: string[] = ["░", "▒", "▓", "█"];
 
-  // Shading ramp — shadow to highlight (trimmed dark end for a brighter look)
-  private readonly SHADING: string[] = [
-    " ",
-    "·",
-    ".",
-    ":",
-    "-",
-    "=",
-    "~",
-    "+",
-    "*",
-    "x",
-    "o",
-    "O",
-    "%",
-    "#",
-    "@",
-  ];
+  // Noise seed for continent generation (fixed so continents stay the same)
+  private readonly NOISE_SEED: number = 42;
 
   // Current rotation angle (radians)
   private angleY: number = 0;
@@ -146,7 +135,7 @@ export class TerminalInputComponent
 
   private startAnimation(): void {
     this.animationTimer = setInterval(() => {
-      this.angleY += 0.12;
+      this.angleY += 0.24;
       // Oscillate angleX gently so the silhouette stays close to a circle
       this.angleX = Math.sin(Date.now() * 0.001) * 0.15;
       this.currentFrame = this.renderSphere();
@@ -161,19 +150,93 @@ export class TerminalInputComponent
   }
 
   /**
-   * Generates one frame of the ASCII sphere.
+   * Simple hash function for deterministic noise
+   */
+  private hash(x: number, y: number, z: number): number {
+    let n = x + y * 57 + z * 131 + this.NOISE_SEED;
+    n = (n << 13) ^ n;
+    return (
+      1 -
+      ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0
+    );
+  }
+
+  /**
+   * Smooth interpolation for value noise
+   */
+  private smooth(t: number): number {
+    return t * t * t * (t * (t * 6 - 15) + 10);
+  }
+
+  /**
+   * 3D value noise with octaves for Earth-like terrain
+   */
+  private noise3D(x: number, y: number, z: number): number {
+    const xi = Math.floor(x);
+    const yi = Math.floor(y);
+    const zi = Math.floor(z);
+    const xf = x - xi;
+    const yf = y - yi;
+    const zf = z - zi;
+    const u = this.smooth(xf);
+    const v = this.smooth(yf);
+    const w = this.smooth(zf);
+
+    const n000 = this.hash(xi, yi, zi);
+    const n100 = this.hash(xi + 1, yi, zi);
+    const n010 = this.hash(xi, yi + 1, zi);
+    const n110 = this.hash(xi + 1, yi + 1, zi);
+    const n001 = this.hash(xi, yi, zi + 1);
+    const n101 = this.hash(xi + 1, yi, zi + 1);
+    const n011 = this.hash(xi, yi + 1, zi + 1);
+    const n111 = this.hash(xi + 1, yi + 1, zi + 1);
+
+    const x00 = n000 + u * (n100 - n000);
+    const x10 = n010 + u * (n110 - n010);
+    const x01 = n001 + u * (n101 - n001);
+    const x11 = n011 + u * (n111 - n011);
+
+    const xy0 = x00 + v * (x10 - x00);
+    const xy1 = x01 + v * (x11 - x01);
+
+    return xy0 + w * (xy1 - xy0);
+  }
+
+  /**
+   * Multi-octave noise for realistic terrain
+   */
+  private fbm(x: number, y: number, z: number): number {
+    let value = 0;
+    let amplitude = 0.5;
+    let frequency = 1;
+    const octaves = 4;
+    const lacunarity = 2.0;
+    const gain = 0.5;
+
+    for (let i = 0; i < octaves; i++) {
+      value +=
+        amplitude * this.noise3D(x * frequency, y * frequency, z * frequency);
+      amplitude *= gain;
+      frequency *= lacunarity;
+    }
+
+    return value;
+  }
+
+  /**
+   * Generates one frame of the ASCII Earth sphere.
    *
    * For each point on the parametric sphere:
-   *   1. Compute (x, y, z) from (θ, φ)
-   *   2. Rotate around Y-axis by angleY
-   *   3. Rotate around X-axis by angleX
+   *   1. Sample terrain noise at (θ, φ) position
+   *   2. Displace radius by elevation for height map effect
+   *   3. Rotate around Y and X axes
    *   4. Project to 2D screen coordinates
-   *   5. Shade by Lambertian dot(normal, light)
-   *   6. Write the shading character at that (row, col) if z is closer
-   *      than what's already there
+   *   5. Color by elevation: blue for ocean, green for land
+   *   6. Shade by Lambertian lighting
+   *   7. Write colored span if z is closer than what's already there
    */
   private renderSphere(): string {
-    // Buffers: one char grid and one z-depth grid
+    // Buffers: HTML spans grid and z-depth grid
     const rows = this.ORIGIN_Y * 2 + 2;
     const cols = this.ORIGIN_X * 2 + 2;
 
@@ -194,13 +257,29 @@ export class TerminalInputComponent
     const ly = this.LIGHT_Y / lightLen;
     const lz = this.LIGHT_Z / lightLen;
 
+    // Ocean/land threshold (~70% ocean, ~30% land)
+    const SEA_LEVEL = 0.42;
+
     // Iterate over the sphere surface
     for (let theta = 0; theta < Math.PI * 2; theta += this.STEP) {
       for (let phi = 0.08; phi < Math.PI - 0.08; phi += this.STEP) {
-        // Parametric sphere point (unit sphere → scale by radius)
-        let x = this.RADIUS * Math.sin(phi) * Math.cos(theta);
-        let y = this.RADIUS * Math.cos(phi);
-        let z = this.RADIUS * Math.sin(phi) * Math.sin(theta);
+        // Sample terrain noise at this (θ, φ) position (before any rotation)
+        const noiseX = theta / Math.PI;
+        const noiseY = phi / Math.PI;
+        const noiseZ = 0.5;
+        const elevation = this.fbm(noiseX, noiseY, noiseZ);
+        // Normalize fbm output (~[-0.5, 0.5]) to [0, 1]
+        const normalizedElevation = (elevation + 0.5) * 0.8;
+
+        // Displace radius by elevation: ocean dips, land rises
+        // Displace radius by elevation: ocean dips, land rises
+        const displacedRadius =
+          this.RADIUS + (normalizedElevation - 0.5) * this.HEIGHT_DISPLACEMENT;
+
+        // Parametric sphere point with displaced radius
+        let x = displacedRadius * Math.sin(phi) * Math.cos(theta);
+        let y = displacedRadius * Math.cos(phi);
+        let z = displacedRadius * Math.sin(phi) * Math.sin(theta);
 
         // Rotate around Y-axis
         const cosY = Math.cos(this.angleY);
@@ -230,32 +309,54 @@ export class TerminalInputComponent
 
         // Bounds check
         if (xp >= 0 && xp < cols && yp >= 0 && yp < rows) {
-          // Lambertian shading from surface normal (sphere centered at origin)
-          const nx = x / this.RADIUS;
-          const ny = y / this.RADIUS;
-          const nz = z / this.RADIUS;
+          // Lambertian shading from surface normal
+          const len = Math.hypot(x, y, z);
+          const nx = x / len;
+          const ny = y / len;
+          const nz = z / len;
           const diffuse = Math.max(0, nx * lx + ny * ly + nz * lz);
           const raw = this.AMBIENT + (1 - this.AMBIENT) * diffuse;
           const intensity = Math.min(
             1,
             Math.pow(raw * this.BRIGHTNESS, this.SHADE_GAMMA),
           );
-          const shadeIndex = Math.min(
-            this.SHADING.length - 1,
-            Math.floor(intensity * (this.SHADING.length - 1)),
+
+          // Select character based on lighting
+          const shadeIndex = Math.max(
+            0,
+            Math.min(
+              this.SHADING.length - 1,
+              Math.floor(intensity * (this.SHADING.length - 1)),
+            ),
           );
           const char = this.SHADING[shadeIndex];
+
+          // Color based on elevation: blue for ocean, green for land
+          // Quantize into 8 color steps to use CSS classes (bypasses Angular encapsulation)
+          const isOcean = normalizedElevation < SEA_LEVEL;
+          let colorIndex: number;
+
+          if (isOcean) {
+            // 4 ocean shades: deep blue → shallow cyan-blue
+            const depth = (SEA_LEVEL - normalizedElevation) / SEA_LEVEL;
+            colorIndex = Math.min(3, Math.floor(depth * 4));
+          } else {
+            // 4 land shades: lowland → highland green
+            const height = (normalizedElevation - SEA_LEVEL) / (1 - SEA_LEVEL);
+            colorIndex = 4 + Math.min(3, Math.floor(height * 4));
+          }
+
+          const cls = `orb-c${colorIndex}`;
+          const span = `<span class="${cls}">${char}</span>`;
 
           // Only write if this point is closer than what's already buffered
           if (z > zBuffer[yp][xp]) {
             zBuffer[yp][xp] = z;
-            outputBuffer[yp][xp] = char;
+            outputBuffer[yp][xp] = span;
           }
         }
       }
     }
-
-    // Find the widest row (the "equator" of the sphere)
     let widestCount = 0;
     let widestRow = 0;
     for (let r = 0; r < rows; r++) {

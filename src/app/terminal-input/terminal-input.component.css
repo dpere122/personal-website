@@ -48,13 +48,37 @@
   font-size: 12px;
   line-height: 1.05;
   letter-spacing: 0;
-  color: #4dff9a;
   margin: 0;
   padding: 0;
   white-space: pre;
-  text-shadow: 0 0 6px rgba(77, 255, 154, 0.65);
   display: inline-block;
 }
+
+/* Orb terrain colors — using ::ng-deep to pierce Angular encapsulation */
+:host ::ng-deep .orb-c0 {
+  color: #1a4d91 !important;
+} /* deep ocean */
+:host ::ng-deep .orb-c1 {
+  color: #2e6bc4 !important;
+} /* deep ocean */
+:host ::ng-deep .orb-c2 {
+  color: #4d91f5 !important;
+} /* shallow ocean */
+:host ::ng-deep .orb-c3 {
+  color: #72b8ff !important;
+} /* shallow ocean */
+:host ::ng-deep .orb-c4 {
+  color: #2e8b4a !important;
+} /* lowland */
+:host ::ng-deep .orb-c5 {
+  color: #4dff9a !important;
+} /* lowland */
+:host ::ng-deep .orb-c6 {
+  color: #82ffbd !important;
+} /* highland */
+:host ::ng-deep .orb-c7 {
+  color: #b3ffb8 !important;
+} /* highland */
 
 /* Resume content */
 .resume-content {
