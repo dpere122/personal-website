@@ -27,10 +27,10 @@ export class CustomBoxComponent {
       period: "July 2024 – Present",
       bullets: [
         "Engineered high-throughput data conversion pipelines for Workday, successfully migrating 10M+ records for major enterprise clients and supporting hundreds of internal conversion specialists as part of a 5-engineer Professional Services team.",
-        "Built RESTful APIs with Java/Spring Boot and data access layers using Spring JDBC/JPA, connecting frontend tools to Microsoft SQL Server on Azure for large-scale data conversion operations.",
+        "Built RESTful APIs with Java/Spring and data access layers using Spring JDBC/JPA, connecting frontend tools to Microsoft SQL Server on Azure for large-scale data conversion operations.",
         "Designed and implemented user interfaces with Angular, TypeScript, HTML, CSS, Bootstrap 5, and jQuery.",
         "Engineered an orchestrated UI automation pipeline with Python/Selenium that navigates Workday's front-end to execute tasks outside of Workday's native automation capabilities.",
-        "Maintained and extended an in-house Angular/TypeScript data conversion tool backed by Spring Boot, executing SQL scripts against large datasets to validate Workday infrastructure integrations.",
+        "Maintained and extended an in-house Angular/TypeScript data conversion tool backed by Spring, executing SQL scripts against large datasets to validate Workday infrastructure integrations.",
         "Owned end-to-end development of a standalone, client-facing application that transforms employee HR data into Workday-compatible database schemas, productizing the core conversion engine from our main platform.",
         "Designed microservice architectures and scalable infrastructure patterns to support high-throughput data conversion pipelines serving hundreds of daily users.",
       ],

@@ -80,6 +80,18 @@
   text-align: center;
 }
 
+/* Terminal full height styling */
+.terminal-full-height {
+  display: block;
+  height: 100%;
+  min-height: 300px;
+}
+
+.terminal-full-height ::ng-deep .gradient-box {
+  height: 100%;
+  min-height: inherit;
+}
+
 /* Responsive styles for mobile */
 @media (max-width: 992px) {
   .custom-box {
@@ -90,20 +102,29 @@
     width: 100%;
     border-radius: 10px;
     min-height: auto;
-    padding-top: 0;
+    margin-top: 24px;
   }
 
   .window-handle {
-    position: relative;
-    top: 0;
-    left: 0;
-    transform: none;
-    margin-bottom: 10px;
+    position: absolute;
+    top: -48px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
     border-radius: 12px;
+    z-index: 20;
   }
 
   .content {
     padding: 15px 10px;
+  }
+
+  .terminal-full-height {
+    height: 300px;
+  }
+
+  .terminal-full-height ::ng-deep .gradient-box {
+    min-height: 300px;
   }
 }
 

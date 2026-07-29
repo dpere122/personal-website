@@ -1,11 +1,11 @@
-<div class="terminal-container">
+<div class="container-fluid terminal-container">
   <!-- Terminal window structure -->
-  <div class="terminal-window">
+  <div class="terminal-window col-12 col-sm-10 col-md-10">
     <!-- VHS screen overlay effects - now inside the terminal window -->
     <div class="screen-overlay"></div>
     <div class="scan-lines"></div>
     <div class="flicker"></div>
-    
+
     <!-- Title bar section -->
     <div class="terminal-header">
       <div class="terminal-controls">
@@ -15,32 +15,55 @@
       </div>
       <div class="terminal-title">{{ title }}</div>
     </div>
-    
+
+    <!-- ASCII Animation section -->
+    <div class="ascii-animation-section">
+      <div class="command-line">
+        <span class="prompt">$</span>
+        <span class="command">./animate-orb</span>
+      </div>
+      <pre class="ascii-art">{{ defaultOrbAnimation[currentFrameIndex] }}</pre>
+    </div>
+
     <!-- Main content -->
     <div class="terminal-content">
-      <!-- Git project section -->
-      <div class="git-project-section">
-        <div class="command-line">
-          <span class="prompt">$</span>
-          <span class="command">git clone {{ projectUrl }}</span>
-        </div>
-        <div class="project-name">
-          <span class="label">Project:</span>
-          <span class="value">{{ projectName }}</span>
-        </div>
-        <div class="repo-link">
-          <a [href]="projectUrl" target="_blank" rel="noopener noreferrer">{{ projectUrl }}</a>
-        </div>
+      <!-- Loading / error states -->
+      <div *ngIf="loading" class="status-message">
+        <span class="prompt">$</span>
+        <span class="command">fetching repos...</span>
       </div>
-      
-      <!-- Description section -->
-      <div class="description-section">
+      <div *ngIf="error" class="status-message error">
+        <span class="prompt">$</span>
+        <span class="command">{{ error }}</span>
+      </div>
+
+      <!-- Repo list -->
+      <div *ngIf="!loading && !error" class="repo-list">
         <div class="command-line">
           <span class="prompt">$</span>
-          <span class="command">cat README.md</span>
+          <span class="command">gh repo list dpere122</span>
         </div>
-        <div class="readme-content">
-          <p>{{ description }}</p>
+
+        <div class="repo-card" *ngFor="let repo of repos">
+          <div class="repo-header">
+            <span class="repo-name">{{ repo.repoName }}</span>
+            <a
+              [href]="repo.repoURL"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="repo-link"
+            >
+              [open]
+            </a>
+          </div>
+          <div class="repo-description" *ngIf="repo.repoDescription">
+            {{ repo.repoDescription }}
+          </div>
+          <div class="repo-url">
+            <a [href]="repo.repoURL" target="_blank" rel="noopener noreferrer">
+              {{ repo.repoURL }}
+            </a>
+          </div>
         </div>
       </div>
     </div>
