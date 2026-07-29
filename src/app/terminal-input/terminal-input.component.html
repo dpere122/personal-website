@@ -22,7 +22,7 @@
             <span class="command">cat professional-summary.txt</span>
           </div>
           <div class="terminal-output">
-            {{ resumeData?.summary }}
+            {{ resumeData.summary }}
           </div>
         </div>
 
@@ -35,7 +35,7 @@
           <div class="terminal-output section-header">> Work Experience</div>
           <div
             class="experience-item"
-            *ngFor="let exp of resumeData?.experiences"
+            *ngFor="let exp of resumeData.experiences"
           >
             <div class="experience-header" (click)="toggleExperience(exp)">
               <span class="expand-icon" [class.expanded]="exp.expanded">
@@ -73,19 +73,19 @@
           <div class="education-item">
             <div class="detail-line">
               <span class="detail-label">Degree:</span>
-              {{ resumeData?.education?.degree }}
+              {{ resumeData.education.degree }}
             </div>
             <div class="detail-line">
               <span class="detail-label">School:</span>
-              {{ resumeData?.education?.school }}
+              {{ resumeData.education.school }}
             </div>
             <div class="detail-line">
               <span class="detail-label">Location:</span>
-              {{ resumeData?.education?.location }}
+              {{ resumeData.education.location }}
             </div>
             <div class="detail-line">
               <span class="detail-label">Period:</span>
-              {{ resumeData?.education?.period }}
+              {{ resumeData.education.period }}
             </div>
           </div>
         </div>
@@ -99,7 +99,7 @@
           <div class="terminal-output section-header">
             > Technical Expertise
           </div>
-          <div class="skills-item" *ngFor="let skill of resumeData?.skills">
+          <div class="skills-item" *ngFor="let skill of resumeData.skills">
             <div class="detail-line">
               <span class="skill-category">{{ skill.category }}</span>
               {{ skill.items }}
