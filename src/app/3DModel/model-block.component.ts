@@ -8,7 +8,8 @@ import {
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import * as THREE from "three";
-import * as threeADDONS from "three/examples/jsm/Addons";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 @Component({
   selector: "app-model-block",
@@ -25,7 +26,7 @@ export class ModelBlockComponent implements OnInit, AfterViewInit {
     return this.canvasRef.nativeElement;
   }
 
-  private gltfLoader!: threeADDONS.GLTFLoader;
+  private gltfLoader!: GLTFLoader;
   private camera!: THREE.PerspectiveCamera;
   private light: THREE.DirectionalLight = new THREE.DirectionalLight(0xffffff);
   private model!: THREE.Group;
@@ -97,8 +98,8 @@ export class ModelBlockComponent implements OnInit, AfterViewInit {
   }
 
   private loadModel(path: string) {
-    this.gltfLoader = new threeADDONS.GLTFLoader();
-    this.gltfLoader.load(path, (gltfScene) => {
+    this.gltfLoader = new GLTFLoader();
+    this.gltfLoader.load(path, (gltfScene: GLTF) => {
       //callback to occur when the loader has loaded the model
       gltfScene.scene.position.set(0, this.verticalOffset, 0);
       gltfScene.scene.scale.set(this.scale, this.scale, this.scale);

@@ -1,23 +1,23 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 export enum SIZE {
   small,
   medium,
-  large
+  large,
 }
 export enum BOXTYPE {
   MESSAGE,
   RESPONSE,
   NOTICE,
-  WARNING
+  WARNING,
 }
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
+  standalone: false,
 })
 export class AppComponent {
-  title = 'CodebyDP';
+  title = "CodebyDP";
 }
-

@@ -12,6 +12,7 @@ import {
   selector: "app-banner",
   templateUrl: "./banner.component.html",
   styleUrls: ["./banner.component.css"],
+  standalone: false,
   animations: [
     trigger("collapseAnimation", [
       state("closed", style({ height: "0", opacity: 0 })),
