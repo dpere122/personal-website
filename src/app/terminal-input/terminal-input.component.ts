@@ -46,8 +46,11 @@ export interface ResumeData {
  * Optimizations:
  * - Canvas rendering (no DOM thrashing)
  * - requestAnimationFrame (pauses when tab hidden)
- * - Precomputed light vector, rotation trig, frame bounds
- * - Reused buffers across frames
+ * - Precomputed terrain elevation map (invariant across frames)
+ * - Precomputed sin/cos lookup tables for theta/phi steps
+ * - Structured buffer (no HTML string creation/parsing)
+ * - Fixed canvas size (no per-frame resize)
+ * - Reduced noise octaves (4→3 fbm, 3→2 ridged)
  */
 @Component({
   selector: "app-terminal-input",
@@ -74,7 +77,7 @@ export class TerminalInputComponent
 
   // Sphere parameters
   private readonly RADIUS: number = 12;
-  private readonly STEP: number = 0.008;
+  private readonly STEP: number = 0.012; // Increased from 0.008 — fewer iterations, similar visual quality
   private readonly FOV: number = 90;
   private readonly ORIGIN_X: number = 20;
   private readonly ORIGIN_Y: number = 12;
@@ -86,7 +89,6 @@ export class TerminalInputComponent
   private readonly LIGHT_Y: number = 0.1;
   private readonly LIGHT_Z: number = 0.35;
   private readonly AMBIENT: number = 0.15;
-  private readonly BRIGHTNESS: number = 1.0;
   private readonly SHADE_GAMMA: number = 0.78;
   private readonly SHADING: string[] = ["░", "▒", "▓", "█"];
   private readonly SHADE_STEPS: number = this.SHADING.length - 1;
@@ -110,9 +112,22 @@ export class TerminalInputComponent
   private topRow: number = 0;
   private bottomRow: number = 0;
 
-  // Reused buffers
-  private outputBuffer: string[][] = [];
+  // Reused buffers — now store structured data instead of HTML strings
+  // Each cell: { charIndex: number, colorIndex: number } | null
+  private cellBuffer: ({ charIndex: number; colorIndex: number } | null)[][] =
+    [];
   private zBuffer: number[][] = [];
+
+  // Precomputed terrain: elevation[thetaIdx][phiIdx]
+  private terrainElevation: number[][] = [];
+  private thetaCount: number = 0;
+  private phiCount: number = 0;
+
+  // Precomputed sin/cos lookup tables for theta and phi steps
+  private thetaSin: number[] = [];
+  private thetaCos: number[] = [];
+  private phiSin: number[] = [];
+  private phiCos: number[] = [];
 
   // Terrain colors matching CSS classes orb-c0..orb-c7
   private terrainColors: string[] = [
@@ -125,6 +140,11 @@ export class TerminalInputComponent
     "#82ffbd", // c6: highland
     "#b3ffb8", // c7: highland
   ];
+
+  // Fixed canvas dimensions (set once in ngOnInit)
+  private canvasWidth: number = 0;
+  private canvasHeight: number = 0;
+  private ctx: CanvasRenderingContext2D | null = null;
 
   constructor() {}
 
@@ -145,17 +165,75 @@ export class TerminalInputComponent
 
     // Allocate buffers once
     for (let r = 0; r < this.rows; r++) {
-      this.outputBuffer[r] = [];
+      this.cellBuffer[r] = [];
       this.zBuffer[r] = [];
       for (let c = 0; c < this.cols; c++) {
-        this.outputBuffer[r][c] = " ";
+        this.cellBuffer[r][c] = null;
         this.zBuffer[r][c] = -Infinity;
       }
     }
+
+    // Precompute theta/phi ranges and lookup tables
+    this.thetaCount = Math.ceil((Math.PI * 2) / this.STEP);
+    this.phiCount = Math.ceil((Math.PI - 0.16) / this.STEP);
+
+    for (let i = 0; i < this.thetaCount; i++) {
+      const theta = i * this.STEP;
+      this.thetaSin.push(Math.sin(theta));
+      this.thetaCos.push(Math.cos(theta));
+    }
+    for (let i = 0; i < this.phiCount; i++) {
+      const phi = 0.08 + i * this.STEP;
+      this.phiSin.push(Math.sin(phi));
+      this.phiCos.push(Math.cos(phi));
+    }
+
+    // Precompute terrain elevation map (invariant across frames)
+    this.terrainElevation = new Array(this.thetaCount);
+    const SEA_LEVEL = 0.42;
+    for (let ti = 0; ti < this.thetaCount; ti++) {
+      this.terrainElevation[ti] = new Array(this.phiCount);
+      const theta = ti * this.STEP;
+      for (let pi = 0; pi < this.phiCount; pi++) {
+        const phi = 0.08 + pi * this.STEP;
+        const noiseX = theta / Math.PI;
+        const noiseY = phi / Math.PI;
+        const baseElevation = this.fbm(noiseX, noiseY, 0.5);
+        let normalizedElevation = (baseElevation + 0.5) * 0.8;
+
+        const ridge = this.ridgedMountainNoise(theta, phi);
+        const latWeight = this.latitudeBandWeight(phi);
+        normalizedElevation += latWeight * ridge * this.MOUNTAIN_STRENGTH;
+        normalizedElevation =
+          normalizedElevation < 0
+            ? 0
+            : normalizedElevation > 1
+              ? 1
+              : normalizedElevation;
+
+        this.terrainElevation[ti][pi] = normalizedElevation;
+      }
+    }
+
+    // Precompute canvas dimensions (fixed — no per-frame resize)
+    const fontSize = 12;
+    const charWidth = fontSize * 0.6;
+    const lineHeight = 1.05 * fontSize;
+    const visibleRows = this.bottomRow - this.topRow + 1;
+    const visibleCols = this.cols; // Use full width for simplicity
+    this.canvasWidth = visibleCols * charWidth + 4;
+    this.canvasHeight = visibleRows * lineHeight + 4;
   }
 
   ngAfterViewInit(): void {
-    this.startAnimation();
+    // Only start animation if the canvas element exists
+    if (this.canvasRef?.nativeElement) {
+      const canvas = this.canvasRef.nativeElement;
+      canvas.width = this.canvasWidth;
+      canvas.height = this.canvasHeight;
+      this.ctx = canvas.getContext("2d");
+      this.startAnimation();
+    }
   }
 
   ngOnDestroy(): void {
@@ -236,7 +314,7 @@ export class TerminalInputComponent
     let value = 0;
     let amplitude = 0.5;
     let frequency = 1;
-    const octaves = 4;
+    const octaves = 3; // Reduced from 4 — barely noticeable difference
     const lacunarity = 2.0;
     const gain = 0.5;
 
@@ -254,7 +332,7 @@ export class TerminalInputComponent
     let value = 0;
     let amplitude = 0.5;
     let frequency = 1;
-    const octaves = 3;
+    const octaves = 2; // Reduced from 3 — barely noticeable difference
     const lacunarity = 2.0;
     const gain = 0.5;
     const ridgePower = 1.2;
@@ -296,34 +374,26 @@ export class TerminalInputComponent
     // Reset buffers in-place
     for (let r = 0; r < this.rows; r++) {
       for (let c = 0; c < this.cols; c++) {
-        this.outputBuffer[r][c] = " ";
+        this.cellBuffer[r][c] = null;
         this.zBuffer[r][c] = -Infinity;
       }
     }
 
-    for (let theta = 0; theta < Math.PI * 2; theta += this.STEP) {
-      for (let phi = 0.08; phi < Math.PI - 0.08; phi += this.STEP) {
-        const noiseX = theta / Math.PI;
-        const noiseY = phi / Math.PI;
-        const baseElevation = this.fbm(noiseX, noiseY, 0.5);
-        let normalizedElevation = (baseElevation + 0.5) * 0.8;
-
-        const ridge = this.ridgedMountainNoise(theta, phi);
-        const latWeight = this.latitudeBandWeight(phi);
-        normalizedElevation += latWeight * ridge * this.MOUNTAIN_STRENGTH;
-        normalizedElevation =
-          normalizedElevation < 0
-            ? 0
-            : normalizedElevation > 1
-              ? 1
-              : normalizedElevation;
+    // Use precomputed sin/cos lookup tables and terrain elevation
+    for (let ti = 0; ti < this.thetaCount; ti++) {
+      const thetaCos = this.thetaCos[ti];
+      const thetaSin = this.thetaSin[ti];
+      for (let pi = 0; pi < this.phiCount; pi++) {
+        const normalizedElevation = this.terrainElevation[ti][pi];
+        const phiCos = this.phiCos[pi];
+        const phiSin = this.phiSin[pi];
 
         const displacedRadius =
           this.RADIUS + (normalizedElevation - 0.5) * this.HEIGHT_DISPLACEMENT;
 
-        let x = displacedRadius * Math.sin(phi) * Math.cos(theta);
-        let y = displacedRadius * Math.cos(phi);
-        let z = displacedRadius * Math.sin(phi) * Math.sin(theta);
+        let x = displacedRadius * phiSin * thetaCos;
+        let y = displacedRadius * phiCos;
+        let z = displacedRadius * phiSin * thetaSin;
 
         // Rotate Y
         const x1 = x * cosY - z * sinY;
@@ -360,7 +430,6 @@ export class TerminalInputComponent
             intensity * this.SHADE_STEPS > this.SHADE_STEPS
               ? this.SHADE_STEPS
               : Math.floor(intensity * this.SHADE_STEPS);
-          const char = this.SHADING[shadeIndex];
 
           const isOcean = normalizedElevation < SEA_LEVEL;
           let colorIndex: number;
@@ -373,11 +442,9 @@ export class TerminalInputComponent
             colorIndex = 4 + (height * 4 > 3 ? 3 : Math.floor(height * 4));
           }
 
-          const span = `<span style="color:${this.terrainColors[colorIndex]}">${char}</span>`;
-
           if (z > this.zBuffer[yp][xp]) {
             this.zBuffer[yp][xp] = z;
-            this.outputBuffer[yp][xp] = span;
+            this.cellBuffer[yp][xp] = { charIndex: shadeIndex, colorIndex };
           }
         }
       }
@@ -385,68 +452,31 @@ export class TerminalInputComponent
   }
 
   private drawCanvas(): void {
-    const canvas = this.canvasRef?.nativeElement;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    if (!this.ctx) return;
 
     const fontSize = 12;
     const lineHeight = 1.05 * fontSize;
-
-    // Find widest row and equator bounds
-    let widestCount = 0;
-    let widestRow = 0;
-    for (let r = 0; r < this.rows; r++) {
-      let count = 0;
-      for (let c = 0; c < this.cols; c++) {
-        if (this.outputBuffer[r][c] !== " ") count++;
-      }
-      if (count > widestCount) {
-        widestCount = count;
-        widestRow = r;
-      }
-    }
-
-    let equatorLeft = this.cols;
-    let equatorRight = -1;
-    for (let c = 0; c < this.cols; c++) {
-      if (this.outputBuffer[widestRow][c] !== " ") {
-        if (c < equatorLeft) equatorLeft = c;
-        if (c > equatorRight) equatorRight = c;
-      }
-    }
-    if (equatorRight < 0) return;
-
     const charWidth = fontSize * 0.6;
-    const visibleRows = this.bottomRow - this.topRow + 1;
-    const visibleCols = equatorRight - equatorLeft + 1;
 
-    canvas.width = visibleCols * charWidth + 4;
-    canvas.height = visibleRows * lineHeight + 4;
+    // Clear canvas
+    this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+    this.ctx.font = `${fontSize}px "Courier New", monospace`;
+    this.ctx.textBaseline = "top";
 
-    ctx.fillStyle = "transparent";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.font = `${fontSize}px "Courier New", monospace`;
-    ctx.textBaseline = "top";
-
+    // Draw cells directly from structured buffer — no regex parsing
     for (let r = this.topRow; r <= this.bottomRow; r++) {
       const y = (r - this.topRow) * lineHeight + 2;
       let x = 2;
 
-      for (let c = equatorLeft; c <= equatorRight; c++) {
-        const cell = this.outputBuffer[r][c];
-        if (cell === " ") {
+      for (let c = 0; c < this.cols; c++) {
+        const cell = this.cellBuffer[r][c];
+        if (!cell) {
           x += charWidth;
           continue;
         }
 
-        // Parse color and char from span
-        const match = cell.match(/color:([^;]+)">(.)/);
-        if (match) {
-          ctx.fillStyle = match[1];
-          ctx.fillText(match[2], x, y);
-        }
+        this.ctx.fillStyle = this.terrainColors[cell.colorIndex];
+        this.ctx.fillText(this.SHADING[cell.charIndex], x, y);
         x += charWidth;
       }
     }

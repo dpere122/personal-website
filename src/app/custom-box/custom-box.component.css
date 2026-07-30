@@ -9,7 +9,6 @@
 .window {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 140px);
   background: rgba(255, 255, 255, 0.2);
   border-radius: 15px;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -92,17 +91,15 @@
 }
 
 /* Terminal full height styling */
+/* Terminal full height styling */
 .terminal-full-height {
   display: flex;
-  flex: 1;
-  min-height: 0;
+  flex-direction: column;
 }
 
 .terminal-full-height ::ng-deep .gradient-box {
-  height: 100%;
-  min-height: 100%;
+  height: auto;
 }
-
 /* Responsive styles for mobile */
 @media (max-width: 992px) {
   .custom-box {

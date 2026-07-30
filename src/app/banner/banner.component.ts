@@ -32,6 +32,14 @@ export class BannerComponent implements OnInit, AfterViewInit {
   currentRoute: string = "";
   isNavbarCollapsed: boolean = false;
 
+  // Cached DOM references (set once, reused on every frame)
+  private navbarEl: HTMLElement | null = null;
+  private titleEl: HTMLElement | null = null;
+
+  // rAF loop control
+  private scrollY = 0;
+  private rafPending = false;
+
   constructor(private router: Router) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -54,10 +62,13 @@ export class BannerComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Set initial height if needed
-    const banner = document.querySelector(".banner") as HTMLElement;
-    if (banner) {
-      this.originalHeight = banner.offsetHeight;
+    // Cache DOM references once instead of querying on every scroll
+    this.navbarEl = document.querySelector(".navbar") as HTMLElement | null;
+    this.titleEl = document.querySelector(".title") as HTMLElement | null;
+
+    // Measure initial height
+    if (this.navbarEl) {
+      this.originalHeight = this.navbarEl.offsetHeight;
       this.minHeight = this.originalHeight * 0.8; // 80% of original height
     }
   }
@@ -78,17 +89,19 @@ export class BannerComponent implements OnInit, AfterViewInit {
 
   @HostListener("window:scroll", [])
   onWindowScroll() {
-    // Get viewport width, height and scroll position
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-    const scrollPosition = window.scrollY;
+    // Only capture the latest scroll position; batch DOM updates via rAF
+    this.scrollY = window.scrollY;
+    if (!this.rafPending) {
+      this.rafPending = true;
+      requestAnimationFrame(() => this.applyScrollEffects());
+    }
+  }
 
-    // Calculate how far down the user has scrolled (as a percentage)
-    // The transition will complete at 1/4 of the viewport height
-    const scrollPercentage = Math.min(
-      scrollPosition / (windowHeight * 0.25),
-      1,
-    );
+  private applyScrollEffects() {
+    this.rafPending = false;
+
+    const windowHeight = window.innerHeight;
+    const scrollPercentage = Math.min(this.scrollY / (windowHeight * 0.25), 1);
 
     // Calculate opacity: starts at 1 (100%) and goes down to 0.7 (70%)
     this.bannerOpacity = 1 - 0.3 * scrollPercentage;
@@ -99,30 +112,26 @@ export class BannerComponent implements OnInit, AfterViewInit {
       (this.originalHeight - this.minHeight) * scrollPercentage;
 
     // Apply the opacity and height to the navbar element
-    const navbar = document.querySelector(".navbar") as HTMLElement;
-    if (navbar) {
-      navbar.style.opacity = this.bannerOpacity.toString();
-      navbar.style.height = `${currentHeight}px`;
+    if (this.navbarEl) {
+      this.navbarEl.style.opacity = this.bannerOpacity.toString();
+      this.navbarEl.style.height = `${currentHeight}px`;
       // Add/remove 'scrolled' class when at minimum height
       if (scrollPercentage >= 1) {
-        navbar.classList.add("scrolled");
+        this.navbarEl.classList.add("scrolled");
       } else {
-        navbar.classList.remove("scrolled");
+        this.navbarEl.classList.remove("scrolled");
       }
     }
 
     // Only resize title on desktop (screen width > 991px)
-    if (windowWidth > 991) {
+    if (window.innerWidth > 991 && this.titleEl) {
       // Calculate title size: starts at original size and goes down to minimum size
       const currentTitleSize =
         this.originalTitleSize -
         (this.originalTitleSize - this.minTitleSize) * scrollPercentage;
 
       // Apply the font size to the title element
-      const title = document.querySelector(".title") as HTMLElement;
-      if (title) {
-        title.style.fontSize = `${currentTitleSize}em`;
-      }
+      this.titleEl.style.fontSize = `${currentTitleSize}em`;
     }
   }
 }
