@@ -7,5 +7,14 @@
     "createdAt": "2026-07-28T04:12:14.651599+00:00",
     "status": "complete",
     "title": "Lazy-load Blog and Home Routes via Standalone Conversion"
+  },
+  {
+    "id": "plan-1034936f3e13",
+    "relativePath": ".nemo/build-plans/plan-1034936f3e13.md",
+    "sessionId": "3f749419-3ccd-492c-90bd-28eac9fce4a8",
+    "conversationTitle": "",
+    "createdAt": "2026-07-30T14:58:18.653555+00:00",
+    "status": "complete",
+    "title": "Optimize terminal-input component rendering performance"
   }
 ]

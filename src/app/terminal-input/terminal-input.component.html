@@ -3,7 +3,11 @@
     <div class="terminal-content">
       <!-- ASCII Orb Animation -->
       <div class="orb-section">
-        <pre class="orb-art" [innerHTML]="currentFrame"></pre>
+        <canvas
+          #orbCanvas
+          class="orb-art"
+          aria-label="Animated ASCII orb"
+        ></canvas>
       </div>
 
       <!-- Resume Content -->
