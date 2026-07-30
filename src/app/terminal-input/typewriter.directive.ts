@@ -2,6 +2,8 @@ import {
   Directive,
   ElementRef,
   Input,
+  Output,
+  EventEmitter,
   OnDestroy,
   OnChanges,
   SimpleChanges,
@@ -13,7 +15,7 @@ import {
  * Works directly with DOM text nodes, preserving all HTML structure.
  *
  * Usage:
- *   <div [typewriter]="true" [typeSpeed]="50" [typeDelay]="0">
+ *   <div [typewriter]="true" [typeSpeed]="50" (typewriterComplete)="onDone()">
  *     <p>Hello <strong>World</strong></p>
  *   </div>
  */
@@ -24,11 +26,13 @@ import {
 export class TypewriterDirective implements OnDestroy, OnChanges {
   /** Enable/disable the typewriter effect */
   @Input() typewriter: boolean = true;
-  /** Characters per frame (default: 5) */
-  @Input() typeSpeed: number = 5;
-
+  /** Milliseconds per character (default: 40) */
+  @Input() typeSpeed: number = 40;
   /** Delay in milliseconds before starting (default: 0ms) */
   @Input() typeDelay: number = 0;
+
+  /** Emitted when typewriter animation completes */
+  @Output() typewriterComplete = new EventEmitter<void>();
 
   private el: HTMLElement;
   private animationTimeout: any = null;
@@ -80,37 +84,42 @@ export class TypewriterDirective implements OnDestroy, OnChanges {
 
       let nodeIndex = 0;
       let charIndex = 0;
+      let lastTypeTime = 0;
 
-      const typeNext = () => {
+      const typeNext = (timestamp: number) => {
         if (nodeIndex >= textNodes.length) {
           this.isAnimating = false;
+          this.typewriterComplete.emit();
           return;
         }
 
-        const node = textNodes[nodeIndex];
-        const text = originalTexts[nodeIndex];
-
-        // Type multiple characters per frame
-        let charsTyped = 0;
-        while (charsTyped < this.typeSpeed && nodeIndex < textNodes.length) {
+        // Type characters based on elapsed time
+        while (timestamp - lastTypeTime >= this.typeSpeed) {
           const currentNode = textNodes[nodeIndex];
           const currentText = originalTexts[nodeIndex];
           if (charIndex < currentText.length) {
             currentNode.textContent += currentText[charIndex];
             charIndex++;
-            charsTyped++;
+            lastTypeTime = timestamp;
           } else {
             nodeIndex++;
             charIndex = 0;
           }
+          if (nodeIndex >= textNodes.length) break;
         }
 
-        this.animationTimeout = setTimeout(typeNext, 16);
+        if (nodeIndex < textNodes.length) {
+          this.animationTimeout = requestAnimationFrame(typeNext);
+        } else {
+          this.isAnimating = false;
+          this.typewriterComplete.emit();
+        }
       };
 
-      this.animationTimeout = setTimeout(typeNext, this.typeDelay);
-
-      this.animationTimeout = setTimeout(typeNext, this.typeDelay);
+      this.animationTimeout = setTimeout(() => {
+        lastTypeTime = performance.now();
+        this.animationTimeout = requestAnimationFrame(typeNext);
+      }, this.typeDelay);
     }, 100);
   }
 
@@ -137,7 +146,11 @@ export class TypewriterDirective implements OnDestroy, OnChanges {
 
   private stopTypewriter(): void {
     if (this.animationTimeout !== null) {
-      clearTimeout(this.animationTimeout);
+      if (typeof this.animationTimeout === "number") {
+        cancelAnimationFrame(this.animationTimeout);
+      } else {
+        clearTimeout(this.animationTimeout);
+      }
       this.animationTimeout = null;
     }
     this.isAnimating = false;

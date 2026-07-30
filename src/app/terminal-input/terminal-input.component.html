@@ -39,10 +39,47 @@
             >
           </div>
 
-          <!-- Work experience output -->
+          <!-- Work experience preview container -->
+          <div
+            class="preview-container"
+            *ngIf="workExpVisible && workExpGenerating"
+          >
+            <div class="preview-header">
+              <span class="preview-label">Generating</span>
+              <span class="preview-cursor">▋</span>
+            </div>
+            <div
+              class="preview-content typewriter-hidden"
+              [typewriter]="true"
+              [typeSpeed]="streamSpeed"
+              (typewriterComplete)="onTypewriterComplete()"
+            >
+              <div class="terminal-output">> Work Experience</div>
+
+              <div
+                class="work-exp-item"
+                *ngFor="let exp of resumeData?.experiences"
+              >
+                <div class="job-title-line">
+                  ▸ {{ exp.title }} — {{ exp.company }} ({{ exp.location }})
+                </div>
+                <div class="detail-line">
+                  <span class="detail-label">Period:</span> {{ exp.period }}
+                </div>
+                <div class="detail-line">
+                  <span class="detail-label">Highlights:</span>
+                </div>
+                <ul class="bullet-list">
+                  <li *ngFor="let bullet of exp.bullets">• {{ bullet }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Work experience final output -->
           <div
             class="work-exp-output typewriter-hidden"
-            *ngIf="workExpVisible"
+            *ngIf="workExpVisible && workExpComplete"
             [typewriter]="true"
             [typeSpeed]="typeSpeed"
           >
