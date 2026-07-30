@@ -92,7 +92,7 @@ export class TerminalInputComponent
   private readonly SHADE_GAMMA: number = 0.78;
   private readonly SHADING: string[] = ["░", "▒", "▓", "█"];
   private readonly SHADE_STEPS: number = this.SHADING.length - 1;
-  private readonly NOISE_SEED: number = 115;
+  private readonly NOISE_SEED: number = 90;
   private readonly MOUNTAIN_STRENGTH: number = 0.08;
 
   // Normalized light direction (computed in ngOnInit)
