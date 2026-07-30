@@ -8,6 +8,7 @@ import {
   ElementRef,
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { TypewriterDirective } from "./typewriter.directive";
 
 export interface Experience {
   title: string;
@@ -57,7 +58,7 @@ export interface ResumeData {
   templateUrl: "./terminal-input.component.html",
   styleUrls: ["./terminal-input.component.css"],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TypewriterDirective],
 })
 export class TerminalInputComponent
   implements OnInit, AfterViewInit, OnDestroy
@@ -67,6 +68,12 @@ export class TerminalInputComponent
   @Input() enableHeightChanges: boolean = true;
   @Input() frameDuration: number = 180;
   @Input() resumeData?: ResumeData;
+
+  // Typewriter speed in ms per character (default: 30ms)
+  @Input() typeSpeed: number = 30;
+
+  // Work experience visibility
+  workExpVisible = false;
 
   @ViewChild("orbCanvas", { read: ElementRef<HTMLCanvasElement> })
   private canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -492,5 +499,9 @@ export class TerminalInputComponent
 
   toggleExperience(exp: Experience): void {
     exp.expanded = !exp.expanded;
+  }
+
+  toggleWorkExperience(): void {
+    this.workExpVisible = !this.workExpVisible;
   }
 }

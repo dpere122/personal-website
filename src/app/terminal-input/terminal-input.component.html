@@ -34,34 +34,35 @@
         <div class="terminal-section">
           <div class="terminal-line">
             <span class="prompt">$</span>
-            <span class="command">ls work-experience/</span>
+            <span class="command clickable" (click)="toggleWorkExperience()"
+              >ls work-experience/</span
+            >
           </div>
-          <div class="terminal-output section-header">> Work Experience</div>
+
+          <!-- Work experience output -->
           <div
-            class="experience-item"
-            *ngFor="let exp of resumeData.experiences"
+            class="work-exp-output typewriter-hidden"
+            *ngIf="workExpVisible"
+            [typewriter]="true"
+            [typeSpeed]="typeSpeed"
           >
-            <div class="experience-header" (click)="toggleExperience(exp)">
-              <span class="expand-icon" [class.expanded]="exp.expanded">
-                {{ exp.expanded ? "[-]" : "[+]" }}
-              </span>
-              <span class="job-title">{{ exp.title }}</span>
-              <span class="job-period">{{ exp.period }}</span>
-            </div>
-            <div class="experience-details" [class.show]="exp.expanded">
-              <div class="detail-line">
-                <span class="detail-label">Company:</span>
-                {{ exp.company }}
+            <div class="terminal-output">> Work Experience</div>
+
+            <div
+              class="work-exp-item"
+              *ngFor="let exp of resumeData?.experiences"
+            >
+              <div class="job-title-line">
+                ▸ {{ exp.title }} — {{ exp.company }} ({{ exp.location }})
               </div>
               <div class="detail-line">
-                <span class="detail-label">Location:</span>
-                {{ exp.location }}
+                <span class="detail-label">Period:</span> {{ exp.period }}
               </div>
               <div class="detail-line">
                 <span class="detail-label">Highlights:</span>
               </div>
               <ul class="bullet-list">
-                <li *ngFor="let bullet of exp.bullets">▹ {{ bullet }}</li>
+                <li *ngFor="let bullet of exp.bullets">• {{ bullet }}</li>
               </ul>
             </div>
           </div>
