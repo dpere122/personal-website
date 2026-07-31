@@ -60,12 +60,15 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "personal-website:build"
+          },
           "configurations": {
             "production": {
-              "buildTarget": "personal-website:build:production"
+              "browserTarget": "personal-website:build:production"
             },
             "development": {
-              "buildTarget": "personal-website:build:development"
+              "browserTarget": "personal-website:build:development"
             }
           },
           "defaultConfiguration": "development"
