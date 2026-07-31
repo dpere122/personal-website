@@ -14,6 +14,9 @@
 npm-debug.log
 yarn-error.log
 
+# Nemo assistant
+.nemo/
+
 # IDEs and editors
 .idea/
 .project
