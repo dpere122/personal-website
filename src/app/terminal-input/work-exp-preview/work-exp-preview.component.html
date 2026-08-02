@@ -1,0 +1,48 @@
+<!-- Preview mode: AI-style generating header with thought process -->
+<div class="preview-container" [hidden]="mode !== 'preview'">
+  <div class="preview-header">
+    <span class="preview-label">Generating</span>
+    <span class="preview-cursor">▋</span>
+  </div>
+  <div
+    class="preview-content typewriter-hidden"
+    [typewriter]="mode === 'preview'"
+    [typeSpeed]="previewTypeSpeed"
+    (typewriterComplete)="typewriterComplete.emit()"
+  >
+    <div class="terminal-output">> Work Experience</div>
+
+    <div class="thought-process">
+      <div>Scanning career history...</div>
+      <div>Identifying key roles and responsibilities...</div>
+      <div>Extracting achievements and impact metrics...</div>
+      <div>Structuring timeline...</div>
+      <div>Formatting highlights...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Final mode: plain work experience output -->
+<div
+  class="work-exp-output typewriter-hidden"
+  [hidden]="mode !== 'final'"
+  [typewriter]="mode === 'final'"
+  [typeSpeed]="typeSpeed"
+>
+  <div class="terminal-output">> Work Experience</div>
+
+  <div class="work-exp-item" *ngFor="let exp of experiences">
+    <div class="job-title-line">
+      ▸ {{ exp.title }} — {{ exp.company }} ({{ exp.location }})
+    </div>
+    <div class="detail-line">
+      <span class="detail-label">Period:</span> {{ exp.period }}
+    </div>
+    <div class="detail-line">
+      <span class="detail-label">Highlights:</span>
+    </div>
+    <ul class="bullet-list">
+      <li *ngFor="let bullet of exp.bullets">• {{ bullet }}</li>
+    </ul>
+  </div>
+</div>

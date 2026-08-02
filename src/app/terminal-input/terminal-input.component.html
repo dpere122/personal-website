@@ -39,33 +39,15 @@
             >
           </div>
 
-          <!-- Work experience output -->
-          <div
-            class="work-exp-output typewriter-hidden"
+          <!-- Work experience preview/final -->
+          <app-work-exp-preview
             *ngIf="workExpVisible"
-            [typewriter]="true"
+            [experiences]="resumeData.experiences"
+            [mode]="workExpGenerating ? 'preview' : 'final'"
+            [previewTypeSpeed]="STREAM_SPEED"
             [typeSpeed]="typeSpeed"
-          >
-            <div class="terminal-output">> Work Experience</div>
-
-            <div
-              class="work-exp-item"
-              *ngFor="let exp of resumeData?.experiences"
-            >
-              <div class="job-title-line">
-                ▸ {{ exp.title }} — {{ exp.company }} ({{ exp.location }})
-              </div>
-              <div class="detail-line">
-                <span class="detail-label">Period:</span> {{ exp.period }}
-              </div>
-              <div class="detail-line">
-                <span class="detail-label">Highlights:</span>
-              </div>
-              <ul class="bullet-list">
-                <li *ngFor="let bullet of exp.bullets">• {{ bullet }}</li>
-              </ul>
-            </div>
-          </div>
+            (typewriterComplete)="onTypewriterComplete()"
+          />
         </div>
 
         <!-- Education -->
@@ -114,9 +96,9 @@
 
         <!-- Command Prompt -->
         <!-- <div class="terminal-line">
-          <span class="prompt">$</span>
-          <span class="cursor">█</span>
-        </div> -->
+        <span class="prompt">$</span>
+        <span class="cursor">█</span>
+      </div> -->
       </div>
     </div>
   </div>

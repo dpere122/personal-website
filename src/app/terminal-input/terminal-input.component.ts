@@ -8,7 +8,9 @@ import {
   ElementRef,
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
+
 import { TypewriterDirective } from "./typewriter.directive";
+import { WorkExpPreviewComponent } from "./work-exp-preview/work-exp-preview.component";
 
 export interface Experience {
   title: string;
@@ -58,7 +60,8 @@ export interface ResumeData {
   templateUrl: "./terminal-input.component.html",
   styleUrls: ["./terminal-input.component.css"],
   standalone: true,
-  imports: [CommonModule, TypewriterDirective],
+  imports: [CommonModule, TypewriterDirective, WorkExpPreviewComponent],
+  animations: [],
 })
 export class TerminalInputComponent
   implements OnInit, AfterViewInit, OnDestroy
@@ -69,11 +72,15 @@ export class TerminalInputComponent
   @Input() frameDuration: number = 180;
   @Input() resumeData?: ResumeData;
 
-  // Typewriter speed in ms per character (default: 30ms)
-  @Input() typeSpeed: number = 30;
+  // Preview stream speed in ms per character (simulated thinking)
+  readonly STREAM_SPEED = 40;
+
+  // Final output typewriter speed in ms per character (fast)
+  @Input() typeSpeed: number = 25;
 
   // Work experience visibility
   workExpVisible = false;
+  workExpGenerating = false;
 
   @ViewChild("orbCanvas", { read: ElementRef<HTMLCanvasElement> })
   private canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -502,6 +509,16 @@ export class TerminalInputComponent
   }
 
   toggleWorkExperience(): void {
-    this.workExpVisible = !this.workExpVisible;
+    if (!this.workExpVisible) {
+      this.workExpVisible = true;
+      this.workExpGenerating = true;
+    } else {
+      this.workExpVisible = false;
+      this.workExpGenerating = false;
+    }
+  }
+
+  onTypewriterComplete(): void {
+    this.workExpGenerating = false;
   }
 }
