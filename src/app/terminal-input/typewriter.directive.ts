@@ -7,7 +7,7 @@ import {
   OnDestroy,
   OnChanges,
   SimpleChanges,
-  afterNextRender,
+  AfterViewInit,
 } from "@angular/core";
 
 /**
@@ -23,7 +23,9 @@ import {
   selector: "[typewriter]",
   standalone: true,
 })
-export class TypewriterDirective implements OnDestroy, OnChanges {
+export class TypewriterDirective
+  implements OnDestroy, OnChanges, AfterViewInit
+{
   /** Enable/disable the typewriter effect */
   @Input() typewriter: boolean = true;
   /** Milliseconds per character (default: 40) */
@@ -37,22 +39,26 @@ export class TypewriterDirective implements OnDestroy, OnChanges {
   private el: HTMLElement;
   private animationTimeout: any = null;
   private isAnimating = false;
+  private started = false;
 
   constructor(private ref: ElementRef<HTMLElement>) {
     this.el = this.ref.nativeElement;
+  }
 
-    // Wait for Angular to fully render the DOM before starting
-    afterNextRender(() => {
-      if (this.typewriter) {
-        this.startTypewriter();
-      }
-    });
+  ngAfterViewInit(): void {
+    if (!this.started && this.typewriter) {
+      this.started = true;
+      this.startTypewriter();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["typewriter"] && changes["typewriter"].currentValue === true) {
-      this.stopTypewriter();
-      setTimeout(() => this.startTypewriter(), 50);
+      if (changes["typewriter"].previousValue === false) {
+        this.stopTypewriter();
+        this.started = true;
+        setTimeout(() => this.startTypewriter(), 50);
+      }
     }
   }
 
@@ -63,19 +69,15 @@ export class TypewriterDirective implements OnDestroy, OnChanges {
   private startTypewriter(): void {
     if (this.isAnimating) return;
 
-    // Wait for any pending Angular rendering
     setTimeout(() => {
-      // Collect all text nodes in document order
       const textNodes = this.collectTextNodes(this.el);
 
       if (textNodes.length === 0) return;
 
       this.isAnimating = true;
 
-      // Make visible and clear text nodes
       this.el.classList.remove("typewriter-hidden");
 
-      // Store original text and clear each text node
       const originalTexts: string[] = [];
       for (const node of textNodes) {
         originalTexts.push(node.textContent || "");
@@ -93,7 +95,6 @@ export class TypewriterDirective implements OnDestroy, OnChanges {
           return;
         }
 
-        // Type characters based on elapsed time
         while (timestamp - lastTypeTime >= this.typeSpeed) {
           const currentNode = textNodes[nodeIndex];
           const currentText = originalTexts[nodeIndex];
@@ -127,7 +128,6 @@ export class TypewriterDirective implements OnDestroy, OnChanges {
     const textNodes: Text[] = [];
     const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, {
       acceptNode: (node) => {
-        // Skip whitespace-only text nodes that are just formatting
         if (node.textContent?.trim() === "") {
           return NodeFilter.FILTER_REJECT;
         }

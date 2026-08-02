@@ -1,0 +1,82 @@
+/* Preview container */
+.preview-container {
+  padding-left: 16px;
+  margin-top: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: rgba(77, 255, 154, 0.05);
+  border-bottom: 1px solid #3a3a3a;
+  border-radius: 4px 4px 0 0;
+  font-size: 11px;
+  color: #4dff9a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.preview-cursor {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.preview-content {
+  padding: 8px 10px;
+}
+
+/* Work experience output - plain terminal style */
+.work-exp-output {
+  padding-left: 16px;
+}
+
+.typewriter-hidden {
+  visibility: hidden;
+}
+
+.work-exp-item {
+  margin-bottom: 8px;
+}
+
+.job-title-line {
+  color: #d4d4d4;
+  font-weight: normal;
+}
+
+.detail-line {
+  margin-bottom: 2px;
+  padding-left: 16px;
+  color: #d4d4d4;
+}
+
+.detail-label {
+  color: #d4d4d4;
+}
+
+.bullet-list {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0 16px;
+}
+
+.bullet-list li {
+  margin-bottom: 4px;
+  color: #d4d4d4;
+}

@@ -10,6 +10,7 @@ import {
 import { CommonModule } from "@angular/common";
 import { trigger, transition, style, animate } from "@angular/animations";
 import { TypewriterDirective } from "./typewriter.directive";
+import { WorkExpPreviewComponent } from "./work-exp-preview/work-exp-preview.component";
 
 export interface Experience {
   title: string;
@@ -59,7 +60,7 @@ export interface ResumeData {
   templateUrl: "./terminal-input.component.html",
   styleUrls: ["./terminal-input.component.css"],
   standalone: true,
-  imports: [CommonModule, TypewriterDirective],
+  imports: [CommonModule, TypewriterDirective, WorkExpPreviewComponent],
   animations: [
     trigger("fadeIn", [
       transition(":enter", [
@@ -78,11 +79,11 @@ export class TerminalInputComponent
   @Input() frameDuration: number = 180;
   @Input() resumeData?: ResumeData;
 
-  // Preview stream speed in ms per character (fast, like AI streaming)
-  streamSpeed: number = 25;
+  // Preview stream speed in ms per character (simulated thinking)
+  streamSpeed: number = 40;
 
-  // Final output typewriter speed in ms per character (moderate)
-  @Input() typeSpeed: number = 30;
+  // Final output typewriter speed in ms per character (fast)
+  @Input() typeSpeed: number = 25;
 
   // Work experience visibility
   workExpVisible = false;
@@ -526,7 +527,6 @@ export class TerminalInputComponent
       this.workExpComplete = false;
     }
   }
-
   onTypewriterComplete(): void {
     this.workExpGenerating = false;
     this.workExpComplete = true;
