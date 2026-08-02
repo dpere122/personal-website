@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { TypewriterDirective } from "../typewriter.directive";
+import { Experience } from "../terminal-input.component";
 
 export type WorkExpMode = "preview" | "final";
 
@@ -13,13 +14,7 @@ export type WorkExpMode = "preview" | "final";
 })
 export class WorkExpPreviewComponent {
   /** Work experience items to display */
-  @Input() experiences?: Array<{
-    title: string;
-    company: string;
-    location: string;
-    period: string;
-    bullets: string[];
-  }>;
+  @Input() experiences?: Experience[];
 
   /** Typing speed in ms per character (final mode) */
   @Input() typeSpeed: number = 30;

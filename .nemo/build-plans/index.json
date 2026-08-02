@@ -16,5 +16,14 @@
     "createdAt": "2026-07-30T14:58:18.653555+00:00",
     "status": "complete",
     "title": "Optimize terminal-input component rendering performance"
+  },
+  {
+    "id": "plan-34d211e2e873",
+    "relativePath": ".nemo/build-plans/plan-34d211e2e873.md",
+    "sessionId": "fe5361a2-d2f7-404c-81f7-3a1e262ea44c",
+    "conversationTitle": "",
+    "createdAt": "2026-08-02T22:12:08.017231+00:00",
+    "status": "complete",
+    "title": "Clean up terminal-input, typewriter, and related components"
   }
 ]

@@ -42,63 +42,63 @@
           <!-- Work experience preview/final -->
           <app-work-exp-preview
             *ngIf="workExpVisible"
-            [experiences]="resumeData?.experiences"
+            [experiences]="resumeData.experiences"
             [mode]="workExpGenerating ? 'preview' : 'final'"
-            [previewTypeSpeed]="streamSpeed"
+            [previewTypeSpeed]="STREAM_SPEED"
             [typeSpeed]="typeSpeed"
             (typewriterComplete)="onTypewriterComplete()"
           />
-
-          <!-- Education -->
-          <div class="terminal-section">
-            <div class="terminal-line">
-              <span class="prompt">$</span>
-              <span class="command">cat education.txt</span>
-            </div>
-            <div class="terminal-output section-header">> Education</div>
-            <div class="education-item">
-              <div class="detail-line">
-                <span class="detail-label">Degree:</span>
-                {{ resumeData.education.degree }}
-              </div>
-              <div class="detail-line">
-                <span class="detail-label">School:</span>
-                {{ resumeData.education.school }}
-              </div>
-              <div class="detail-line">
-                <span class="detail-label">Location:</span>
-                {{ resumeData.education.location }}
-              </div>
-              <div class="detail-line">
-                <span class="detail-label">Period:</span>
-                {{ resumeData.education.period }}
-              </div>
-            </div>
-          </div>
-
-          <!-- Technical Expertise -->
-          <div class="terminal-section">
-            <div class="terminal-line">
-              <span class="prompt">$</span>
-              <span class="command">cat technical-skills.txt</span>
-            </div>
-            <div class="terminal-output section-header">
-              > Technical Expertise
-            </div>
-            <div class="skills-item" *ngFor="let skill of resumeData.skills">
-              <div class="detail-line">
-                <span class="skill-category">{{ skill.category }}</span>
-                {{ skill.items }}
-              </div>
-            </div>
-          </div>
-
-          <!-- Command Prompt -->
-          <!-- <div class="terminal-line">
-          <span class="prompt">$</span>
-          <span class="cursor">█</span>
-        </div> -->
         </div>
+
+        <!-- Education -->
+        <div class="terminal-section">
+          <div class="terminal-line">
+            <span class="prompt">$</span>
+            <span class="command">cat education.txt</span>
+          </div>
+          <div class="terminal-output section-header">> Education</div>
+          <div class="education-item">
+            <div class="detail-line">
+              <span class="detail-label">Degree:</span>
+              {{ resumeData.education.degree }}
+            </div>
+            <div class="detail-line">
+              <span class="detail-label">School:</span>
+              {{ resumeData.education.school }}
+            </div>
+            <div class="detail-line">
+              <span class="detail-label">Location:</span>
+              {{ resumeData.education.location }}
+            </div>
+            <div class="detail-line">
+              <span class="detail-label">Period:</span>
+              {{ resumeData.education.period }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Technical Expertise -->
+        <div class="terminal-section">
+          <div class="terminal-line">
+            <span class="prompt">$</span>
+            <span class="command">cat technical-skills.txt</span>
+          </div>
+          <div class="terminal-output section-header">
+            > Technical Expertise
+          </div>
+          <div class="skills-item" *ngFor="let skill of resumeData.skills">
+            <div class="detail-line">
+              <span class="skill-category">{{ skill.category }}</span>
+              {{ skill.items }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Command Prompt -->
+        <!-- <div class="terminal-line">
+        <span class="prompt">$</span>
+        <span class="cursor">█</span>
+      </div> -->
       </div>
     </div>
   </div>

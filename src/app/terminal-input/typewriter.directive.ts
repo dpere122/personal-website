@@ -37,9 +37,11 @@ export class TypewriterDirective
   @Output() typewriterComplete = new EventEmitter<void>();
 
   private el: HTMLElement;
-  private animationTimeout: any = null;
+  private animationTimeout: number | ReturnType<typeof setTimeout> | null =
+    null;
   private isAnimating = false;
   private started = false;
+  private completed = false;
 
   constructor(private ref: ElementRef<HTMLElement>) {
     this.el = this.ref.nativeElement;
@@ -91,7 +93,10 @@ export class TypewriterDirective
       const typeNext = (timestamp: number) => {
         if (nodeIndex >= textNodes.length) {
           this.isAnimating = false;
-          this.typewriterComplete.emit();
+          if (!this.completed) {
+            this.completed = true;
+            this.typewriterComplete.emit();
+          }
           return;
         }
 
@@ -113,7 +118,10 @@ export class TypewriterDirective
           this.animationTimeout = requestAnimationFrame(typeNext);
         } else {
           this.isAnimating = false;
-          this.typewriterComplete.emit();
+          if (!this.completed) {
+            this.completed = true;
+            this.typewriterComplete.emit();
+          }
         }
       };
 
