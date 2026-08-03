@@ -73,10 +73,10 @@ export class TerminalInputComponent
   @Input() resumeData?: ResumeData;
 
   // Preview stream speed in ms per character (simulated thinking)
-  readonly STREAM_SPEED = 40;
+  readonly STREAM_SPEED = 10;
 
   // Final output typewriter speed in ms per character (fast)
-  @Input() typeSpeed: number = 25;
+  @Input() typeSpeed: number = 5;
 
   // Work experience visibility
   workExpVisible = false;

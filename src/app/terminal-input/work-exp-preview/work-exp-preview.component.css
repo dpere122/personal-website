@@ -1,10 +1,11 @@
 /* Preview container */
 .preview-container {
-  padding-left: 16px;
+  /* padding-left: 16px; */
   margin-top: 4px;
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid #3a3a3a;
   border-radius: 4px;
+  height: 200px;
   max-height: 200px;
   overflow-y: auto;
 }
@@ -79,4 +80,35 @@
 .bullet-list li {
   margin-bottom: 4px;
   color: #d4d4d4;
+}
+
+/* Thought process styling */
+.thought-process {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.reasoning-text {
+  color: #a0a0a0;
+  font-style: italic;
+  margin-bottom: 4px;
+}
+
+.tool-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  margin-bottom: 6px;
+  background: rgba(77, 255, 154, 0.1);
+  border: 1px solid rgba(77, 255, 154, 0.3);
+  border-radius: 999px;
+  font-size: 10px;
+  font-family: "Courier New", monospace;
+  color: #4dff9a;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.tool-pill.revealed {
+  opacity: 1;
 }

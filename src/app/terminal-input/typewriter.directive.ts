@@ -103,7 +103,16 @@ export class TypewriterDirective
         while (timestamp - lastTypeTime >= this.typeSpeed) {
           const currentNode = textNodes[nodeIndex];
           const currentText = originalTexts[nodeIndex];
-          if (charIndex < currentText.length) {
+          const parent = currentNode.parentElement;
+          const isToolPill = parent?.classList?.contains("tool-pill");
+
+          if (isToolPill) {
+            // Reveal full pill content instantly
+            currentNode.textContent = currentText;
+            parent?.classList.add("revealed");
+            nodeIndex++;
+            charIndex = 0;
+          } else if (charIndex < currentText.length) {
             currentNode.textContent += currentText[charIndex];
             charIndex++;
             lastTypeTime = timestamp;
@@ -115,8 +124,10 @@ export class TypewriterDirective
         }
 
         if (nodeIndex < textNodes.length) {
+          this.scrollToBottom();
           this.animationTimeout = requestAnimationFrame(typeNext);
         } else {
+          this.scrollToBottom();
           this.isAnimating = false;
           if (!this.completed) {
             this.completed = true;
@@ -150,6 +161,13 @@ export class TypewriterDirective
     }
 
     return textNodes;
+  }
+
+  private scrollToBottom(): void {
+    const scrollable = this.el.closest(".preview-container") || this.el;
+    (scrollable as HTMLElement).scrollTop = (
+      scrollable as HTMLElement
+    ).scrollHeight;
   }
 
   private stopTypewriter(): void {

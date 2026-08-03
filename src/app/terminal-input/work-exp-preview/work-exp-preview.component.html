@@ -1,7 +1,7 @@
 <!-- Preview mode: AI-style generating header with thought process -->
 <div class="preview-container" [hidden]="mode !== 'preview'">
   <div class="preview-header">
-    <span class="preview-label">Generating</span>
+    <span class="preview-label">Reasoning</span>
     <span class="preview-cursor">▋</span>
   </div>
   <div
@@ -10,14 +10,32 @@
     [typeSpeed]="previewTypeSpeed"
     (typewriterComplete)="typewriterComplete.emit()"
   >
-    <div class="terminal-output">> Work Experience</div>
+    <div class="terminal-output">
+      The user has asked me to fetch Daniel's Resume
+    </div>
 
     <div class="thought-process">
-      <div>Scanning career history...</div>
-      <div>Identifying key roles and responsibilities...</div>
-      <div>Extracting achievements and impact metrics...</div>
-      <div>Structuring timeline...</div>
-      <div>Formatting highlights...</div>
+      <div class="reasoning-text">
+        I need to retrieve Daniel's work experience from his resume file.
+      </div>
+      <div class="reasoning-text">Calling read_workspace_file...</div>
+      <div class="tool-pill" data-tool="read_workspace_file">
+        read_workspace_file
+      </div>
+      <div class="reasoning-text">
+        Got the resume data. I can see 3 work experience entries to format.
+      </div>
+      <div class="reasoning-text">Calling search_workspace...</div>
+      <div class="tool-pill" data-tool="search_workspace">search_workspace</div>
+      <div class="reasoning-text">
+        Found relevant experience entries. I'll structure them chronologically
+        with key achievements.
+      </div>
+      <div class="reasoning-text">Calling format_output...</div>
+      <div class="tool-pill" data-tool="format_output">format_output</div>
+      <div class="reasoning-text">
+        Formatting complete. Presenting work experience below.
+      </div>
     </div>
   </div>
 </div>
