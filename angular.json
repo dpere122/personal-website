@@ -61,14 +61,15 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "personal-website:build"
+            "buildTarget": "personal-website:build",
+            "port": 4201
           },
           "configurations": {
             "production": {
-              "browserTarget": "personal-website:build:production"
+              "buildTarget": "personal-website:build:production"
             },
             "development": {
-              "browserTarget": "personal-website:build:development"
+              "buildTarget": "personal-website:build:development"
             }
           },
           "defaultConfiguration": "development"
