@@ -1,13 +1,19 @@
 /* Preview container */
 .preview-container {
-  /* padding-left: 16px; */
   margin-top: 4px;
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid #3a3a3a;
   border-radius: 4px;
   height: 200px;
   max-height: 200px;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.preview-container.fade-out {
+  animation: fadeOut 0.3s ease forwards;
 }
 
 .preview-header {
@@ -17,7 +23,7 @@
   padding: 6px 10px;
   background: rgba(77, 255, 154, 0.05);
   border-bottom: 1px solid #3a3a3a;
-  border-radius: 4px 4px 0 0;
+  flex-shrink: 0;
   font-size: 11px;
   color: #4dff9a;
   text-transform: uppercase;
@@ -39,13 +45,73 @@
   }
 }
 
+.preview-scrollable {
+  flex: 1;
+  overflow-y: auto;
+}
+
 .preview-content {
+  padding: 8px 10px;
+}
+
+/* Work experience box - bordered container matching preview style */
+.work-exp-box {
+  margin-top: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+/* Fade animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Sticky header matching preview style */
+.work-exp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: rgba(77, 255, 154, 0.05);
+  border-bottom: 1px solid #3a3a3a;
+  flex-shrink: 0;
+  font-size: 11px;
+  color: #4dff9a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.work-exp-label {
+  font-weight: 500;
+}
+
+/* Content area - no scroll, grows with content */
+.work-exp-scrollable {
   padding: 8px 10px;
 }
 
 /* Work experience output - plain terminal style */
 .work-exp-output {
-  padding-left: 16px;
+  padding-left: 8px;
 }
 
 .typewriter-hidden {

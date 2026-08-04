@@ -164,10 +164,20 @@ export class TypewriterDirective
   }
 
   private scrollToBottom(): void {
-    const scrollable = this.el.closest(".preview-container") || this.el;
-    (scrollable as HTMLElement).scrollTop = (
-      scrollable as HTMLElement
-    ).scrollHeight;
+    // Walk up from this element to find the first ancestor with overflow-y:auto/scroll
+    let node: HTMLElement | null = this.el.parentElement;
+    while (node) {
+      const style = window.getComputedStyle(node);
+      const overflowY = style.overflowY;
+      if (overflowY === "auto" || overflowY === "scroll") {
+        node.scrollTop = node.scrollHeight;
+        return;
+      }
+      node = node.parentElement;
+    }
+
+    // Fallback: scroll the element itself
+    this.el.scrollTop = this.el.scrollHeight;
   }
 
   private stopTypewriter(): void {

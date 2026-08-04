@@ -1,66 +1,82 @@
 <!-- Preview mode: AI-style generating header with thought process -->
-<div class="preview-container" [hidden]="mode !== 'preview'">
+<div
+  class="preview-container"
+  [hidden]="mode !== 'preview'"
+  [class.fade-out]="previewFadingOut"
+>
   <div class="preview-header">
     <span class="preview-label">Reasoning</span>
     <span class="preview-cursor">▋</span>
   </div>
-  <div
-    class="preview-content typewriter-hidden"
-    [typewriter]="mode === 'preview'"
-    [typeSpeed]="previewTypeSpeed"
-    (typewriterComplete)="typewriterComplete.emit()"
-  >
-    <div class="terminal-output">
-      The user has asked me to fetch Daniel's Resume
-    </div>
+  <div class="preview-scrollable">
+    <div
+      class="preview-content typewriter-hidden"
+      [typewriter]="mode === 'preview'"
+      [typeSpeed]="previewTypeSpeed"
+      (typewriterComplete)="typewriterComplete.emit()"
+    >
+      <div class="terminal-output">
+        The user has asked me to fetch Daniel's Resume
+      </div>
 
-    <div class="thought-process">
-      <div class="reasoning-text">
-        I need to retrieve Daniel's work experience from his resume file.
-      </div>
-      <div class="reasoning-text">Calling read_workspace_file...</div>
-      <div class="tool-pill" data-tool="read_workspace_file">
-        read_workspace_file
-      </div>
-      <div class="reasoning-text">
-        Got the resume data. I can see 3 work experience entries to format.
-      </div>
-      <div class="reasoning-text">Calling search_workspace...</div>
-      <div class="tool-pill" data-tool="search_workspace">search_workspace</div>
-      <div class="reasoning-text">
-        Found relevant experience entries. I'll structure them chronologically
-        with key achievements.
-      </div>
-      <div class="reasoning-text">Calling format_output...</div>
-      <div class="tool-pill" data-tool="format_output">format_output</div>
-      <div class="reasoning-text">
-        Formatting complete. Presenting work experience below.
+      <div class="thought-process">
+        <div class="reasoning-text">
+          I need to retrieve Daniel's work experience from his resume file.
+        </div>
+        <div class="reasoning-text">Calling read_workspace_file...</div>
+        <div class="tool-pill" data-tool="read_workspace_file">
+          read_workspace_file
+        </div>
+        <div class="reasoning-text">
+          Got the resume data. I can see 3 work experience entries to format.
+        </div>
+        <div class="reasoning-text">Calling search_workspace...</div>
+        <div class="tool-pill" data-tool="search_workspace">
+          search_workspace
+        </div>
+        <div class="reasoning-text">
+          Found relevant experience entries. I'll structure them chronologically
+          with key achievements.
+        </div>
+        <div class="reasoning-text">Calling format_output...</div>
+        <div class="tool-pill" data-tool="format_output">format_output</div>
+        <div class="reasoning-text">
+          Formatting complete. Presenting work experience below.
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <!-- Final mode: plain work experience output -->
-<div
-  class="work-exp-output typewriter-hidden"
-  [hidden]="mode !== 'final'"
-  [typewriter]="mode === 'final'"
-  [typeSpeed]="typeSpeed"
->
-  <div class="terminal-output">> Work Experience</div>
+<div #workExpBox class="work-exp-box" [hidden]="mode !== 'final'">
+  <div class="work-exp-header">
+    <span class="work-exp-label">Work Experience</span>
+  </div>
+  <div class="work-exp-scrollable">
+    <div
+      #workExpOutput
+      class="work-exp-output typewriter-hidden"
+      [typewriter]="mode === 'final'"
+      [typeSpeed]="typeSpeed"
+      (typewriterComplete)="onFinalTypewriterComplete()"
+    >
+      <div class="terminal-output">> Work Experience</div>
 
-  <div class="work-exp-item" *ngFor="let exp of experiences">
-    <div class="job-title-line">
-      ▸ {{ exp.title }} — {{ exp.company }} ({{ exp.location }})
+      <div class="work-exp-item" *ngFor="let exp of experiences">
+        <div class="job-title-line">
+          ▸ {{ exp.title }} — {{ exp.company }} ({{ exp.location }})
+        </div>
+        <div class="detail-line">
+          <span class="detail-label">Period:</span> {{ exp.period }}
+        </div>
+        <div class="detail-line">
+          <span class="detail-label">Highlights:</span>
+        </div>
+        <ul class="bullet-list">
+          <li *ngFor="let bullet of exp.bullets">• {{ bullet }}</li>
+        </ul>
+      </div>
     </div>
-    <div class="detail-line">
-      <span class="detail-label">Period:</span> {{ exp.period }}
-    </div>
-    <div class="detail-line">
-      <span class="detail-label">Highlights:</span>
-    </div>
-    <ul class="bullet-list">
-      <li *ngFor="let bullet of exp.bullets">• {{ bullet }}</li>
-    </ul>
   </div>
 </div>

@@ -2,22 +2,95 @@
 .terminal-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   min-height: 100vh;
   padding: 120px 20px 20px 20px; /* Added top padding to account for the banner */
 }
 
 /* Terminal window styling */
-.terminal-window {
-  /* width controlled by Bootstrap grid classes (col-12 col-sm-10 col-md-10) */
-  height: auto;
+.window {
+  display: flex;
+  flex-direction: column;
   background-color: #0c0c0c;
   border-radius: 15px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-  overflow: hidden;
-  position: relative;
-  z-index: 2;
   border: 1px solid #30d977;
+  position: relative;
+  overflow: visible;
+  padding: 10px;
+}
+
+/* Liquid Glass Window Handle */
+.window-handle {
+  position: absolute;
+  top: -56px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 36px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 255, 255, 0.15) 100%
+  );
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  z-index: 10;
+}
+
+.handle-dots {
+  display: flex;
+  gap: 8px;
+  position: absolute;
+  left: 16px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.dot-red {
+  background: radial-gradient(circle at 35% 35%, #ff6b6b, #ff4444);
+}
+
+.dot-yellow {
+  background: radial-gradient(circle at 35% 35%, #ffd93d, #ffbf00);
+}
+
+.dot-green {
+  background: radial-gradient(circle at 35% 35%, #6bff6b, #44dd44);
+}
+
+.handle-title {
+  font-size: 0.85rem;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  font-family: "Fira Code Medium", monospace;
+  text-align: center;
+}
+
+/* Content area */
+.content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 40px 20px 20px 20px;
+  min-height: 0;
 }
 
 /* VHS Screen Effects - Moved inside the terminal window */
@@ -67,84 +140,10 @@
   animation: flicker 0.3s infinite alternate;
 }
 
-/* Header bar styling */
-.terminal-header {
-  background: linear-gradient(to right, #2e3238, #4a5568);
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  border-bottom: 2px solid #1f2937;
-}
-
-.terminal-controls {
-  display: flex;
-  gap: 8px;
-  margin-right: 15px;
-}
-
-.control-btn {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.close {
-  background-color: #ff5f56;
-}
-
-.minimize {
-  background-color: #ffbd2e;
-}
-
-.maximize {
-  background-color: #27c93f;
-}
-
-.terminal-title {
-  color: #e2e8f0;
-  font-weight: bold;
-  font-size: 1rem;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
 /* Terminal content area */
 .terminal-content {
-  padding: 15px;
+  padding: 0;
   color: #ddd;
-}
-
-/* Git project section */
-.git-project-section {
-  border-bottom: 1px dashed #30d977;
-  padding-bottom: 15px;
-  margin-bottom: 15px;
-}
-
-/* ASCII animation section */
-.ascii-animation-section {
-  border-bottom: 1px dashed #30d977;
-  padding-bottom: 15px;
-  margin-bottom: 15px;
-}
-
-.ascii-art {
-  font-family: "Courier New", monospace;
-  font-size: 14px;
-  line-height: 1.2;
-  color: #30d977;
-  margin: 10px 0;
-  padding: 10px;
-  background-color: #121212;
-  border-radius: 4px;
-  white-space: pre;
-  overflow-x: auto;
-  text-shadow: 0 0 5px rgba(48, 217, 119, 0.5);
-}
-
-/* Description section */
-.description-section {
-  padding-top: 5px;
 }
 
 /* Command line styling */
@@ -161,76 +160,6 @@
 
 .command {
   color: #ddd;
-}
-
-/* Project details */
-.project-name,
-.repo-link {
-  margin: 8px 0;
-  padding-left: 20px;
-}
-
-.label {
-  color: #30d977;
-  font-weight: bold;
-  margin-right: 10px;
-}
-
-.value {
-  color: #ddd;
-}
-
-.repo-link a {
-  color: #55c2fe;
-  text-decoration: underline;
-  word-break: break-all;
-}
-
-.repo-link a:hover {
-  color: #7cd5ff;
-}
-
-/* README content */
-.readme-content {
-  padding: 10px;
-  background-color: #121212;
-  border-radius: 4px;
-  line-height: 1.5;
-}
-
-@keyframes flicker {
-  0%,
-  95% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .terminal-container {
-    padding: 105px 0 0 0; /* Top padding for banner, no side padding */
-  }
-
-  .terminal-window {
-    width: 100vw;
-    border-radius: 0;
-    min-height: calc(100vh - 105px); /* Adjust for banner height */
-  }
-
-  .terminal-header {
-    padding: 8px;
-  }
-
-  .terminal-title {
-    font-size: 0.9rem;
-  }
-
-  .terminal-content {
-    padding: 10px;
-  }
 }
 
 /* Status messages */
@@ -308,8 +237,47 @@
   color: #7cd5ff;
 }
 
-/* Responsive adjustments for repo cards */
-@media (max-width: 768px) {
+@keyframes flicker {
+  0%,
+  95% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .terminal-container {
+    padding: 110px 10px 20px 10px;
+  }
+
+  .window {
+    height: auto;
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 24px;
+  }
+
+  .window-handle {
+    position: absolute;
+    top: -48px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    border-radius: 12px;
+    z-index: 20;
+  }
+
+  .content {
+    padding: 15px 10px;
+  }
+
+  .terminal-content {
+    padding: 10px;
+  }
+
   .repo-card {
     padding: 10px;
   }
@@ -322,5 +290,63 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
+  }
+}
+
+/* Pagination controls */
+.pagination-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px dashed #30d977;
+}
+
+.page-btn {
+  background-color: #121212;
+  color: #30d977;
+  border: 1px solid #30d977;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-family: "Courier New", monospace;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-shadow: 0 0 5px rgba(48, 217, 119, 0.5);
+}
+
+.page-btn:hover:not(:disabled) {
+  background-color: #30d977;
+  color: #0c0c0c;
+  box-shadow: 0 0 10px rgba(48, 217, 119, 0.4);
+}
+
+.page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-info {
+  color: #ddd;
+  font-family: "Courier New", monospace;
+  font-size: 0.85rem;
+}
+
+/* Responsive adjustments for pagination */
+@media (max-width: 768px) {
+  .pagination-controls {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .page-btn {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+  }
+
+  .page-info {
+    font-size: 0.8rem;
   }
 }

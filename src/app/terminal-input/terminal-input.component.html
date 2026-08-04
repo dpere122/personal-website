@@ -44,6 +44,7 @@
             *ngIf="workExpVisible"
             [experiences]="resumeData.experiences"
             [mode]="workExpGenerating ? 'preview' : 'final'"
+            [previewFadingOut]="previewFadingOut"
             [previewTypeSpeed]="STREAM_SPEED"
             [typeSpeed]="typeSpeed"
             (typewriterComplete)="onTypewriterComplete()"

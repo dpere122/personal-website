@@ -76,11 +76,12 @@ export class TerminalInputComponent
   readonly STREAM_SPEED = 10;
 
   // Final output typewriter speed in ms per character (fast)
-  @Input() typeSpeed: number = 5;
+  @Input() typeSpeed: number = 2;
 
   // Work experience visibility
   workExpVisible = false;
   workExpGenerating = false;
+  previewFadingOut = false;
 
   @ViewChild("orbCanvas", { read: ElementRef<HTMLCanvasElement> })
   private canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -513,12 +514,18 @@ export class TerminalInputComponent
       this.workExpVisible = true;
       this.workExpGenerating = true;
     } else {
+      // Fade out and close
       this.workExpVisible = false;
       this.workExpGenerating = false;
     }
   }
 
   onTypewriterComplete(): void {
-    this.workExpGenerating = false;
+    // Preview typewriter finished - fade out preview, then show final box
+    this.previewFadingOut = true;
+    setTimeout(() => {
+      this.workExpGenerating = false;
+      this.previewFadingOut = false;
+    }, 350); // Match fade-out animation duration
   }
 }

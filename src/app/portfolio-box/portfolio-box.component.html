@@ -1,23 +1,23 @@
 <div class="container-fluid terminal-container">
   <!-- Terminal window structure -->
-  <div class="terminal-window col-12 col-sm-10 col-md-10 col-xxl-6">
+  <div class="window col-12 col-sm-10 col-md-10 col-xxl-6">
+    <!-- Liquid Glass Window Handle -->
+    <div class="window-handle">
+      <div class="handle-dots">
+        <span class="dot dot-red"></span>
+        <span class="dot dot-yellow"></span>
+        <span class="dot dot-green"></span>
+      </div>
+      <span class="handle-title">{{ title }}</span>
+    </div>
+
     <!-- VHS screen overlay effects - now inside the terminal window -->
     <div class="screen-overlay"></div>
     <div class="scan-lines"></div>
     <div class="flicker"></div>
 
-    <!-- Title bar section -->
-    <div class="terminal-header">
-      <div class="terminal-controls">
-        <span class="control-btn close"></span>
-        <span class="control-btn minimize"></span>
-        <span class="control-btn maximize"></span>
-      </div>
-      <div class="terminal-title">{{ title }}</div>
-    </div>
-
     <!-- Main content -->
-    <div class="terminal-content">
+    <div class="content terminal-content">
       <!-- Loading / error states -->
       <div *ngIf="loading" class="status-message">
         <span class="prompt">$</span>
@@ -55,6 +55,28 @@
               {{ repo.repoURL }}
             </a>
           </div>
+        </div>
+
+        <!-- Pagination controls -->
+        <div class="pagination-controls">
+          <button
+            class="page-btn"
+            (click)="loadPreviousPage()"
+            [disabled]="!hasPreviousPage || loading"
+          >
+            &larr; Previous
+          </button>
+          <span class="page-info">
+            Page {{ currentPage }} of {{ totalPages }} ({{ totalCount }} total
+            repos)
+          </span>
+          <button
+            class="page-btn"
+            (click)="loadNextPage()"
+            [disabled]="!hasNextPage || loading"
+          >
+            Next &rarr;
+          </button>
         </div>
       </div>
     </div>
