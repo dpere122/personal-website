@@ -35,25 +35,39 @@
           <span class="command">gh repo list dpere122</span>
         </div>
 
-        <div class="repo-card" *ngFor="let repo of repos">
-          <div class="repo-header">
-            <span class="repo-name">{{ repo.repoName }}</span>
-            <a
-              [href]="repo.repoURL"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="repo-link"
-            >
-              [open]
-            </a>
+        <div class="repo-cards-wrapper" [@pageTransition]="currentPage">
+          <div class="repo-card" *ngFor="let repo of repos">
+            <div class="repo-header">
+              <span class="repo-name">{{ repo.repoName }}</span>
+              <a
+                [href]="repo.repoURL"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="repo-link"
+              >
+                [open]
+              </a>
+            </div>
+            <div class="repo-description" *ngIf="repo.repoDescription">
+              {{ repo.repoDescription }}
+            </div>
+            <div class="repo-url">
+              <a
+                [href]="repo.repoURL"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {{ repo.repoURL }}
+              </a>
+            </div>
           </div>
-          <div class="repo-description" *ngIf="repo.repoDescription">
-            {{ repo.repoDescription }}
-          </div>
-          <div class="repo-url">
-            <a [href]="repo.repoURL" target="_blank" rel="noopener noreferrer">
-              {{ repo.repoURL }}
-            </a>
+
+          <!-- Placeholder cards for missing repos -->
+          <div class="repo-card placeholder" *ngFor="let _ of placeholders">
+            <div class="repo-header">
+              <span class="repo-name coming-soon">Coming Soon</span>
+            </div>
+            <div class="repo-description">New project in progress...</div>
           </div>
         </div>
 

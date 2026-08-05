@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
+import { trigger, transition, animate, style } from "@angular/animations";
 import { GithubService, PaginatedResult } from "../services/github.service";
 import { GithubRepo } from "../models/github-repo.model";
 
@@ -10,6 +11,14 @@ import { GithubRepo } from "../models/github-repo.model";
   imports: [CommonModule, HttpClientModule],
   templateUrl: "./portfolio-box.component.html",
   styleUrls: ["./portfolio-box.component.css"],
+  animations: [
+    trigger("pageTransition", [
+      transition("* => *", [
+        style({ opacity: 0 }),
+        animate("0.3s ease-in-out", style({ opacity: 1 })),
+      ]),
+    ]),
+  ],
 })
 export class PortfolioBoxComponent implements OnInit {
   @Input() title: string = "Public Repositories";
@@ -25,7 +34,18 @@ export class PortfolioBoxComponent implements OnInit {
   hasNextPage = false;
   hasPreviousPage = false;
 
+  private readonly MAX_REPOS_PER_PAGE = 5;
+
   constructor(private githubService: GithubService) {}
+
+  /**
+   * Returns an array of placeholder indices so the template can render
+   * "Coming Soon" cards when there are fewer than MAX_REPOS_PER_PAGE repos.
+   */
+  get placeholders(): number[] {
+    const count = this.MAX_REPOS_PER_PAGE - this.repos.length;
+    return count > 0 ? Array.from({ length: count }, (_, i) => i) : [];
+  }
 
   ngOnInit() {
     this.loadRepos();

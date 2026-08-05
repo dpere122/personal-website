@@ -18,6 +18,7 @@
   position: relative;
   overflow: visible;
   padding: 10px;
+  max-height: 780px;
 }
 
 /* Liquid Glass Window Handle */
@@ -91,6 +92,8 @@
   flex: 1;
   padding: 40px 20px 20px 20px;
   min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* VHS Screen Effects - Moved inside the terminal window */
@@ -175,6 +178,14 @@
 /* Repo list */
 .repo-list {
   margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Wrapper for animated repo cards */
+.repo-cards-wrapper {
+  display: flex;
+  flex-direction: column;
 }
 
 /* Individual repo card */
@@ -191,6 +202,16 @@
   box-shadow: 0 0 10px rgba(48, 217, 119, 0.3);
 }
 
+.repo-card.placeholder {
+  border-style: dashed;
+  border-color: #555;
+  opacity: 0.5;
+}
+
+.repo-card.placeholder:hover {
+  box-shadow: none;
+}
+
 .repo-header {
   display: flex;
   justify-content: space-between;
@@ -203,6 +224,12 @@
   font-weight: bold;
   font-size: 1.05rem;
   text-shadow: 0 0 5px rgba(48, 217, 119, 0.5);
+}
+
+.repo-name.coming-soon {
+  color: #888;
+  text-shadow: none;
+  font-style: italic;
 }
 
 .repo-link {
